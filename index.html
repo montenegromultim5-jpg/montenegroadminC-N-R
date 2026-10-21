@@ -6,6 +6,9 @@
   <title>Montenegro Multimedia — Suite de Gestión Fotográfica</title>
   <!-- Librería html2pdf para descargar el Contrato o Nota directamente en archivo PDF limpio -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- Librerías oficiales de Google Firebase para Sincronización en Tiempo Real (Celular <-> PC) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <style>
     :root {
       --bg-main: #f4f6fb;
@@ -1470,6 +1473,68 @@
       color: #0f172a !important;
     }
 
+
+    /* Indicador de Estado de Nube Firebase en el Encabezado */
+    .cloud-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(15, 23, 42, 0.65);
+      color: #cbd5e1;
+      transition: all 0.2s ease;
+    }
+
+    .cloud-status-pill:hover {
+      border-color: var(--cyan);
+      color: #ffffff;
+    }
+
+    .cloud-status-pill.online {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #6ee7b7;
+    }
+
+    .cloud-status-pill.syncing {
+      background: rgba(2, 132, 199, 0.25);
+      border-color: #38bdf8;
+      color: #bae6fd;
+    }
+
+    .cloud-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .cloud-status-pill.online .cloud-dot {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .cloud-status-pill.syncing .cloud-dot {
+      background: #38bdf8;
+      animation: pulseRed 1s infinite;
+    }
+
+    .fb-step-list {
+      margin: 0.5rem 0 0.9rem 1.1rem;
+      font-size: 0.8rem;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .fb-step-list li {
+      margin-bottom: 0.25rem;
+    }
+
     /* ================= IMPRESIÓN 100% AISLADA Y LIMPIA ================= */
     #print_only_stage {
       display: none;
@@ -1574,8 +1639,12 @@
       <button type="button" class="tab-btn" id="nav_btn_calendario" onclick="switchTab('calendario')">📅 2. Mini Calendario</button>
       <button type="button" class="tab-btn" id="nav_btn_inventario" onclick="switchTab('inventario')">🎥 3. Inventario y Renta</button>
       <button type="button" class="tab-btn" id="nav_btn_remisiones" onclick="switchTab('remisiones')">🧾 4. Notas 10x15 y Pendientes</button>
-      <button type="button" class="tab-btn" id="nav_btn_config" onclick="switchTab('config')">⚙️ 5. Respaldo</button>
+      <button type="button" class="tab-btn" id="nav_btn_config" onclick="switchTab('config')">☁️ 5. Firebase y Respaldo</button>
     </nav>
+    <div id="cloud_status_badge" class="cloud-status-pill" onclick="switchTab('config')" title="Haz clic para configurar o ver el estado de sincronización con Firebase">
+      <span class="cloud-dot"></span>
+      <span id="cloud_status_text">Modo Local (Sin Nube)</span>
+    </div>
   </header>
 
   <main>
@@ -2366,16 +2435,43 @@
           </div>
         </div>
 
-        <div class="card">
-          <h2>☁️ Conexión a Base de Datos en Tiempo Real (Firebase Ready)</h2>
-          <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">
-            El sistema ya está preparado para sincronizar en tiempo real tus contratos, inventario y notas entre tu celular y el de tus colaboradores con <strong>Google Firebase</strong>.
+        <div class="card" style="border: 2px solid #0284c7; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);">
+          <h2>
+            <span>☁️ Conexión en Tiempo Real con Google Firebase</span>
+            <span id="fb_card_badge" class="badge badge-warn">Desconectado</span>
+          </h2>
+          <p style="font-size:0.81rem; color:#334155; margin-bottom:0.5rem;">
+            Conecta tu sistema a <strong>Firebase Realtime Database</strong> para que todo lo que guardes en el celular aparezca al instante en tu computadora (contratos sin imprimir en amarillo, abonos semanales, notas 10×15 e inventario).
           </p>
+
+          <details style="background:#ffffff; border:1px solid #bae6fd; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.75rem; font-size:0.78rem;">
+            <summary style="cursor:pointer; font-weight:800; color:#0369a1;">📖 ¿Cómo obtener mi enlace gratis en 1 minuto? (Ver pasos)</summary>
+            <ol class="fb-step-list">
+              <li>Entra a <strong>console.firebase.google.com</strong> e inicia sesión con tu cuenta de Google.</li>
+              <li>Haz clic en <strong>"Crear un proyecto"</strong> (Ej. <em>Montenegro-Multimedia</em>).</li>
+              <li>En el menú izquierdo entra a <strong>Compilación ➔ Realtime Database</strong> y pulsa <strong>"Crear base de datos"</strong>.</li>
+              <li>Elige <strong>"Comenzar en modo de prueba"</strong> (o en la pestaña <em>Reglas</em> pon <code>".read": true, ".write": true</code>).</li>
+              <li>Copia el enlace que aparece arriba de tu base (termina en <code>.firebaseio.com</code> o <code>.firebasedatabase.app</code>) y pégalo aquí abajo:</li>
+            </ol>
+          </details>
+
           <div class="form-group">
-            <label>URL de tu Realtime Database / Proyecto Firebase (Opcional —Siguiente paso):</label>
-            <input type="text" id="cfg_firebase_url" placeholder="https://tu-proyecto-default-rtdb.firebaseio.com" oninput="guardarDatosNegocio()" />
+            <label>1. Pega aquí la URL de tu Firebase Realtime Database (o pega todo el bloque <code>firebaseConfig</code>):</label>
+            <textarea id="cfg_firebase_url" rows="3" placeholder="Ejemplo: https://moneteadmin-default-rtdb.firebaseio.com&#10;(O pega aquí todo el código const firebaseConfig = { ... } que te da Firebase)" style="font-family:monospace; font-size:0.8rem;"></textarea>
           </div>
-          <small style="color:var(--accent); font-weight:600;">✨ Lista para vincular en cuanto me pases tus credenciales de Firebase.</small>
+
+          <div class="form-row" style="margin-top:0.5rem;">
+            <button type="button" class="btn btn-primary" style="font-weight:800;" onclick="conectarYProbarFirebase()">
+              ☁️🔌 Conectar y Sincronizar Ahora
+            </button>
+            <button type="button" class="btn btn-success" onclick="subirDatosLocalesAFirebaseManual()">
+              ⬆️ Subir mis datos actuales a Firebase
+            </button>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.55rem; flex-wrap:wrap; gap:0.4rem;">
+            <small id="fb_ultima_sync_lbl" style="color:#0369a1; font-weight:700;">Esperando conexión...</small>
+            <button type="button" class="btn btn-outline btn-sm" onclick="desconectarFirebase()">🔌 Desconectar</button>
+          </div>
         </div>
       </div>
 
@@ -2660,6 +2756,12 @@
       document.getElementById("cfg_dias_alerta_nota").value = state.config.diasAlertaNota || 5;
       document.getElementById("cfg_dias_alerta_contrato").value = state.config.diasAlertaContrato || 12;
 
+      const fbInput = document.getElementById("cfg_firebase_url");
+      const savedFbInput = state.config.firebaseRawInput || localStorage.getItem("montenegro_firebase_raw") || "https://moneteadmin-default-rtdb.firebaseio.com";
+      if (fbInput && savedFbInput) {
+        fbInput.value = savedFbInput;
+      }
+
       // Calcular el siguiente folio libre según las notas guardadas
       actualizarSiguienteFolioRemision();
 
@@ -2671,10 +2773,301 @@
       renderizarBloquesDOM();
       renderizarCatalogoProductosRemision();
       refrescarTodo();
+
+      // Si ya tenía configurado Firebase, reconectar en tiempo real automáticamente
+      if (savedFbInput) {
+        setTimeout(() => iniciarConexionFirebase(savedFbInput, true), 250);
+      }
+    }
+
+    // ================= MOTOR DE SINCRONIZACIÓN EN TIEMPO REAL CON GOOGLE FIREBASE =================
+    let fbDatabaseUrl = "";
+    let fbDbRef = null;
+    let fbEventSource = null;
+    let fbIgnorarProximoEco = false;
+    let fbUltimaMarcaTiempoLocal = 0;
+
+    function actualizarIndicadorNube(estado, mensajeDetalle = "") {
+      const pill = document.getElementById("cloud_status_badge");
+      const txt = document.getElementById("cloud_status_text");
+      const cardBadge = document.getElementById("fb_card_badge");
+      const lblSync = document.getElementById("fb_ultima_sync_lbl");
+
+      if (!pill || !txt) return;
+      pill.classList.remove("online", "syncing");
+
+      if (estado === "online") {
+        pill.classList.add("online");
+        txt.textContent = "☁️ Firebase En Línea (Tiempo Real)";
+        if (cardBadge) {
+          cardBadge.className = "badge badge-ok";
+          cardBadge.textContent = "🟢 Conectado en Tiempo Real";
+        }
+      } else if (estado === "syncing") {
+        pill.classList.add("syncing");
+        txt.textContent = "🔄 Sincronizando con Firebase...";
+        if (cardBadge) {
+          cardBadge.className = "badge badge-blue";
+          cardBadge.textContent = "🔄 Sincronizando...";
+        }
+      } else {
+        txt.textContent = "Modo Local (Conectar Firebase)";
+        if (cardBadge) {
+          cardBadge.className = "badge badge-warn";
+          cardBadge.textContent = "Desconectado";
+        }
+      }
+
+      if (lblSync && mensajeDetalle) {
+        lblSync.textContent = mensajeDetalle;
+      }
+    }
+
+    function extraerConfigFirebase(rawInput) {
+      if (!rawInput || !rawInput.trim()) return null;
+      const texto = rawInput.trim();
+
+      // 1. Buscar databaseURL explícita dentro de un bloque firebaseConfig o URL directa
+      const matchDbUrl = texto.match(/https?:\/\/[a-zA-Z0-9-]+(?:\.firebaseio\.com|\.firebasedatabase\.app)/i);
+      let databaseURL = matchDbUrl ? matchDbUrl[0].replace(/\/+$/, "") : "";
+
+      // 2. Si pegó el bloque firebaseConfig pero sin databaseURL explícita, deducirla desde projectId
+      const matchProj = texto.match(/projectId\s*:\s*["']([a-zA-Z0-9-]+)["']/);
+      const matchApiKey = texto.match(/apiKey\s*:\s*["']([a-zA-Z0-9_-]+)["']/);
+      const projectId = matchProj ? matchProj[1] : "";
+      const apiKey = matchApiKey ? matchApiKey[1] : "";
+
+      if (!databaseURL && projectId) {
+        databaseURL = `https://${projectId}-default-rtdb.firebaseio.com`;
+      }
+
+      if (!databaseURL && /^[a-zA-Z0-9-]+$/.test(texto) && texto.length > 4) {
+        databaseURL = `https://${texto}-default-rtdb.firebaseio.com`;
+      }
+
+      if (!databaseURL) return null;
+      return { databaseURL, projectId, apiKey };
+    }
+
+    function aplicarDatosRecibidosDeNube(remoto) {
+      if (!remoto || typeof remoto !== "object") return;
+      if (remoto.updatedAt && remoto.updatedAt <= fbUltimaMarcaTiempoLocal) return;
+
+      fbUltimaMarcaTiempoLocal = remoto.updatedAt || Date.now();
+      const rawSaved = state.config.firebaseRawInput || localStorage.getItem("montenegro_firebase_raw") || "";
+
+      state = {
+        ...state,
+        ...remoto,
+        config: {
+          ...state.config,
+          ...(remoto.config || {}),
+          firebaseRawInput: rawSaved
+        },
+        eventos: Array.isArray(remoto.eventos) ? remoto.eventos : [],
+        rentas: Array.isArray(remoto.rentas) ? remoto.rentas : [],
+        notasGuardadas: Array.isArray(remoto.notasGuardadas) ? remoto.notasGuardadas : [],
+        paquetes: Array.isArray(remoto.paquetes) && remoto.paquetes.length > 0 ? remoto.paquetes : state.paquetes,
+        productosRemision: Array.isArray(remoto.productosRemision) && remoto.productosRemision.length > 0 ? remoto.productosRemision : state.productosRemision,
+        inventario: Array.isArray(remoto.inventario) && remoto.inventario.length > 0 ? remoto.inventario : state.inventario
+      };
+
+      localStorage.setItem("montenegro_multimedia_v5", JSON.stringify(state));
+
+      // Actualizar campos visuales sin interrumpir si el usuario está escribiendo
+      document.getElementById("cfg_negocio").value = state.config.negocio || "Montenegro Multimedia";
+      document.getElementById("cfg_representante").value = state.config.representante || "Gilberto Montenegro Ruiz";
+      document.getElementById("cfg_domicilio").value = state.config.domicilio || "Porfirio Díaz #280";
+      document.getElementById("cfg_contacto").value = state.config.contacto || "";
+      document.getElementById("cfg_plantilla_1").value = state.config.plantilla1 || CONTRATO_1_DEFAULT;
+      document.getElementById("cfg_plantilla_2").value = state.config.plantilla2 || CONTRATO_2_DEFAULT;
+
+      actualizarSiguienteFolioRemision();
+      renderizarSelectPaquetes();
+      renderizarCatalogoProductosRemision();
+      refrescarTodo();
+
+      const horaStr = new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      actualizarIndicadorNube("online", `✅ Sincronizado en tiempo real (${horaStr}) — ${state.eventos.length} contrato(s), ${state.notasGuardadas.length} nota(s)`);
+    }
+
+    async function empujarEstadoAFirebase(mostrarToast = false) {
+      if (!fbDatabaseUrl) return;
+      fbUltimaMarcaTiempoLocal = Date.now();
+      const payload = {
+        ...state,
+        updatedAt: fbUltimaMarcaTiempoLocal
+      };
+
+      actualizarIndicadorNube("syncing", "Subiendo cambios a Firebase...");
+      fbIgnorarProximoEco = true;
+
+      try {
+        if (fbDbRef) {
+          await fbDbRef.set(payload);
+        } else {
+          const resp = await fetch(`${fbDatabaseUrl}/montenegro_suite.json`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+        }
+        const horaStr = new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        actualizarIndicadorNube("online", `✅ Guardado en la nube (${horaStr})`);
+        if (mostrarToast) {
+          notificar("☁️✅ Todos tus contratos, notas e inventario se subieron a Firebase.");
+        }
+      } catch (err) {
+        console.error("Error al sincronizar con Firebase:", err);
+        actualizarIndicadorNube("offline", "⚠️ Error de permisos o red en Firebase. Verifica que las Reglas estén en true.");
+        if (mostrarToast) {
+          notificar("⚠️ No se pudo subir a Firebase. Verifica que en Realtime Database > Reglas tengas '.read': true y '.write': true.", "error");
+        }
+      } finally {
+        setTimeout(() => { fbIgnorarProximoEco = false; }, 600);
+      }
+    }
+
+    async function iniciarConexionFirebase(rawInput, silencioso = false) {
+      const cfg = extraerConfigFirebase(rawInput);
+      if (!cfg || !cfg.databaseURL) {
+        if (!silencioso) {
+          notificar("Pega la URL de tu Realtime Database (ej. https://tu-proyecto-default-rtdb.firebaseio.com) o el bloque firebaseConfig.", "error");
+        }
+        return;
+      }
+
+      fbDatabaseUrl = cfg.databaseURL;
+      state.config.firebaseRawInput = rawInput.trim();
+      localStorage.setItem("montenegro_firebase_raw", rawInput.trim());
+      localStorage.setItem("montenegro_multimedia_v5", JSON.stringify(state));
+
+      actualizarIndicadorNube("syncing", "Conectando con " + fbDatabaseUrl + "...");
+
+      // 1. Intentar conexión por SDK oficial de Firebase si está cargado
+      try {
+        if (typeof firebase !== "undefined" && firebase.database) {
+          if (fbDbRef) fbDbRef.off();
+          let app;
+          if (!firebase.apps.length) {
+            app = firebase.initializeApp({
+              apiKey: cfg.apiKey || "AIzaSyDummyKeyForRealtimeDB",
+              projectId: cfg.projectId || "montenegro-multimedia",
+              databaseURL: fbDatabaseUrl
+            });
+          } else {
+            app = firebase.app();
+          }
+          fbDbRef = firebase.database(app).ref("montenegro_suite");
+
+          fbDbRef.on("value", (snapshot) => {
+            const val = snapshot.val();
+            if (val) {
+              if (!fbIgnorarProximoEco) {
+                aplicarDatosRecibidosDeNube(val);
+              }
+            } else {
+              // La base de datos en Firebase está vacía: subir los datos actuales por primera vez
+              empujarEstadoAFirebase(false);
+            }
+          }, (error) => {
+            console.warn("Aviso SDK Firebase, activando canal directo REST:", error);
+          });
+        }
+      } catch (e) {
+        console.warn("Usando canal REST directo para Firebase:", e);
+      }
+
+      // 2. Verificación inmediata por REST + Canal de Tiempo Real (Server-Sent Events) para garantizar funcionamiento con solo la URL
+      try {
+        const resp = await fetch(`${fbDatabaseUrl}/montenegro_suite.json`);
+        if (!resp.ok) {
+          throw new Error("Acceso denegado o URL incorrecta (" + resp.status + ")");
+        }
+        const datosRemotos = await resp.json();
+        if (datosRemotos && (datosRemotos.eventos || datosRemotos.config || datosRemotos.notasGuardadas)) {
+          aplicarDatosRecibidosDeNube(datosRemotos);
+          if (!silencioso) {
+            notificar("☁️🎉 ¡Conectado a Firebase! Datos sincronizados en tiempo real.");
+          }
+        } else {
+          await empujarEstadoAFirebase(false);
+          if (!silencioso) {
+            notificar("☁️🎉 ¡Conectado a Firebase! Se subieron tus datos actuales a la nube.");
+          }
+        }
+
+        // Suscripción en tiempo real mediante EventSource por si sólo puso la URL sin apiKey
+        if (fbEventSource) fbEventSource.close();
+        if (!fbDbRef && typeof EventSource !== "undefined") {
+          fbEventSource = new EventSource(`${fbDatabaseUrl}/montenegro_suite.json`);
+          fbEventSource.addEventListener("put", (e) => {
+            if (fbIgnorarProximoEco) return;
+            try {
+              const packet = JSON.parse(e.data);
+              if (packet && packet.path === "/" && packet.data) {
+                aplicarDatosRecibidosDeNube(packet.data);
+              } else {
+                fetch(`${fbDatabaseUrl}/montenegro_suite.json`)
+                  .then(r => r.json())
+                  .then(d => { if (d) aplicarDatosRecibidosDeNube(d); });
+              }
+            } catch (err) {}
+          });
+        }
+      } catch (err) {
+        actualizarIndicadorNube("offline", "⚠️ No se pudo conectar. Revisa la URL y que las Reglas estén en true.");
+        if (!silencioso) {
+          notificar("⚠️ No se pudo conectar con esa URL. Verifica que termine en .firebaseio.com y que en 'Reglas' tenga .read: true y .write: true.", "error");
+        }
+      }
+    }
+
+    function conectarYProbarFirebase() {
+      const inp = document.getElementById("cfg_firebase_url");
+      const raw = inp ? inp.value.trim() : "";
+      iniciarConexionFirebase(raw, false);
+    }
+
+    function subirDatosLocalesAFirebaseManual() {
+      const inp = document.getElementById("cfg_firebase_url");
+      const raw = inp ? inp.value.trim() : "";
+      const cfg = extraerConfigFirebase(raw);
+      if (cfg && cfg.databaseURL) {
+        fbDatabaseUrl = cfg.databaseURL;
+      }
+      if (!fbDatabaseUrl) {
+        notificar("Primero pega tu URL de Firebase arriba.", "warn");
+        return;
+      }
+      empujarEstadoAFirebase(true);
+    }
+
+    function desconectarFirebase() {
+      if (fbDbRef) {
+        fbDbRef.off();
+        fbDbRef = null;
+      }
+      if (fbEventSource) {
+        fbEventSource.close();
+        fbEventSource = null;
+      }
+      fbDatabaseUrl = "";
+      state.config.firebaseRawInput = "";
+      localStorage.removeItem("montenegro_firebase_raw");
+      localStorage.setItem("montenegro_multimedia_v5", JSON.stringify(state));
+      const inp = document.getElementById("cfg_firebase_url");
+      if (inp) inp.value = "";
+      actualizarIndicadorNube("offline", "Desconectado de la nube (Guardando solo en este dispositivo).");
+      notificar("🔌 Desconectado de Firebase. Tus datos siguen seguros en este navegador.");
     }
 
     function guardarEstado() {
       localStorage.setItem("montenegro_multimedia_v5", JSON.stringify(state));
+      if (fbDatabaseUrl) {
+        empujarEstadoAFirebase(false);
+      }
     }
 
     function guardarUmbralesAlerta() {
