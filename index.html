@@ -1634,6 +1634,84 @@
       margin-bottom: 0.75rem;
     }
 
+    
+    /* Bloques Mensuales Agrupados en Todos los Días Señalados */
+    .mes-agenda-bloque {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.1rem;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .mes-agenda-bloque:last-child {
+      margin-bottom: 0;
+    }
+
+    .mes-agenda-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 0.6rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--cyan);
+    }
+
+    .mes-agenda-titulo {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    /* Botón directo para abrir Google Maps desde el celular */
+    .btn-maps-mobile {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 0.76rem;
+      padding: 0.34rem 0.68rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid #047857;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-maps-mobile:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.38);
+      background: #047857;
+    }
+
+    .maps-inline-box {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-left: 3.5px solid #0284c7;
+      border-radius: 6px;
+      padding: 0.32rem 0.48rem;
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      color: #0f172a !important;
+    }
+
+    tr.row-moroso-3m .maps-inline-box,
+    tr.row-moroso-3m .maps-inline-box strong,
+    tr.row-moroso-3m .maps-inline-box small,
+    tr.row-moroso-3m .maps-inline-box span {
+      color: #0f172a !important;
+    }
+
     /* ================= IMPRESIÓN 100% AISLADA Y LIMPIA ================= */
     #print_only_stage {
       display: none;
@@ -1968,7 +2046,7 @@
             </div>
           </div>
 
-          <div class="section-subtitle">📍 2. Ubicaciones del Evento</div>
+          <div class="section-subtitle">📍 2. Ubicaciones del Evento y Link de Google Maps</div>
           <div class="form-group">
             <label>Localidad / Municipio en Edo. Méx.</label>
             <input type="text" id="ev_lugar" value="Capulhuac" placeholder="Ej. Capulhuac, Santiago Tianguistenco, Toluca" oninput="actualizarVistaContrato()" />
@@ -1982,6 +2060,22 @@
               <label>Recepción / Salón *</label>
               <input type="text" id="ev_dir_recepcion" placeholder="Salón, jardín o domicilio" oninput="actualizarVistaContrato()" />
             </div>
+          </div>
+          <div class="form-group" style="background:#f0f9ff; border:1.5px solid #7dd3fc; border-radius:9px; padding:0.6rem 0.75rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.3rem;">
+              <label style="margin:0; font-size:0.79rem; font-weight:800; color:#0369a1;">
+                🗺️ Link de Google Maps de la Ubicación (Para picarle desde tu celular e ir al evento)
+              </label>
+              <div style="display:flex; gap:0.3rem;">
+                <button type="button" class="btn btn-outline btn-sm" style="padding:0.14rem 0.48rem; font-size:0.69rem; background:#fff;" onclick="generarLinkMapsDesdeDireccionFormulario()">
+                  🧭 Generar Link con Dirección
+                </button>
+                <button type="button" class="btn btn-success btn-sm" style="padding:0.14rem 0.48rem; font-size:0.69rem;" onclick="probarLinkMapsFormulario()">
+                  📍 Abrir Mapa
+                </button>
+              </div>
+            </div>
+            <input type="url" id="ev_maps_url" placeholder="Pega aquí el link de Google Maps (Ej. https://maps.app.goo.gl/... o https://www.google.com/maps/...)" />
           </div>
 
           <div class="section-subtitle">🎁 3. Paquete y Descripción del Servicio</div>
@@ -2092,15 +2186,96 @@
       </div>
 
       <!-- Tabla de Eventos y Lista de Pendientes de Material -->
-      <div class="card no-print">
+      <div class="card no-print" id="card_agenda_contratos">
         <h2>
           <span>📅 Agenda y Lista de Pendientes de Contratos (Ordenados por Fecha)</span>
-          <div style="display:flex; align-items:center; gap:0.45rem; font-size:0.78rem; font-weight:normal;">
-            <span>Alerta roja de atraso tras el evento a los:</span>
-            <input type="number" id="cfg_dias_alerta_contrato" value="12" min="1" max="90" style="width:60px; padding:0.2rem 0.4rem;" onchange="guardarUmbralesAlerta()" />
-            <span>días</span>
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <button type="button" class="btn btn-success btn-sm" id="btn_toggle_contrato_anterior_agenda" style="font-weight:800; padding:0.42rem 0.8rem;" onclick="toggleMenuContratoAnteriorAgenda()">
+              ➕📂 Pasar Contrato Ya Hecho / Agregar Evento sin Hacer Contrato
+            </button>
+            <div style="display:flex; align-items:center; gap:0.35rem; font-size:0.76rem; font-weight:normal;">
+              <span>Alerta atraso:</span>
+              <input type="number" id="cfg_dias_alerta_contrato" value="12" min="1" max="90" style="width:55px; padding:0.18rem 0.35rem;" onchange="guardarUmbralesAlerta()" />
+              <span>días</span>
+            </div>
           </div>
         </h2>
+
+        <!-- Panel Desplegable en la Agenda para Pasar un Contrato Ya Hecho antes de la página (Sin necesidad de elaborar contrato nuevo) -->
+        <div id="panel_contrato_anterior_agenda" style="display:none; background:linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); border:2px solid #10b981; border-radius:12px; padding:1rem 1.15rem; margin-bottom:1.1rem; box-shadow:0 6px 18px rgba(16, 185, 129, 0.12);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.55rem; padding-bottom:0.45rem; border-bottom:1px solid #a7f3d0;">
+            <div>
+              <strong id="titulo_form_ant_agenda" style="font-size:0.95rem; color:#065f46;">📂 Pasar Contrato Ya Hecho / Registrar Evento Rápido en la Agenda</strong>
+              <p style="font-size:0.76rem; color:#047857; margin-top:2px;">
+                Pasa aquí los contratos que ya tenías hechos antes de la página para llevar el orden de fechas, cuánto te restan por pagar, estado del material, sesión de fotos y su ubicación en Google Maps.
+              </p>
+            </div>
+            <div style="display:flex; gap:0.35rem;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormularioContratoAnteriorAgenda()">🧹 Limpiar</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="cerrarMenuContratoAnteriorAgenda()">✕ Cerrar</button>
+            </div>
+          </div>
+
+          <input type="hidden" id="ant_edit_id" value="" />
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Nombre del Cliente / Festejado(a) *</label>
+              <input type="text" id="ant_cliente" placeholder="Ej. XV Años Valeria / Boda Fam. Pérez" />
+            </div>
+            <div class="form-group">
+              <label>Fecha del Evento *</label>
+              <input type="date" id="ant_fecha" />
+            </div>
+            <div class="form-group">
+              <label>Teléfono del Cliente (Opcional)</label>
+              <input type="text" id="ant_telefono" placeholder="Ej. 722 123 4567" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Lugar / Salón / Localidad del Evento *</label>
+              <input type="text" id="ant_lugar" placeholder="Ej. Salón Real, Capulhuac / Iglesia San Bartolomé" />
+            </div>
+            <div class="form-group">
+              <label>🗺️ Link de Google Maps de la Ubicación (Opcional — Para abrir desde tu celular)</label>
+              <input type="url" id="ant_maps_url" placeholder="Pega aquí el link de Google Maps (https://maps.app.goo.gl/...)" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre del Paquete o Servicio Contratado (Opcional)</label>
+              <input type="text" id="ant_paquete" placeholder="Ej. Paquete Foto y Video (Contrato Anterior)" />
+            </div>
+            <div class="form-group">
+              <label>Qué incluye / Horarios / Notas del Contrato (Opcional)</label>
+              <input type="text" id="ant_detalles" placeholder="Ej. 100 fotos 4x6, Cuadro 16x20, Video USB — Misa 1:00 pm, Salón 3:00 pm" />
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Costo Total del Contrato ($ MXN)</label>
+              <input type="number" id="ant_total" value="0" min="0" oninput="calcularSaldoContratoAnterior()" />
+            </div>
+            <div class="form-group">
+              <label>Cuánto ya dejó de Anticipo / Abonos ($ MXN)</label>
+              <input type="number" id="ant_anticipo" value="0" min="0" oninput="calcularSaldoContratoAnterior()" />
+            </div>
+            <div class="form-group">
+              <label>Saldo Restante por Cobrar ($ MXN)</label>
+              <input type="number" id="ant_saldo" value="0" readonly style="background:#f1f5f9; font-weight:800; color:#e11d48;" />
+            </div>
+          </div>
+
+          <div class="btn-group" style="margin-top:0.4rem;">
+            <button type="button" class="btn btn-success" id="btn_guardar_ant_agenda" style="font-weight:800; padding:0.6rem 1.1rem;" onclick="guardarContratoAnteriorEnAgenda()">
+              📂💾 Guardar en mi Agenda y Calendario (Sin Hacer Contrato Nuevo)
+            </button>
+          </div>
+        </div>
 
         <div class="filter-bar">
           <div class="filter-pills">
@@ -2174,18 +2349,70 @@
           </div>
         </div>
 
-        <!-- Detalle del Día Seleccionado + Agendar Fecha Independiente / Sesión + Resumen de Días Ocupados -->
+        <!-- Detalle del Día Seleccionado + Formularios Desplegables + Resumen Agrupado por Mes -->
         <div>
           <div class="card">
             <h2>
               <span>📌 Actividad del Día Seleccionado: <strong id="cal_fecha_seleccionada_lbl" style="color:var(--accent);"></strong></span>
               <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                <button type="button" class="btn btn-primary btn-sm" id="btn_toggle_form_evento_rapido_cal" onclick="toggleMenuEventoRapidoCalendario()">➕ Agregar Evento / Contrato Anterior</button>
                 <button type="button" class="btn btn-success btn-sm" id="btn_toggle_form_sesion_cal" onclick="prepararNuevaSesionEnDiaSeleccionado()">📷 Agendar Sesión / Fecha Independiente</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="agendarEnFechaSeleccionada('evento')">➕ Nuevo Evento</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="agendarEnFechaSeleccionada('evento')" title="Ir a la pestaña 1 para elaborar un contrato nuevo">📄 Elaborar Contrato</button>
                 <button type="button" class="btn btn-outline btn-sm" onclick="agendarEnFechaSeleccionada('renta')">🎥 Rentar Equipo</button>
               </div>
             </h2>
             <div id="cal_detalle_dia"></div>
+          </div>
+
+          <!-- Formulario Desplegable en Calendario para Agregar Evento Rápido / Contrato Anterior (Oculto por defecto; se abre/cierra al picar el botón) -->
+          <div class="card" id="card_form_evento_rapido_cal" style="display: none; border: 1.5px solid #38bdf8; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);">
+            <h2>
+              <span id="titulo_form_evrap_cal">📸 Agregar Evento / Contrato Anterior al Calendario</span>
+              <div style="display:flex; gap:0.35rem;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormularioEventoRapidoCal()">🧹 Limpiar</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="cerrarMenuEventoRapidoCalendario()">✕ Cerrar</button>
+              </div>
+            </h2>
+            <input type="hidden" id="evrap_edit_id" value="" />
+            <p style="font-size:0.79rem; color:#0369a1; margin-bottom:0.75rem;">
+              Agrega aquí eventos o contratos anteriores sin tener que elaborar contrato nuevo. Se guardan tanto en tu Calendario como en tu Agenda.
+            </p>
+
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>Nombre del Cliente o Evento *</label>
+                <input type="text" id="evrap_cliente" placeholder="Ej. XV Años Valeria / Boda Fam. Pérez" />
+              </div>
+              <div class="form-group">
+                <label>Lugar / Salón / Localidad *</label>
+                <input type="text" id="evrap_lugar" placeholder="Ej. Salón Real, Capulhuac" />
+              </div>
+              <div class="form-group">
+                <label>Fecha del Evento *</label>
+                <input type="date" id="evrap_fecha" />
+              </div>
+            </div>
+
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>🗺️ Link de Google Maps (Opcional)</label>
+                <input type="url" id="evrap_maps_url" placeholder="https://maps.app.goo.gl/..." />
+              </div>
+              <div class="form-group">
+                <label>Horario / Qué incluye / Notas</label>
+                <input type="text" id="evrap_notas" placeholder="Ej. Misa 1:00 pm, Salón 3:00 pm / Foto y Video" />
+              </div>
+              <div class="form-group">
+                <label>Teléfono (Opcional)</label>
+                <input type="text" id="evrap_telefono" placeholder="Opcional" />
+              </div>
+            </div>
+
+            <div class="btn-group" style="margin-top:0.4rem;">
+              <button type="button" class="btn btn-primary" id="btn_guardar_evrap_cal" style="font-weight:800;" onclick="guardarEventoRapidoCalendario()">
+                📸💾 Guardar en mi Calendario y Agenda
+              </button>
+            </div>
           </div>
 
           <!-- Formulario Desplegable para Agendar Fechas Independientes / Sesiones de Fotos (Oculto por defecto; se abre/cierra al picar el botón) -->
@@ -2249,9 +2476,15 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label>Notas / Detalles de la Sesión o Fecha</label>
-              <input type="text" id="ses_notas" placeholder="Ej. Llevar dron, cambio de vestuario, sesión previa al evento..." />
+            <div class="form-row">
+              <div class="form-group">
+                <label>🗺️ Link de Google Maps de la Locación (Opcional)</label>
+                <input type="url" id="ses_maps_url" placeholder="Pega el link de Google Maps para ir desde tu celular..." />
+              </div>
+              <div class="form-group">
+                <label>Notas / Detalles de la Sesión o Fecha</label>
+                <input type="text" id="ses_notas" placeholder="Ej. Llevar dron, cambio de vestuario, sesión previa al evento..." />
+              </div>
             </div>
 
             <div class="btn-group" style="margin-top:0.5rem;">
@@ -2265,7 +2498,10 @@
           </div>
 
           <div class="card">
-            <h2>📋 Todos los Días Señalados en este Mes (Eventos, Sesiones y Rentas)</h2>
+            <h2>
+              <span>📋 Todos los Días Señalados por Mes (Solo Meses con Agenda)</span>
+              <span id="badge_total_meses_agendados" class="badge badge-blue">0 meses con agenda</span>
+            </h2>
             <div id="cal_resumen_mes"></div>
           </div>
         </div>
@@ -3121,6 +3357,8 @@
       if (inpSesFecha) inpSesFecha.value = hoy;
       const inpEvRapFecha = document.getElementById("evrap_fecha");
       if (inpEvRapFecha) inpEvRapFecha.value = hoy;
+      const inpAntFecha = document.getElementById("ant_fecha");
+      if (inpAntFecha) inpAntFecha.value = hoy;
       const inpAbonoFecha = document.getElementById("nuevo_abono_fecha");
       if (inpAbonoFecha) inpAbonoFecha.value = hoy;
 
@@ -3564,13 +3802,57 @@
       document.getElementById("evrap_cliente").focus();
     }
 
+    // --- Funciones de Utilidad para Links de Google Maps (Para abrir la ubicación desde el celular) ---
+    function construirUrlGoogleMapsValida(rawUrl, dirRecepcion = "", lugar = "") {
+      if (rawUrl && rawUrl.trim()) {
+        const u = rawUrl.trim();
+        if (/^https?:\/\//i.test(u)) return u;
+        return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(u);
+      }
+      const combinada = [dirRecepcion, lugar].map(s => (s || "").trim()).filter(s => s && s !== "Por confirmar").join(", ");
+      if (combinada) {
+        return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(combinada);
+      }
+      return "";
+    }
+
+    function generarLinkMapsDesdeDireccionFormulario() {
+      const rec = document.getElementById("ev_dir_recepcion").value.trim();
+      const misa = document.getElementById("ev_dir_ceremonia").value.trim();
+      const lug = document.getElementById("ev_lugar").value.trim();
+      const consulta = [rec || misa, lug, "Estado de México"].filter(Boolean).join(", ");
+      if (!rec && !misa) {
+        notificar("Primero escribe el nombre del Salón/Recepción o la Misa arriba para generar el link de Google Maps.", "warn");
+        document.getElementById("ev_dir_recepcion").focus();
+        return;
+      }
+      const url = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(consulta);
+      const inp = document.getElementById("ev_maps_url");
+      if (inp) inp.value = url;
+      notificar("🧭 ¡Link de Google Maps generado con la dirección del evento!");
+    }
+
+    function probarLinkMapsFormulario() {
+      const inp = document.getElementById("ev_maps_url");
+      const raw = inp ? inp.value.trim() : "";
+      const rec = document.getElementById("ev_dir_recepcion").value.trim();
+      const lug = document.getElementById("ev_lugar").value.trim();
+      const url = construirUrlGoogleMapsValida(raw, rec, lug);
+      if (!url) {
+        notificar("Pega un link de Google Maps o escribe la dirección del evento primero.", "warn");
+        return;
+      }
+      window.open(url, "_blank");
+    }
+
     function limpiarFormularioEventoRapidoCal(silencioso = false) {
       document.getElementById("evrap_edit_id").value = "";
-      document.getElementById("titulo_form_evrap_cal").textContent = "📸 Agregar Evento al Calendario (Sin Hacer Contrato / Contrato Anterior)";
-      document.getElementById("btn_guardar_evrap_cal").textContent = "📸💾 Guardar Evento en mi Calendario";
+      document.getElementById("titulo_form_evrap_cal").textContent = "📸 Agregar Evento / Contrato Anterior al Calendario";
+      document.getElementById("btn_guardar_evrap_cal").textContent = "📸💾 Guardar en mi Calendario y Agenda";
       document.getElementById("evrap_cliente").value = "";
       document.getElementById("evrap_lugar").value = "";
       document.getElementById("evrap_fecha").value = calSelectedDate || new Date().toISOString().split("T")[0];
+      if (document.getElementById("evrap_maps_url")) document.getElementById("evrap_maps_url").value = "";
       document.getElementById("evrap_notas").value = "";
       document.getElementById("evrap_telefono").value = "";
       if (!silencioso) notificar("Formulario de evento rápido limpio.");
@@ -3580,6 +3862,7 @@
       const cliente = document.getElementById("evrap_cliente").value.trim();
       const lugar = document.getElementById("evrap_lugar").value.trim();
       const fecha = document.getElementById("evrap_fecha").value;
+      const mapsUrl = document.getElementById("evrap_maps_url") ? document.getElementById("evrap_maps_url").value.trim() : "";
       const notas = document.getElementById("evrap_notas").value.trim();
       const telefono = document.getElementById("evrap_telefono").value.trim();
       const editId = document.getElementById("evrap_edit_id").value;
@@ -3599,6 +3882,7 @@
           state.eventos[idx].lugar = lugar;
           state.eventos[idx].dirRecepcion = lugar;
           state.eventos[idx].fecha = fecha;
+          state.eventos[idx].mapsUrl = mapsUrl;
           if (telefono) state.eventos[idx].telefono = telefono;
           if (notas) {
             state.eventos[idx].bloquesTexto = notas;
@@ -3620,10 +3904,11 @@
           lugar,
           dirCeremonia: "",
           dirRecepcion: lugar,
+          mapsUrl,
           paqueteId: "",
           paqueteNombre: "Contrato Anterior / Evento Agendado",
           horasTotales: 6,
-          detalles: notas || "1. [FOTO] Evento registrado directamente en calendario (Contrato anterior)",
+          detalles: notas || "1. [FOTO] Contrato anterior / Evento agendado",
           modoHorario: "bloques",
           bloques: [],
           horarioCeremonia: "",
@@ -3672,6 +3957,7 @@
       document.getElementById("evrap_cliente").value = ev.cliente || "";
       document.getElementById("evrap_lugar").value = ev.dirRecepcion || ev.lugar || "";
       document.getElementById("evrap_fecha").value = ev.fecha || "";
+      if (document.getElementById("evrap_maps_url")) document.getElementById("evrap_maps_url").value = ev.mapsUrl || "";
       document.getElementById("evrap_notas").value = ev.bloquesTexto || "";
       document.getElementById("evrap_telefono").value = ev.telefono || "";
       if (card) card.scrollIntoView({ behavior: "smooth" });
@@ -3760,6 +4046,7 @@
       document.getElementById("ses_cliente").value = "";
       document.getElementById("ses_telefono").value = "";
       document.getElementById("ses_lugar").value = "";
+      if (document.getElementById("ses_maps_url")) document.getElementById("ses_maps_url").value = "";
       document.getElementById("ses_notas").value = "";
       if (!silencioso) notificar("Formulario de sesión limpio.");
     }
@@ -3772,6 +4059,7 @@
       const horaInicio = document.getElementById("ses_hora_inicio").value || "16:00";
       const horaFin = document.getElementById("ses_hora_fin").value || "18:00";
       const lugar = document.getElementById("ses_lugar").value.trim() || "Por confirmar";
+      const mapsUrl = document.getElementById("ses_maps_url") ? document.getElementById("ses_maps_url").value.trim() : "";
       const telefono = document.getElementById("ses_telefono").value.trim();
       const notas = document.getElementById("ses_notas").value.trim();
       const editId = document.getElementById("ses_edit_id").value;
@@ -3794,6 +4082,7 @@
         cliente,
         telefono,
         lugar,
+        mapsUrl,
         notas
       };
 
@@ -3851,6 +4140,7 @@
       document.getElementById("ses_cliente").value = ses.cliente || "";
       document.getElementById("ses_telefono").value = ses.telefono || "";
       document.getElementById("ses_lugar").value = ses.lugar || "";
+      if (document.getElementById("ses_maps_url")) document.getElementById("ses_maps_url").value = ses.mapsUrl || "";
       document.getElementById("ses_notas").value = ses.notas || "";
       const card = document.getElementById("card_form_sesion_independiente");
       if (card) {
@@ -4035,6 +4325,10 @@
                   <strong style="font-size:0.95rem; margin-left:0.4rem;">${ev.cliente} — ${ev.paqueteNombre || "Evento"}</strong>
                 </div>
                 <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                  ${(() => {
+                    const mUrl = construirUrlGoogleMapsValida(ev.mapsUrl, ev.dirRecepcion, ev.lugar);
+                    return mUrl ? `<a class="btn-maps-mobile" href="${mUrl}" target="_blank" rel="noopener">📍🗺️ Abrir en Maps</a>` : "";
+                  })()}
                   <button type="button" class="btn btn-outline btn-sm" onclick="cargarEventoRapidoEnCalendario('${ev.id}')">✏️ Editar Rápido</button>
                   <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')">📄 Ver en Contratos</button>
                   <button type="button" class="btn btn-warning btn-sm" onclick="enviarEventoGuardadoARemision('${ev.id}')">🧾 Nota</button>
@@ -4067,7 +4361,11 @@
                   <span class="badge badge-ok">📷 ${ses.tipo.toUpperCase()}</span>
                   <strong style="font-size:0.95rem; margin-left:0.4rem; color:#065f46;">${ses.cliente}</strong>
                 </div>
-                <div style="display:flex; gap:0.35rem;">
+                <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                  ${(() => {
+                    const mUrl = construirUrlGoogleMapsValida(ses.mapsUrl, ses.lugar, "");
+                    return mUrl ? `<a class="btn-maps-mobile" href="${mUrl}" target="_blank" rel="noopener">📍🗺️ Abrir en Maps</a>` : "";
+                  })()}
                   ${!ses.esDeContratoDirecto ? `<button type="button" class="btn btn-outline btn-sm" onclick="cargarSesionEnFormulario('${ses.id}')">✏️ Editar</button>` : ""}
                   ${ses.contratoId ? `<button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ses.contratoId}')">📄 Ver Contrato</button>` : ""}
                   <a class="btn btn-success btn-sm" href="${calUrl}" target="_blank">📅 Calendar</a>
@@ -4124,6 +4422,7 @@
             tipo: "📸 EVENTO",
             titulo: e.cliente,
             sub: `📍 ${lug}${e.paqueteNombre ? " • " + e.paqueteNombre : ""}`,
+            mapsHref: construirUrlGoogleMapsValida(e.mapsUrl, e.dirRecepcion, e.lugar),
             color: "badge-next",
             editFn: `cargarEventoRapidoEnCalendario('${e.id}')`,
             delFn: `eliminarEvento('${e.id}')`
@@ -4134,6 +4433,7 @@
           tipo: `📷 ${s.tipo.toUpperCase()}`,
           titulo: s.cliente,
           sub: `📍 ${s.lugar || "Por confirmar"} (${s.horaInicio || "16:00"} hrs)`,
+          mapsHref: construirUrlGoogleMapsValida(s.mapsUrl, s.lugar, ""),
           color: "badge-ok",
           editFn: !s.esDeContratoDirecto ? `cargarSesionEnFormulario('${s.id}')` : `switchTab('contratos'); cargarEventoEnFormulario('${s.contratoId}')`,
           delFn: !s.esDeContratoDirecto ? `eliminarSesionCalendario('${s.id}')` : `quitarSesionDeContrato('${s.contratoId}')`
@@ -4199,7 +4499,10 @@
                           </td>
                           <td><span class="badge ${it.color}">${it.tipo}</span></td>
                           <td><strong>${it.titulo}</strong></td>
-                          <td><small>${it.sub}</small></td>
+                          <td>
+                            <small>${it.sub}</small>
+                            ${it.mapsHref ? `<div style="margin-top:3px;" onclick="event.stopPropagation();"><a class="btn-maps-mobile" style="font-size:0.68rem; padding:0.18rem 0.48rem;" href="${it.mapsHref}" target="_blank" rel="noopener">📍🗺️ Ir a Ubicación (Maps)</a></div>` : ""}
+                          </td>
                           <td style="text-align:right; white-space:nowrap;" onclick="event.stopPropagation();">
                             <button type="button" class="btn btn-outline btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.editFn}" title="Editar">✏️</button>
                             <button type="button" class="btn btn-danger btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.delFn}" title="Eliminar">✕</button>
@@ -5381,6 +5684,7 @@
         lugar: document.getElementById("ev_lugar").value.trim(),
         dirCeremonia: document.getElementById("ev_dir_ceremonia").value.trim(),
         dirRecepcion,
+        mapsUrl: document.getElementById("ev_maps_url") ? document.getElementById("ev_maps_url").value.trim() : "",
         paqueteId: pkgId,
         paqueteNombre: pkgObj ? pkgObj.nombre : "Servicio Fotografía y Video",
         horasTotales: Number(document.getElementById("ev_horas_totales").value) || 6,
@@ -5623,6 +5927,7 @@
       document.getElementById("ev_lugar").value = ev.lugar || "";
       document.getElementById("ev_dir_ceremonia").value = ev.dirCeremonia || "";
       document.getElementById("ev_dir_recepcion").value = ev.dirRecepcion || "";
+      if (document.getElementById("ev_maps_url")) document.getElementById("ev_maps_url").value = ev.mapsUrl || "";
 
       if (ev.paqueteId && state.paquetes.some(p => p.id === ev.paqueteId)) {
         document.getElementById("ev_paquete_select").value = ev.paqueteId;
@@ -5731,6 +6036,187 @@
       notificar("Fecha de sesión quitada del contrato.");
     }
 
+    // ================= PASAR CONTRATO YA HECHO ANTES DE LA PÁGINA A LA AGENDA (SIN HACER CONTRATO NUEVO) =================
+    function actualizarBotonToggleContratoAnteriorAgenda(estaAbierto) {
+      const btn = document.getElementById("btn_toggle_contrato_anterior_agenda");
+      if (!btn) return;
+      if (estaAbierto) {
+        btn.innerHTML = "✕ Cerrar Panel de Contrato Anterior";
+        btn.className = "btn btn-danger btn-sm";
+      } else {
+        btn.innerHTML = "➕📂 Pasar Contrato Ya Hecho / Agregar Evento sin Hacer Contrato";
+        btn.className = "btn btn-success btn-sm";
+      }
+    }
+
+    function cerrarMenuContratoAnteriorAgenda() {
+      const panel = document.getElementById("panel_contrato_anterior_agenda");
+      if (panel) panel.style.display = "none";
+      actualizarBotonToggleContratoAnteriorAgenda(false);
+    }
+
+    function toggleMenuContratoAnteriorAgenda() {
+      const panel = document.getElementById("panel_contrato_anterior_agenda");
+      if (!panel) return;
+      const estaVisible = panel.style.display !== "none" && panel.style.display !== "";
+      if (estaVisible) {
+        cerrarMenuContratoAnteriorAgenda();
+        return;
+      }
+      panel.style.display = "block";
+      actualizarBotonToggleContratoAnteriorAgenda(true);
+      limpiarFormularioContratoAnteriorAgenda(true);
+      document.getElementById("ant_cliente").focus();
+    }
+
+    function calcularSaldoContratoAnterior() {
+      const tot = Number(document.getElementById("ant_total").value) || 0;
+      const ant = Number(document.getElementById("ant_anticipo").value) || 0;
+      const sal = Math.max(0, tot - ant);
+      const salInput = document.getElementById("ant_saldo");
+      if (salInput) salInput.value = sal;
+    }
+
+    function limpiarFormularioContratoAnteriorAgenda(silencioso = false) {
+      const hoy = new Date().toISOString().split("T")[0];
+      document.getElementById("ant_edit_id").value = "";
+      document.getElementById("titulo_form_ant_agenda").textContent = "📂 Pasar Contrato Ya Hecho / Registrar Evento Rápido en la Agenda";
+      document.getElementById("btn_guardar_ant_agenda").textContent = "📂💾 Guardar en mi Agenda y Calendario (Sin Hacer Contrato Nuevo)";
+      document.getElementById("ant_cliente").value = "";
+      document.getElementById("ant_fecha").value = hoy;
+      document.getElementById("ant_telefono").value = "";
+      document.getElementById("ant_lugar").value = "";
+      document.getElementById("ant_maps_url").value = "";
+      document.getElementById("ant_paquete").value = "";
+      document.getElementById("ant_detalles").value = "";
+      document.getElementById("ant_total").value = 0;
+      document.getElementById("ant_anticipo").value = 0;
+      document.getElementById("ant_saldo").value = 0;
+      if (!silencioso) notificar("Formulario de contrato anterior limpio.");
+    }
+
+    function guardarContratoAnteriorEnAgenda() {
+      const cliente = document.getElementById("ant_cliente").value.trim();
+      const fecha = document.getElementById("ant_fecha").value;
+      const lugar = document.getElementById("ant_lugar").value.trim();
+      const telefono = document.getElementById("ant_telefono").value.trim();
+      const mapsUrl = document.getElementById("ant_maps_url").value.trim();
+      const paqueteNombre = document.getElementById("ant_paquete").value.trim() || "Contrato Anterior / Evento Agendado";
+      const detallesRaw = document.getElementById("ant_detalles").value.trim();
+      const total = Number(document.getElementById("ant_total").value) || 0;
+      const anticipo = Number(document.getElementById("ant_anticipo").value) || 0;
+      const saldo = Math.max(0, total - anticipo);
+      const editId = document.getElementById("ant_edit_id").value;
+
+      if (!cliente || !fecha || !lugar) {
+        notificar("Escribe al menos el Nombre del Cliente, la Fecha del Evento y el Lugar.", "error");
+        if (!cliente) document.getElementById("ant_cliente").focus();
+        else if (!fecha) document.getElementById("ant_fecha").focus();
+        else document.getElementById("ant_lugar").focus();
+        return;
+      }
+
+      if (editId) {
+        const idx = state.eventos.findIndex(e => e.id === editId);
+        if (idx >= 0) {
+          state.eventos[idx].cliente = cliente;
+          state.eventos[idx].fecha = fecha;
+          state.eventos[idx].lugar = lugar;
+          state.eventos[idx].dirRecepcion = lugar;
+          state.eventos[idx].telefono = telefono;
+          state.eventos[idx].mapsUrl = mapsUrl;
+          state.eventos[idx].paqueteNombre = paqueteNombre;
+          if (detallesRaw) {
+            state.eventos[idx].detalles = detallesRaw;
+            state.eventos[idx].bloquesTexto = detallesRaw;
+          }
+          state.eventos[idx].total = total;
+          state.eventos[idx].anticipo = anticipo;
+          state.eventos[idx].totalAbonado = anticipo;
+          state.eventos[idx].saldo = saldo;
+        }
+      } else {
+        const abonosInit = anticipo > 0
+          ? [{ id: "ab_ant_" + Date.now(), fecha, monto: anticipo, nota: "Anticipo / Pagos previos" }]
+          : [];
+        const nuevoContratoAnt = {
+          id: "ev_" + Date.now(),
+          esEventoSinContrato: true,
+          cliente,
+          telefono,
+          telefono2: "",
+          fechaCotizacion: fecha,
+          fecha,
+          fechaSesion: "",
+          horaSesion: "16:00",
+          lugarSesion: "",
+          lugar,
+          dirCeremonia: "",
+          dirRecepcion: lugar,
+          mapsUrl,
+          paqueteId: "",
+          paqueteNombre,
+          horasTotales: 6,
+          detalles: detallesRaw || "1. [FOTO] Contrato realizado previamente",
+          modoHorario: "bloques",
+          bloques: [],
+          horarioCeremonia: "",
+          horarioRecepcion: "",
+          bloquesTexto: detallesRaw || "Horario en contrato físico anterior",
+          total,
+          anticipo,
+          totalAbonado: anticipo,
+          abonos: abonosInit,
+          saldo,
+          estadoMaterial: "pendiente",
+          prioridad: "normal",
+          impreso: true,
+          equipo: {}
+        };
+        state.eventos.push(nuevoContratoAnt);
+      }
+
+      ordenarEventosPorFecha();
+      guardarEstado();
+      limpiarFormularioContratoAnteriorAgenda(true);
+      cerrarMenuContratoAnteriorAgenda();
+      refrescarTodo();
+      notificar(`📂✅ Contrato de "${cliente}" (${fecha}) agregado a tu Agenda y Mini Calendario.`);
+    }
+
+    function guardarLinkMapsDirectoEnContrato(evId) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      const inp = document.getElementById("maps_inline_url_" + evId);
+      let url = inp ? inp.value.trim() : "";
+
+      if (!url) {
+        // Si dejó vacío el campo y pulsó guardar, generar automáticamente el link con la dirección del contrato
+        url = construirUrlGoogleMapsValida("", ev.dirRecepcion, ev.lugar);
+        if (inp) inp.value = url;
+      }
+
+      ev.mapsUrl = url;
+      if (document.getElementById("ev_edit_id").value === ev.id && document.getElementById("ev_maps_url")) {
+        document.getElementById("ev_maps_url").value = url;
+      }
+      guardarEstado();
+      refrescarTodo();
+      notificar(`📍🗺️ Ubicación de Google Maps guardada en el contrato de ${ev.cliente}. ¡Lista para abrir desde tu celular!`);
+    }
+
+    function quitarLinkMapsDeContrato(evId) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      ev.mapsUrl = "";
+      if (document.getElementById("ev_edit_id").value === ev.id && document.getElementById("ev_maps_url")) {
+        document.getElementById("ev_maps_url").value = "";
+      }
+      guardarEstado();
+      refrescarTodo();
+      notificar("Link personalizado de Google Maps quitado del contrato.");
+    }
+
     function eliminarEvento(id) {
       state.eventos = state.eventos.filter(e => e.id !== id);
       guardarEstado();
@@ -5751,6 +6237,7 @@
       if (document.getElementById("ev_lugar_sesion")) document.getElementById("ev_lugar_sesion").value = "";
       document.getElementById("ev_dir_ceremonia").value = "";
       document.getElementById("ev_dir_recepcion").value = "";
+      if (document.getElementById("ev_maps_url")) document.getElementById("ev_maps_url").value = "";
       document.getElementById("ev_modo_horario").value = "bloques";
       document.getElementById("ev_estado_material").value = "pendiente";
       document.getElementById("ev_prioridad").value = "normal";
@@ -5909,7 +6396,11 @@
             <span>💰 <strong>Resta:</strong> $${Number(proximo.saldo).toLocaleString("es-MX")} MXN</span>
           </div>
         </div>
-        <div style="display:flex; gap:0.4rem;">
+        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+          ${(() => {
+            const urlMap = construirUrlGoogleMapsValida(proximo.mapsUrl, proximo.dirRecepcion, proximo.lugar);
+            return urlMap ? `<a class="btn-maps-mobile" href="${urlMap}" target="_blank" rel="noopener">📍🗺️ Ir a Ubicación (Maps)</a>` : "";
+          })()}
           <button type="button" class="btn btn-outline btn-sm" style="background:#fff;" onclick="cargarEventoEnFormulario('${proximo.id}')">📄 Ver Contrato</button>
           <button type="button" class="btn btn-primary btn-sm" onclick="cargarEventoEnFormulario('${proximo.id}', true)">🖨️ Imprimir</button>
         </div>
@@ -8013,6 +8504,27 @@
             <strong style="font-size:0.93rem;">${ev.cliente}</strong><br/>
             <small>Tel: ${ev.telefono || "-"} ${ev.telefono2 ? ' / ' + ev.telefono2 : ''}</small><br/>
             <small>📍 ${ev.dirRecepcion} (${ev.lugar || ""})</small>
+            ${(() => {
+              const hrefMapa = construirUrlGoogleMapsValida(ev.mapsUrl, ev.dirRecepcion, ev.lugar);
+              return hrefMapa ? `
+                <div style="margin-top:0.35rem;">
+                  <a class="btn-maps-mobile" href="${hrefMapa}" target="_blank" rel="noopener" title="Toca aquí desde tu celular para abrir la ubicación en Google Maps">
+                    📍🗺️ ${ev.mapsUrl ? "Ir a Ubicación (Google Maps)" : "Buscar Dirección en Maps"}
+                  </a>
+                </div>
+              ` : "";
+            })()}
+            <div class="maps-inline-box">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.18rem;">
+                <strong>🗺️ Link de Google Maps:</strong>
+                ${ev.mapsUrl ? `<span style="color:#0369a1; font-weight:800;">✅ Link guardado</span>` : `<span style="color:#64748b;">Pegar link exacto</span>`}
+              </div>
+              <div style="display:flex; gap:0.22rem; align-items:center;">
+                <input type="url" id="maps_inline_url_${ev.id}" value="${(ev.mapsUrl || '').replace(/"/g, '&quot;')}" placeholder="Pega link de Google Maps..." style="padding:0.16rem 0.35rem; font-size:0.71rem; flex:1; min-width:110px; background:#fff;" onkeydown="if(event.key==='Enter'){event.preventDefault();guardarLinkMapsDirectoEnContrato('${ev.id}');}" />
+                <button type="button" class="btn btn-primary btn-sm" style="padding:0.16rem 0.42rem; font-size:0.68rem;" onclick="guardarLinkMapsDirectoEnContrato('${ev.id}')" title="Guardar link de Google Maps en este contrato">💾</button>
+                ${ev.mapsUrl ? `<button type="button" class="btn btn-danger btn-sm" style="padding:0.14rem 0.34rem; font-size:0.66rem;" onclick="quitarLinkMapsDeContrato('${ev.id}')" title="Quitar link">✕</button>` : ""}
+              </div>
+            </div>
           </td>
           <td>
             <strong>${ev.paqueteNombre}</strong> (${ev.horasTotales}h)<br/>
