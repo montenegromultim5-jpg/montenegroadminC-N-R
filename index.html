@@ -2804,20 +2804,29 @@
       }, 3400);
     }
 
-    // ================= CONTRATO 1 Y CONTRATO 2 INTEGRADOS DE FÁBRICA =================
+    // ================= CONTRATO 1 Y CONTRATO 2 DE TUS GOOGLE DOCS (CON ETIQUETAS DINÁMICAS INTEGRADAS) =================
+    const GDOC_URL_1_DEFAULT = "https://docs.google.com/document/d/1e6Tb2VZGjTadPs0Swk0nNQutGMk5IEzaocESmv0tkCU/edit?usp=sharing";
+    const GDOC_URL_2_DEFAULT = "https://docs.google.com/document/d/13m23Gh1qTlHRDpZoRzlRdxH4EnZmVmnuT0rmcuSW0jk/edit?usp=sharing";
+
     const CONTRATO_1_DEFAULT = [
-      "CONTRATO DE PRESTACIÓN DE SERVICIOS DE FOTOGRAFÍA Y VIDEO",
-      "Se celebra el siguiente contrato entre Montenegro Multimedia y ( [cliente] ) por servicio de fotografía y video para la cobertura de evento social el día ( [fecha_evento] ) en ( [lugar] ), Edo. Méx. Dando inicio ceremonia ( [horario_ceremonia] ) y recepción ( [horario_recepcion] ).",
+      "CONTRATO DE PRESTACIÓN DE SERVICIOS",
+      "",
+      "Se celebra el siguiente contrato entre Montenegro Multimedia y ( [cliente] ) Por servicio de fotografía y video a que se llevará a cabo la cobertura de evento social el día ( [fecha_evento] ) en ( [lugar] ), Edo. Méx. Dando inicio ceremonia ( [horario_ceremonia] ) recepción ( [horario_recepcion] ).",
       "",
       "Desglose de Horarios / Bloques estipulados ([horas_totales] horas totales):",
       "[bloques_horario]",
-      "Teniendo el costo adicional de $500.00 MXN pesos por hora extra por paquete (opcional).",
+      "",
+      "Teniendo el costo adicional de $500.00 MNX pesos por hora extra por paquete (opcional).",
+      "",
+      "Descripción del Servicio ([paquete]):",
       "[descripcion_servicio]",
-      "El Costo del servicio se estableció en previa cotización del día ( [fecha_cotizacion] ) y es de $( [total] MXN ) y se respetará hasta el día del evento, siendo aceptada por el cliente. Dispone de 30 días para solicitar copias del material posteriores a la fecha de entrega. El pago del servicio se realiza de la siguiente manera: Un anticipo de $ ( [anticipo] MXN ) y la cantidad de $ ( [saldo] MXN ) restante contra entrega del trabajo.",
+      "",
+      "El Costo del servicio se estableció en previa cotización del día ( [fecha_cotizacion] ) y es de $( [total] MXN ) y se respetará hasta el día del evento. Siendo aceptada por el cliente. Dispone de 30 días para solicitar copias del material posteriores a la fecha de entrega. El pago del servicio se realiza de la siguiente manera: Un anticipo del $ ( [anticipo] MXN ) y la cantidad de $ ( [saldo] MXN ) restante contra entrega del trabajo.",
       "",
       "_____________________________________          _____________________________________",
       "        Montenegro Multimedia                         ( [cliente] )",
       "      Gilberto Montenegro Ruiz                            EL CLIENTE",
+      "",
       "Montenegro Multimedia | montenegromultimedia@gmail.com | 7131016388 y 7296990786"
     ].join("\n");
 
@@ -2826,70 +2835,137 @@
       "Fecha: [ [fecha_cotizacion] ]",
       "Empresa: [Montenegro Multimedia]   |   Domicilio: [Porfirio Díaz #280]",
       "",
-      "1. DATOS DEL CLIENTE Y DEL EVENTO",
+      "DATOS DEL CLIENTE Y DEL EVENTO",
       "• Nombre del cliente: [cliente]     |     Teléfono del cliente: [telefono]",
       "• Dirección de la ceremonia religiosa: [direccion_ceremonia]",
       "• Dirección del salón o lugar del evento: [direccion_recepcion] ([lugar], Edo. Méx.)",
       "• Fecha del evento: [fecha_evento]     |     Teléfono del cliente 2: [telefono2]",
-      "• Hora de inicio / Bloques del evento ([horas_totales] horas totales):",
+      "• Hora de inicio del evento ([horas_totales] horas totales):",
       "[bloques_horario]",
       "",
-      "2. HORAS DE SERVICIO",
+      "1. HORAS DE SERVICIO",
       "1.1. El servicio de fotografía y/o video cubre un total de [horas_totales] horas estipuladas en el paquete de trabajo ([paquete]), comenzando a la hora acordada con el cliente.",
-      "1.2. El servicio se puede dividir en 2 bloques (o los bloques acordados arriba).",
+      "1.2. El servicio se puede dividir en 2 bloques.",
       "1.3. El costo de horas extra es de $500.00 MXN por hora por cada servicio (fotografía o video).",
       "1.4. En caso de requerir horas adicionales, el cliente deberá notificarlo con anticipación y pagar el monto correspondiente al finalizar el evento.",
       "",
-      "3. FORMA DE PAGO",
-      "• Se requiere un 50% de anticipo del costo total del servicio ($[total] MXN). Este pago debe realizarse mínimo 14 días antes del evento y está sujeto a disponibilidad. (Anticipo registrado: $[anticipo] MXN).",
-      "• El 50% restante del pago ($[saldo] MXN) se liquidará al momento de la entrega del material terminado.",
-      "• El pago puede realizarse en efectivo, depósito bancario o transferencia electrónica.",
+      "2. FORMA DE PAGO",
+      "2.1. Se requiere un 50% de anticipo del costo total del servicio ($[total] MXN — Anticipo registrado: $[anticipo] MXN). Este pago debe realizarse mínimo 14 días antes del evento y está sujeto a disponibilidad.",
+      "2.2. El 50% restante del pago ($[saldo] MXN) se liquidará al momento de la entrega del material terminado.",
+      "2.3. El pago puede realizarse en efectivo, depósito bancario o transferencia electrónica.",
       "",
-      "4. ENTREGA DE MATERIAL",
-      "• El material fotográfico y/o de video se entregará en un plazo de 15 días hábiles posteriores al evento.",
-      "• Si el cliente no liquida el 50% restante dentro de los 15 días hábiles posteriores a la notificación de entrega, se aplicará una penalización del 10% mensual sobre el costo total del servicio.",
-      "• En caso de que el cliente no recoja su material dentro del plazo establecido (60 días), EL PRESTADOR DE SERVICIOS podrá ofrecer el material para su venta a personas relacionadas con el evento, como los novios, padres de quinceañera, padres del festejado/festejada u otros interesados. El cliente acepta esta condición al firmar el presente contrato.",
+      "3. ENTREGA DE MATERIAL",
+      "3.1. El material fotográfico y/o de video se entregará en un plazo de 15 días hábiles posteriores al evento.",
+      "3.2. Si el cliente no liquida el 50% restante dentro de los 15 días hábiles posteriores a la notificación de entrega, se aplicará una penalización del 10% mensual sobre el costo total del servicio.",
+      "3.3. En caso de que el cliente no recoja su material dentro del plazo establecido (60 días), EL PRESTADOR DE SERVICIOS podrá ofrecer el material para su venta a personas relacionadas con el evento, como los novios, padres de quinceañera, padres del festejado/festejada u otros interesados. El cliente acepta esta condición al firmar el presente contrato.",
       "• En caso de no ser vendido el material el prestador de servicios tiene el derecho de conservarlo.",
       "",
-      "5. GARANTÍA",
-      "EL PRESTADOR DE SERVICIOS ofrece una garantía de 30 días a partir de la entrega del material.",
-      "La garantía cubre: Fallos en la memoria o dispositivos de almacenamiento proporcionados por EL PRESTADOR DE SERVICIOS; mala calidad de impresión en fotografías; fotografías borrosas o con defectos técnicos atribuibles al equipo o proceso de captura; daños físicos en el material entregado (fotografías, DVD, etc.) que no sean causados por el cliente.",
-      "La garantía no cubre: Daños intencionales al material por parte del cliente o terceros; pérdida o daño del material por negligencia o mal uso del cliente; defectos o daños causados por factores externos (ejemplo: agua, fuego, manipulación inadecuada).",
-      "En caso de que el material presente fallos cubiertos por la garantía, EL PRESTADOR DE SERVICIOS se compromete a reparar, reemplazar o compensar el material defectuoso dentro del plazo de 30 días. Para hacer válida la garantía, el cliente deberá notificar el defecto dentro de los 30 días posteriores a la entrega y presentar el material defectuoso para su revisión.",
+      "4. GARANTÍA",
+      "4.1. EL PRESTADOR DE SERVICIOS ofrece una garantía de 30 días a partir de la entrega del material.",
+      "4.2. La garantía cubre: Fallos en la memoria o dispositivos de almacenamiento proporcionados por EL PRESTADOR DE SERVICIOS; Mala calidad de impresión en fotografías; Fotografías borrosas o con defectos técnicos atribuibles al equipo o proceso de captura; Daños físicos en el material entregado (fotografías, DVD, etc.) que no sean causados por el cliente.",
+      "4.3. La garantía no cubre: Daños intencionales al material por parte del cliente o terceros; Pérdida o daño del material por negligencia o mal uso del cliente; Defectos o daños causados por factores externos (ejemplo: agua, fuego, manipulación inadecuada).",
+      "4.4. En caso de que el material presente fallos cubiertos por la garantía, EL PRESTADOR DE SERVICIOS se compromete a reparar, reemplazar o compensar el material defectuoso dentro del plazo de 30 días. Para hacer válida la garantía, el cliente deberá notificar el defecto dentro de los 30 días posteriores a la entrega y presentar el material defectuoso para su revisión.",
       "",
-      "6. COSTOS ADICIONALES",
-      "• Fotografías 4x6: $10.00 MXN c/u (o $5.00 MXN en paquete adicional) | Fotografía 6x8: $15.00 MXN | Fotografía tamaño carta: $30.00 MXN",
+      "5. COSTOS ADICIONALES",
+      "• Fotografías 4x6: $5.00 MXN | Fotografía 6x8: $15.00 MXN | Fotografía tamaño carta: $30.00 MXN",
       "• Foto enmarcada 11x14: $600.00 MXN | Foto enmarcada 16x20: $1,200.00 MXN | Foto enmarcada 20x24: $1,700.00 MXN",
       "• USB de 64GB: $250.00 MXN | Estuche: $400.00 MXN | DVD: $30.00 MXN | Respaldo USB: $100.00 MXN (las primeras 3 son gratis)",
-      "• El servicio cubre 23 kilómetros. Coste extra por kilómetro: $30.00 MXN.",
+      "• El servicio cubre 23 kilómetros | Coste extra por kilómetro: $30.00 MXN",
       "• Si desea un tamaño especial o distinto material en específico, preguntar por la disponibilidad.",
       "",
-      "7. RESPONSABILIDAD SOBRE EL CONTENIDO Y DERECHOS DE USO DEL MATERIAL",
-      "EL CLIENTE asume toda la responsabilidad sobre el contenido obtenido (fotografías, videos, etc.), incluyendo su uso, distribución o publicación. EL PRESTADOR DE SERVICIOS no se hace responsable por el mal uso, manipulación o edición del material por parte del cliente o terceros.",
-      "EL PRESTADOR DE SERVICIOS se reserva el derecho de utilizar las imágenes y videos capturados durante el evento para fines promocionales, publicitarios o demostrativos, salvo que el cliente manifieste lo contrario por escrito. Los derechos de las fotografías y videos pertenecen a EL PRESTADOR DE SERVICIOS, y queda prohibido para el cliente realizar publicidad con dicho material sin autorización expresa.",
+      "6. RESPONSABILIDAD SOBRE EL CONTENIDO Y DERECHOS DE USO DEL MATERIAL",
+      "6.1. EL CLIENTE asume toda la responsabilidad sobre el contenido obtenido (fotografías, videos, etc.), incluyendo, pero no limitado a, su uso, distribución, publicación o cualquier otro fin para el que sea destinado. EL PRESTADOR DE SERVICIOS no se hace responsable por el mal uso, manipulación o edición del material por parte del cliente o terceros.",
+      "6.2. EL PRESTADOR DE SERVICIOS se reserva el derecho de utilizar las imágenes y videos capturados durante el evento para fines promocionales, publicitarios o demostrativos, salvo que el cliente manifieste lo contrario por escrito. Los derechos de las fotografías y videos pertenecen a EL PRESTADOR DE SERVICIOS, y queda prohibido para el cliente realizar publicidad con dicho material sin autorización expresa.",
       "",
-      "8. DAÑOS AL EQUIPO Y PÉRDIDA DE MATERIAL",
-      "Si el equipo sufre daños por causa intencional de cualquier persona presente en el evento (incluyendo niños), EL CLIENTE o EL TUTOR será responsable de cubrir los costos de reparación o reposición del equipo. Si el equipo se daña por causas naturales o fallos técnicos no atribuibles al cliente, EL PRESTADOR DE SERVICIOS asumirá la responsabilidad.",
-      "En caso de que se dañe una memoria o se pierda el material capturado durante el evento, EL PRESTADOR DE SERVICIOS compensará al cliente de la siguiente manera:",
+      "7. DAÑOS AL EQUIPO Y PÉRDIDA DE MATERIAL",
+      "7.1. Si el equipo sufre daños por causa intencional de cualquier persona presente en el evento (incluyendo niños), EL CLIENTE o EL TUTOR será responsable de cubrir los costos de reparación o reposición del equipo. Si el equipo se daña por causas naturales o fallos técnicos no atribuibles al cliente, EL PRESTADOR DE SERVICIOS asumirá la responsabilidad de reparar o reemplazar el equipo.",
+      "7.2. En caso de que se dañe una memoria o se pierda el material capturado durante el evento, EL PRESTADOR DE SERVICIOS compensará al cliente de la siguiente manera:",
       "• Fotografía: depende del contenido perdido puede ir de 20 fotografías a 500 fotografías o ampliaciones o photobook, etc.",
       "• Video: depende del contenido perdido puede ir de 1 DVD hasta 5 estuches con USB.",
       "Esta compensación aplica únicamente si la pérdida del material no fue causada por negligencia o mal uso del cliente.",
       "",
-      "9. CONFIDENCIALIDAD, CANCELACIONES Y REEMBOLSOS",
-      "EL PRESTADOR DE SERVICIOS se compromete a mantener la confidencialidad de todo el material capturado durante el evento no haciendo mala publicidad o mal uso, salvo obligación legal o fines promocionales. Después de 60 días posteriores al evento, el material queda fuera del alcance de EL PRESTADOR DE SERVICIOS.",
-      "Para apartar la fecha del evento, se requiere un 10% de anticipo (mínimo 60 días antes del evento y sujeto a disponibilidad). En caso de cancelación por parte del cliente, no habrá reembolso del anticipo. Si el evento se cancela por causas de fuerza mayor, se podrá reprogramar sin costo adicional, sujeto a disponibilidad.",
+      "8. CONFIDENCIALIDAD, CANCELACIONES Y REEMBOLSOS",
+      "8.1. EL PRESTADOR DE SERVICIOS se compromete a mantener la confidencialidad de todo el material capturado durante el evento no haciendo mala publicidad o mal uso, salvo que sea necesario revelarlo por obligación legal o para fines promocionales. Después de 60 días posteriores al evento, el material queda fuera del alcance de EL PRESTADOR DE SERVICIOS, y este se deslinda de cualquier publicación o uso inapropiado del material por parte del cliente o terceros.",
+      "8.2. Para apartar la fecha del evento, se requiere un 10% de anticipo (mínimo 60 días antes del evento y sujeto a disponibilidad). En caso de cancelación por parte del cliente, no habrá reembolso del anticipo. Si el evento se cancela por causas ajenas al cliente (fuerza mayor), se podrá reprogramar el servicio sin costo adicional, sujeto a disponibilidad.",
       "",
-      "10. ACEPTACIÓN DE TÉRMINOS Y ALIMENTOS PARA EL EQUIPO DE TRABAJO",
-      "Al firmar este contrato, EL CLIENTE acepta todos los términos y condiciones aquí descritos. EL CLIENTE no está obligado a proporcionar alimentos al equipo de trabajo durante el evento. Sin embargo, el equipo tiene derecho a tomar un tiempo razonable para comer durante las horas de trabajo, sin dejar de estar pendiente del evento y sin que esto afecte la calidad del servicio.",
+      "9. ACEPTACIÓN DE TÉRMINOS Y ALIMENTOS PARA EL EQUIPO DE TRABAJO",
+      "9.1. Al firmar este contrato, EL CLIENTE acepta todos los términos y condiciones aquí descritos. Cualquier modificación a estos términos deberá ser acordada por ambas partes por escrito.",
+      "9.2. EL CLIENTE no está obligado a proporcionar alimentos al equipo de trabajo durante el evento. Sin embargo, el equipo tiene derecho a tomar un tiempo razonable para comer durante las horas de trabajo, sin dejar de estar pendiente del evento y sin que esto afecte la calidad del servicio.",
       "",
-      "11. ACCIONES DE RIESGO, MALTRATO AL EQUIPO Y CONDICIONES DURANTE VUELO DE DRON",
-      "En caso de acciones de riesgo (riñas, accidentes, desastres naturales, maltrato hacia el equipo de trabajo), EL PRESTADOR DE SERVICIOS notificará al cliente un máximo de 3 veces; si no se resuelve, el servicio se cancelará de inmediato sin derecho a reembolso.",
-      "En caso de malas condiciones climáticas (vientos fuertes, lluvias, aves que puedan atacar el dron), EL PRESTADOR DE SERVICIOS no realizará el vuelo para evitar daños al equipo y brindará la cobertura con métodos terrestres (fotografía o video terrestre).",
+      "10. ACCIONES DE RIESGO, MALTRATO AL EQUIPO Y CONDICIONES CLIMÁTICAS DURANTE VUELO DE DRON",
+      "10.1. En caso de acciones de riesgo (riñas, accidentes, desastres naturales, maltrato hacia el equipo de trabajo o cualquier siniestro que ponga en riesgo la integridad del equipo), EL PRESTADOR DE SERVICIOS notificará al cliente un máximo de 3 veces; si no se resuelve la situación, el servicio se cancelará de inmediato sin derecho a reembolso.",
+      "10.2. En caso de malas condiciones climáticas (vientos fuertes, lluvias, presencia de aves que puedan atacar el dron u otros factores que afecten el vuelo), EL PRESTADOR DE SERVICIOS no realizará el vuelo para evitar daños al equipo y brindará la mejor calidad posible con otros métodos de captura (fotografía o video terrestre).",
       "",
-      "12. RESPONSABILIDAD DEL CLIENTE Y DESGLOSE ESPECÍFICO DEL PAQUETE CONTRATADO",
-      "Es responsabilidad del cliente asegurarse de que el paquete contratado ([paquete]) incluya el material deseado por los festejados. Una vez firmado, no se realizarán cambios ni reembolsos por insatisfacción con el contenido del paquete:",
+      "11. RESPONSABILIDAD DEL CLIENTE SOBRE EL PAQUETE CONTRATADO",
+      "Es responsabilidad del cliente asegurarse de que el paquete contratado ([paquete]) incluya el material deseado por los festejados. El cliente debe revisar y confirmar los detalles del paquete antes de la firma del contrato. Una vez firmado, no se realizarán cambios ni reembolsos por insatisfacción con el contenido del paquete:",
       "[descripcion_servicio]"
     ].join("\n");
+
+    // Convierte automáticamente los espacios en blanco (   ) o campos sin etiquetas de tus Google Docs en etiquetas dinámicas [cliente], [descripcion_servicio], etc.
+    function convertirTextoGoogleDocEnPlantillaDinamica(textoRaw, numContrato = 1) {
+      if (!textoRaw || !textoRaw.trim()) {
+        return numContrato === 1 ? CONTRATO_1_DEFAULT : CONTRATO_2_DEFAULT;
+      }
+      let t = textoRaw;
+
+      if (numContrato === 1) {
+        // 1. Previa cotización del día (   ) -> ( [fecha_cotizacion] )
+        t = t.replace(/(cotizaci[oó]n\s+del\s+d[ií]a\s*)\([\s_\.]*\)/gi, "$1( [fecha_cotizacion] )");
+        // 2. entre Montenegro Multimedia y (   ) -> ( [cliente] )
+        t = t.replace(/(entre\s+Montenegro\s+Multimedia\s+y\s*)\([\s_\.]*\)/gi, "$1( [cliente] )");
+        // 3. social el día (   ) -> ( [fecha_evento] )
+        t = t.replace(/(el\s+d[ií]a\s*)\([\s_\.]*\)/gi, "$1( [fecha_evento] )");
+        // 4. en (   ) -> ( [lugar] )
+        t = t.replace(/(\ben\s*)\([\s_\.]*\)/gi, "$1( [lugar] )");
+        // 5. ceremonia (   ) -> ( [horario_ceremonia] )
+        t = t.replace(/(ceremonia\s*)\([\s_\.]*\)/gi, "$1( [horario_ceremonia] )");
+        // 6. recepción (   ) -> ( [horario_recepcion] ).
+        t = t.replace(/(recepci[oó]n\s*)\([\s_\.]*\)/gi, "$1( [horario_recepcion] ).");
+        if (!t.includes("[bloques_horario]")) {
+          t = t.replace(/(recepci[oó]n\s*\(\s*\[horario_recepcion\]\s*\)\.?)/i, "$1\n\nDesglose de Horarios / Bloques estipulados ([horas_totales] horas totales):\n[bloques_horario]\n");
+        }
+        // 7. Descripción del Servicio:¨   ” -> [descripcion_servicio]
+        if (!t.includes("[descripcion_servicio]")) {
+          t = t.replace(/Descripci[oó]n\s+del\s+Servicio\s*:?\s*[¨"“”'\s_\.]*/i, "Descripción del Servicio ([paquete]):\n[descripcion_servicio]\n");
+        }
+        // 8. es de $( .   ) -> $( [total] MXN )
+        t = t.replace(/(es\s+de\s*\$\s*)\([\s_\.]*\)/gi, "$1( [total] MXN )");
+        // 9. anticipo del $ ( ) -> $ ( [anticipo] MXN )
+        t = t.replace(/(anticipo\s+del?\s*\$\s*)\([\s_\.]*\)/gi, "$1( [anticipo] MXN )");
+        // 10. cantidad de $ ( ) -> $ ( [saldo] MXN )
+        t = t.replace(/(cantidad\s+de\s*\$\s*)\([\s_\.]*\)/gi, "$1( [saldo] MXN )");
+        // 11. Gilberto Montenegro Ruiz (   ) -> Firmas con [cliente]
+        t = t.replace(/(?:Montenegro\s+Multimedia\s*\r?\n\s*)?Gilberto\s+Montenegro\s+Ruiz\s*\([\s_\.]*\)/gi,
+          "_____________________________________          _____________________________________\n        Montenegro Multimedia                         ( [cliente] )\n      Gilberto Montenegro Ruiz                            EL CLIENTE");
+
+        if (!t.includes("[cliente]") || !t.includes("[descripcion_servicio]")) {
+          return CONTRATO_1_DEFAULT;
+        }
+        return t;
+      } else {
+        // Contrato 2
+        t = t.replace(/Fecha\s*:\s*\[[\s_\.]*\]/gi, "Fecha: [ [fecha_cotizacion] ]");
+        if (!t.includes("[cliente]")) {
+          t = t.replace(/DATOS\s+DEL\s+CLIENTE\s+Y\s+DEL\s+EVENTO[\s\S]*?(?=\r?\n\s*(?:1\.|\d+\.|HORAS\s+DE\s+SERVICIO))/i,
+            "DATOS DEL CLIENTE Y DEL EVENTO\n• Nombre del cliente: [cliente]     |     Teléfono del cliente: [telefono]\n• Dirección de la ceremonia religiosa: [direccion_ceremonia]\n• Dirección del salón o lugar del evento: [direccion_recepcion] ([lugar], Edo. Méx.)\n• Fecha del evento: [fecha_evento]     |     Teléfono del cliente 2: [telefono2]\n• Hora de inicio del evento ([horas_totales] horas totales):\n[bloques_horario]\n");
+        }
+        t = t.replace(/cubre\s+un\s+total\s+de\s+horas\s+estipuladas\s+en\s+el\s+paquete\s+de\s+trabajo/gi,
+          "cubre un total de [horas_totales] horas estipuladas en el paquete de trabajo ([paquete])");
+        t = t.replace(/50%\s+de\s+anticipo\s+del\s+costo\s+total\s+del\s+servicio\./gi,
+          "50% de anticipo del costo total del servicio ($[total] MXN — Anticipo registrado: $[anticipo] MXN).");
+        t = t.replace(/El\s+50%\s+restante\s+del\s+pago\s+se\s+liquidar[aá]/gi,
+          "El 50% restante del pago ($[saldo] MXN) se liquidará");
+        t = t.replace(/Despu[eé]s\s+de\s+G0\s+d[ií]as/gi, "Después de 60 días");
+        t = t.replace(/\r?\n\s*\|?\s*\*?\*?Fecha\s+de\s+pago[\s\S]*$/i, "");
+        if (!t.includes("[descripcion_servicio]")) {
+          t = t.trim() + "\n[descripcion_servicio]";
+        }
+        if (!t.includes("[cliente]")) {
+          return CONTRATO_2_DEFAULT;
+        }
+        return t;
+      }
+    }
 
     const PAQUETES_DEFAULT = [
       {
@@ -2960,6 +3036,8 @@
         representante: "Gilberto Montenegro Ruiz",
         domicilio: "Porfirio Díaz #280",
         contacto: "montenegromultimedia@gmail.com | Tel: 7131016388 y 7296990786",
+        gdocUrl1: GDOC_URL_1_DEFAULT,
+        gdocUrl2: GDOC_URL_2_DEFAULT,
         plantilla1: CONTRATO_1_DEFAULT,
         plantilla2: CONTRATO_2_DEFAULT,
         diasAlertaNota: 5,
@@ -3001,10 +3079,10 @@
               ...(parsed.config || {})
             }
           };
-          if (!state.config.plantilla1 || state.config.plantilla1.includes("ESPECIFICACIÓN CLARA Y DESGLOSE POR PUNTOS")) {
-            state.config.plantilla1 = CONTRATO_1_DEFAULT;
-          }
-          if (!state.config.plantilla2) state.config.plantilla2 = CONTRATO_2_DEFAULT;
+          state.config.plantilla1 = convertirTextoGoogleDocEnPlantillaDinamica(state.config.plantilla1, 1);
+          state.config.plantilla2 = convertirTextoGoogleDocEnPlantillaDinamica(state.config.plantilla2, 2);
+          if (!state.config.gdocUrl1) state.config.gdocUrl1 = GDOC_URL_1_DEFAULT;
+          if (!state.config.gdocUrl2) state.config.gdocUrl2 = GDOC_URL_2_DEFAULT;
           if (!state.productosRemision || state.productosRemision.length === 0) {
             state.productosRemision = JSON.parse(JSON.stringify(PRODUCTOS_REMISION_DEFAULT));
           }
@@ -3188,8 +3266,10 @@
       document.getElementById("cfg_representante").value = state.config.representante || "Gilberto Montenegro Ruiz";
       document.getElementById("cfg_domicilio").value = state.config.domicilio || "Porfirio Díaz #280";
       document.getElementById("cfg_contacto").value = state.config.contacto || "";
-      document.getElementById("cfg_plantilla_1").value = state.config.plantilla1 || CONTRATO_1_DEFAULT;
-      document.getElementById("cfg_plantilla_2").value = state.config.plantilla2 || CONTRATO_2_DEFAULT;
+      state.config.plantilla1 = convertirTextoGoogleDocEnPlantillaDinamica(state.config.plantilla1, 1);
+      state.config.plantilla2 = convertirTextoGoogleDocEnPlantillaDinamica(state.config.plantilla2, 2);
+      document.getElementById("cfg_plantilla_1").value = state.config.plantilla1;
+      document.getElementById("cfg_plantilla_2").value = state.config.plantilla2;
 
       actualizarSiguienteFolioRemision();
       renderizarSelectPaquetes();
@@ -4132,12 +4212,13 @@
           throw new Error("Documento vacío");
         }
 
+        const plantillaDinamica = convertirTextoGoogleDocEnPlantillaDinamica(textoExtraido, numContrato);
         if (numContrato === 1) {
-          state.config.plantilla1 = textoExtraido;
-          document.getElementById("cfg_plantilla_1").value = textoExtraido;
+          state.config.plantilla1 = plantillaDinamica;
+          document.getElementById("cfg_plantilla_1").value = plantillaDinamica;
         } else {
-          state.config.plantilla2 = textoExtraido;
-          document.getElementById("cfg_plantilla_2").value = textoExtraido;
+          state.config.plantilla2 = plantillaDinamica;
+          document.getElementById("cfg_plantilla_2").value = plantillaDinamica;
         }
 
         guardarEstado();
@@ -4961,8 +5042,10 @@
     }
 
     function actualizarVistaContrato() {
-      const texto1 = reemplazarVariablesContrato(state.config.plantilla1);
-      const texto2 = reemplazarVariablesContrato(state.config.plantilla2);
+      const base1 = convertirTextoGoogleDocEnPlantillaDinamica(state.config.plantilla1, 1);
+      const base2 = convertirTextoGoogleDocEnPlantillaDinamica(state.config.plantilla2, 2);
+      const texto1 = reemplazarVariablesContrato(base1);
+      const texto2 = reemplazarVariablesContrato(base2);
       const cont = document.getElementById("contrato_preview_container");
 
       const htmlC1 = `
