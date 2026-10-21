@@ -1595,6 +1595,45 @@
       line-height: 1.35;
     }
 
+    
+    /* Indicadores de Sesiones de Fotos / Fechas Independientes en el Mini Calendario */
+    .mini-cal-day.has-sesion {
+      background: var(--emerald-light);
+      color: #065f46;
+      border-color: #6ee7b7;
+      font-weight: 800;
+    }
+
+    .cal-dot.ses {
+      background: #10b981;
+    }
+
+    .sesion-inline-box {
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
+      border-left: 3.5px solid #10b981;
+      border-radius: 6px;
+      padding: 0.4rem 0.55rem;
+      margin-top: 0.38rem;
+      font-size: 0.74rem;
+      color: #065f46 !important;
+    }
+
+    tr.row-moroso-3m .sesion-inline-box,
+    tr.row-moroso-3m .sesion-inline-box strong,
+    tr.row-moroso-3m .sesion-inline-box small,
+    tr.row-moroso-3m .sesion-inline-box span {
+      color: #065f46 !important;
+    }
+
+    .discount-box-nota {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 1.5px solid #6ee7b7;
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
     /* ================= IMPRESIÓN 100% AISLADA Y LIMPIA ================= */
     #print_only_stage {
       display: none;
@@ -1717,12 +1756,13 @@
         </div>
         <div class="kpi-icon">📸</div>
       </div>
-      <div class="kpi-card kpi-yellow" onclick="switchTab('contratos'); filtrarTablaEventos('no_impresos');" title="Ver contratos guardados desde el móvil que aún no se han impreso">
-        <div>
-          <div class="kpi-num" id="kpi_no_impresos">0</div>
-          <div class="kpi-label">⚠️ Contratos Sin Imprimir</div>
+      <div class="kpi-card kpi-yellow" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-color: #c4b5fd;" onclick="switchTab('inventario'); const el=document.getElementById('card_tabla_rentas_agendadas'); if(el) el.scrollIntoView({behavior:'smooth'});" title="Haz clic para ver el listado enumerado de tus rentas de equipo">
+        <div style="flex:1; padding-right:0.4rem;">
+          <div class="kpi-num" id="kpi_total_rentas" style="color:#5b21b6;">0</div>
+          <div class="kpi-label" style="color:#4c1d95;">🎥 Rentas de Equipo</div>
+          <div id="kpi_rentas_enum_mini" style="font-size:0.68rem; color:#5b21b6; font-weight:700; margin-top:3px; max-height:42px; overflow-y:auto; line-height:1.25;">Sin rentas registradas</div>
         </div>
-        <div class="kpi-icon">🖨️</div>
+        <div class="kpi-icon">🎥</div>
       </div>
       <div class="kpi-card kpi-red" onclick="switchTab('remisiones'); filtrarTablaNotas('urgentes');">
         <div>
@@ -1901,6 +1941,30 @@
             <div class="form-group">
               <label>Fecha del Evento *</label>
               <input type="date" id="ev_fecha" onchange="actualizarDisponibilidadEvento(); actualizarVistaContrato();" />
+            </div>
+          </div>
+
+          <!-- Apartado para Día de Sesión de Fotos (Opcional hoy o puedes agregarlo después en el contrato ya realizado) -->
+          <div style="background:#ecfdf5; border:1.5px solid #6ee7b7; border-radius:9px; padding:0.65rem 0.8rem; margin-bottom:0.75rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.35rem;">
+              <label style="margin:0; font-size:0.79rem; font-weight:800; color:#065f46;">
+                📷 Día de Sesión de Fotos Previa / Formal (Opcional — Puedes asignarla después en la Agenda cuando el cliente te confirme)
+              </label>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:0.12rem 0.45rem; font-size:0.68rem;" onclick="document.getElementById('ev_fecha_sesion').value=''; document.getElementById('ev_lugar_sesion').value='';">Dejar Pendiente</button>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:0.72rem; color:#047857;">Fecha de la Sesión</label>
+                <input type="date" id="ev_fecha_sesion" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:0.72rem; color:#047857;">Hora de la Sesión</label>
+                <input type="time" id="ev_hora_sesion" value="16:00" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:0.72rem; color:#047857;">Locación / Lugar de Sesión</label>
+                <input type="text" id="ev_lugar_sesion" placeholder="Ej. Jardín / Parque / Estudio" />
+              </div>
             </div>
           </div>
 
@@ -2100,27 +2164,105 @@
               <span>Día con Evento (Foto/Video)</span>
             </div>
             <div class="cal-legend-item">
+              <span class="cal-dot ses"></span>
+              <span>Día con Sesión de Fotos / Fecha Independiente</span>
+            </div>
+            <div class="cal-legend-item">
               <span class="cal-dot ren"></span>
               <span>Día con Renta de Equipo</span>
             </div>
           </div>
         </div>
 
-        <!-- Detalle del Día Seleccionado + Resumen de Días Ocupados -->
+        <!-- Detalle del Día Seleccionado + Agendar Fecha Independiente / Sesión + Resumen de Días Ocupados -->
         <div>
           <div class="card">
             <h2>
               <span>📌 Actividad del Día Seleccionado: <strong id="cal_fecha_seleccionada_lbl" style="color:var(--accent);"></strong></span>
-              <div style="display:flex; gap:0.4rem;">
-                <button type="button" class="btn btn-primary btn-sm" onclick="agendarEnFechaSeleccionada('evento')">➕ Nuevo Evento este día</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="agendarEnFechaSeleccionada('renta')">🎥 Rentar Equipo este día</button>
+              <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                <button type="button" class="btn btn-success btn-sm" onclick="prepararNuevaSesionEnDiaSeleccionado()">📷 Agendar Sesión / Fecha Independiente</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="agendarEnFechaSeleccionada('evento')">➕ Nuevo Evento</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="agendarEnFechaSeleccionada('renta')">🎥 Rentar Equipo</button>
               </div>
             </h2>
             <div id="cal_detalle_dia"></div>
           </div>
 
+          <!-- Formulario para Agendar Fechas Independientes / Sesiones de Fotos en el Calendario -->
+          <div class="card" id="card_form_sesion_independiente" style="border: 1.5px solid #6ee7b7; background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);">
+            <h2>
+              <span id="titulo_form_sesion_cal">📷 Agendar Fecha Independiente / Sesión de Fotos</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormularioSesionCalendario()">🧹 Limpiar</button>
+            </h2>
+            <input type="hidden" id="ses_edit_id" value="" />
+            <p style="font-size:0.79rem; color:#065f46; margin-bottom:0.75rem;">
+              Agenda aquí sesiones de fotos (pre-boda, XV años, casual, estudio) o fechas independientes cuando el cliente te confirme qué día puede. También puedes vincularla a un contrato ya realizado.
+            </p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Vincular a un Contrato Ya Realizado (Opcional)</label>
+                <select id="ses_contrato_select" onchange="alElegirContratoParaSesion(this.value)" style="border-color:#6ee7b7; font-weight:600;"></select>
+              </div>
+              <div class="form-group">
+                <label>Tipo de Fecha / Sesión *</label>
+                <select id="ses_tipo">
+                  <option value="Sesión de Fotos">📷 Sesión de Fotos (Pre-Evento / Casual / Estudio)</option>
+                  <option value="Sesión XV Años / Boda">👑 Sesión Formal (XV Años / Boda)</option>
+                  <option value="Fecha Independiente / Cita">📌 Fecha Independiente / Cita con Cliente</option>
+                  <option value="Entrega de Material">🎁 Entrega de Material Fotográfico / Video</option>
+                  <option value="Grabación / Cobertura Extra">🎥 Grabación o Cobertura Independiente</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>Fecha Acordada con el Cliente *</label>
+                <input type="date" id="ses_fecha" />
+              </div>
+              <div class="form-group">
+                <label>Hora de Inicio</label>
+                <input type="time" id="ses_hora_inicio" value="16:00" />
+              </div>
+              <div class="form-group">
+                <label>Hora de Fin</label>
+                <input type="time" id="ses_hora_fin" value="18:00" />
+              </div>
+            </div>
+
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>Nombre del Cliente *</label>
+                <input type="text" id="ses_cliente" placeholder="Nombre del cliente o festejado(a)" />
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="ses_telefono" placeholder="Teléfono de contacto" />
+              </div>
+              <div class="form-group">
+                <label>Lugar / Locación de la Sesión *</label>
+                <input type="text" id="ses_lugar" placeholder="Ej. Ex-Hacienda, Parque, Estudio, Capulhuac..." />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Notas / Detalles de la Sesión o Fecha</label>
+              <input type="text" id="ses_notas" placeholder="Ej. Llevar dron, cambio de vestuario, sesión previa al evento..." />
+            </div>
+
+            <div class="btn-group" style="margin-top:0.5rem;">
+              <button type="button" class="btn btn-success" id="btn_guardar_sesion_cal" style="font-weight:800;" onclick="guardarSesionCalendario()">
+                📷💾 Guardar Fecha / Sesión en el Calendario
+              </button>
+              <button type="button" class="btn btn-outline" onclick="enviarSesionActualAGoogleCalendar()">
+                📅 Agregar a Google Calendar
+              </button>
+            </div>
+          </div>
+
           <div class="card">
-            <h2>📋 Todos los Días Señalados en este Mes</h2>
+            <h2>📋 Todos los Días Señalados en este Mes (Eventos, Sesiones y Rentas)</h2>
             <div id="cal_resumen_mes"></div>
           </div>
         </div>
@@ -2254,13 +2396,16 @@
         </div>
       </div>
 
-      <div class="card">
-        <h2>📋 Rentas de Equipo Agendadas (Ordenadas por Fecha)</h2>
+      <div class="card" id="card_tabla_rentas_agendadas">
+        <h2>
+          <span>📋 Rentas de Equipo Agendadas (Enumeradas y Ordenadas por Fecha)</span>
+          <span id="contador_total_rentas_badge" class="badge badge-purple" style="font-size:0.8rem;">Total: 0 rentas</span>
+        </h2>
         <div style="overflow-x:auto;">
           <table>
             <thead>
               <tr>
-                <th>Fecha y Horario</th>
+                <th>N° / Fecha y Horario</th>
                 <th>Colaborador</th>
                 <th>Equipo Rentado</th>
                 <th>Costo</th>
@@ -2463,6 +2608,39 @@
                 </thead>
                 <tbody id="tabla_items_remision"></tbody>
               </table>
+            </div>
+          </div>
+
+          <!-- Apartado de Descuento y Precios de Mayoreo (Ej. 100+ Fotos 4x6 a $8 c/u) -->
+          <div class="discount-box-nota">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.45rem;">
+              <span style="font-size:0.8rem; font-weight:800; color:#065f46;">
+                🏷️ Descuento o Precio de Mayoreo en la Nota (Ej. 100+ Fotos 4×6 a $8 c/u)
+              </span>
+              <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
+                <button type="button" class="btn btn-success btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem;" onclick="aplicarMayoreoFotos4x6('descuento')" title="Mantiene el precio de lista ($10) y agrega el descuento de -$2 por foto en la nota para que el cliente vea su rebaja">
+                  🏷️ Mayoreo Fotos 4×6 a $8 (Mostrar Descuento)
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:0.2rem 0.5rem; background:#fff; border-color:#10b981; color:#065f46; font-weight:700;" onclick="aplicarMayoreoFotos4x6('directo')" title="Cambia directamente el precio unitario de las fotos 4x6 a $8.00 en la tabla">
+                  💲 Poner Fotos 4×6 a $8 directo
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:0.2rem 0.45rem; background:#fff;" onclick="aplicarPorcentajeDescuentoNota(10)">
+                  -10%
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:0.2rem 0.45rem; background:#fff; color:#e11d48;" onclick="quitarDescuentoNota()">
+                  ✕ Sin Desc.
+                </button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="margin:0;">
+                <label style="color:#065f46;">Descuento a restar del Subtotal ($ MXN)</label>
+                <input type="number" id="rem_descuento" value="0" min="0" oninput="renderizarRemision()" style="font-weight:800; color:#059669; border-color:#6ee7b7;" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label style="color:#065f46;">Concepto / Motivo del Descuento (Opcional)</label>
+                <input type="text" id="rem_motivo_descuento" placeholder="Ej. Precio mayoreo ($8 c/u a partir de 100 fotos)" oninput="renderizarRemision()" style="border-color:#6ee7b7;" />
+              </div>
             </div>
           </div>
 
@@ -2823,6 +3001,7 @@
         { id: "eq3", nombre: "Dron", total: 1 }
       ],
       perfilesClientesRenta: [],
+      sesiones: [],
       eventos: [],
       rentas: [],
       notasGuardadas: [],
@@ -2863,6 +3042,9 @@
           if (!Array.isArray(state.perfilesClientesRenta)) {
             state.perfilesClientesRenta = [];
           }
+          if (!Array.isArray(state.sesiones)) {
+            state.sesiones = [];
+          }
           // Asegurar que los paquetes existentes tengan su descripción claramente numerada por puntos (1., 2., 3...)
           if (Array.isArray(state.paquetes)) {
             state.paquetes.forEach(p => {
@@ -2885,6 +3067,8 @@
       document.getElementById("ev_fecha_cotizacion").value = hoy;
       document.getElementById("ren_fecha").value = hoy;
       document.getElementById("rem_fecha").value = hoy;
+      const inpSesFecha = document.getElementById("ses_fecha");
+      if (inpSesFecha) inpSesFecha.value = hoy;
       const inpAbonoFecha = document.getElementById("nuevo_abono_fecha");
       if (inpAbonoFecha) inpAbonoFecha.value = hoy;
 
@@ -3011,6 +3195,7 @@
           firebaseRawInput: rawSaved
         },
         perfilesClientesRenta: Array.isArray(remoto.perfilesClientesRenta) ? remoto.perfilesClientesRenta : (state.perfilesClientesRenta || []),
+        sesiones: Array.isArray(remoto.sesiones) ? remoto.sesiones : (state.sesiones || []),
         eventos: Array.isArray(remoto.eventos) ? remoto.eventos : [],
         rentas: Array.isArray(remoto.rentas) ? remoto.rentas : [],
         notasGuardadas: Array.isArray(remoto.notasGuardadas) ? remoto.notasGuardadas : [],
@@ -3235,7 +3420,7 @@
       refrescarTodo();
     }
 
-    // ================= MINI CALENDARIO DE EVENTOS Y RENTAS =================
+    // ================= MINI CALENDARIO DE EVENTOS, SESIONES DE FOTOS / FECHAS INDEPENDIENTES Y RENTAS =================
     const MESES_NOMBRES = [
       "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -3258,11 +3443,17 @@
       calYear = hoy.getFullYear();
       calMonth = hoy.getMonth();
       calSelectedDate = hoy.toISOString().split("T")[0];
+      const inpSesFecha = document.getElementById("ses_fecha");
+      if (inpSesFecha) inpSesFecha.value = calSelectedDate;
       renderizarMiniCalendario();
     }
 
     function seleccionarDiaCalendario(fechaStr) {
       calSelectedDate = fechaStr;
+      const inpSesFecha = document.getElementById("ses_fecha");
+      if (inpSesFecha && !document.getElementById("ses_edit_id").value) {
+        inpSesFecha.value = fechaStr;
+      }
       renderizarMiniCalendario();
     }
 
@@ -3283,7 +3474,223 @@
       }
     }
 
+    function prepararNuevaSesionEnDiaSeleccionado() {
+      limpiarFormularioSesionCalendario(true);
+      document.getElementById("ses_fecha").value = calSelectedDate;
+      const card = document.getElementById("card_form_sesion_independiente");
+      if (card) card.scrollIntoView({ behavior: "smooth" });
+      document.getElementById("ses_cliente").focus();
+      notificar("📷 Día " + calSelectedDate + " listo para agendar Sesión de Fotos o Fecha Independiente.");
+    }
+
+    function renderizarSelectorContratosParaSesion() {
+      const sel = document.getElementById("ses_contrato_select");
+      if (!sel) return;
+      const prev = sel.value;
+      sel.innerHTML = `<option value="">— Fecha Independiente (Sin vincular a contrato, o escribe abajo) —</option>`;
+      state.eventos.forEach(ev => {
+        const tagSes = ev.fechaSesion ? ` [Sesión: ${ev.fechaSesion}]` : ` [Sin fecha de sesión aún]`;
+        const opt = document.createElement("option");
+        opt.value = ev.id;
+        opt.textContent = `📄 ${ev.cliente} — Evento: ${ev.fecha} (${ev.paqueteNombre})${tagSes}`;
+        sel.appendChild(opt);
+      });
+      if (prev && state.eventos.some(e => e.id === prev)) {
+        sel.value = prev;
+      }
+    }
+
+    function alElegirContratoParaSesion(evId) {
+      if (!evId) return;
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      document.getElementById("ses_cliente").value = ev.cliente || "";
+      document.getElementById("ses_telefono").value = ev.telefono || "";
+      if (ev.fechaSesion) {
+        document.getElementById("ses_fecha").value = ev.fechaSesion;
+      } else {
+        document.getElementById("ses_fecha").value = calSelectedDate;
+      }
+      if (ev.horaSesion) document.getElementById("ses_hora_inicio").value = ev.horaSesion;
+      if (ev.lugarSesion) document.getElementById("ses_lugar").value = ev.lugarSesion;
+      else if (ev.lugar) document.getElementById("ses_lugar").value = ev.lugar;
+      document.getElementById("ses_notas").value = `Sesión de fotos del contrato (${ev.paqueteNombre} — Evento: ${ev.fecha})`;
+      notificar(`📄 Datos de ${ev.cliente} cargados para asignarle su día de sesión de fotos.`);
+    }
+
+    function limpiarFormularioSesionCalendario(silencioso = false) {
+      document.getElementById("ses_edit_id").value = "";
+      document.getElementById("titulo_form_sesion_cal").textContent = "📷 Agendar Fecha Independiente / Sesión de Fotos";
+      document.getElementById("btn_guardar_sesion_cal").textContent = "📷💾 Guardar Fecha / Sesión en el Calendario";
+      const sel = document.getElementById("ses_contrato_select");
+      if (sel) sel.value = "";
+      document.getElementById("ses_tipo").value = "Sesión de Fotos";
+      document.getElementById("ses_fecha").value = calSelectedDate || new Date().toISOString().split("T")[0];
+      document.getElementById("ses_hora_inicio").value = "16:00";
+      document.getElementById("ses_hora_fin").value = "18:00";
+      document.getElementById("ses_cliente").value = "";
+      document.getElementById("ses_telefono").value = "";
+      document.getElementById("ses_lugar").value = "";
+      document.getElementById("ses_notas").value = "";
+      if (!silencioso) notificar("Formulario de sesión limpio.");
+    }
+
+    function guardarSesionCalendario() {
+      const cliente = document.getElementById("ses_cliente").value.trim();
+      const fecha = document.getElementById("ses_fecha").value;
+      const contratoId = document.getElementById("ses_contrato_select").value;
+      const tipo = document.getElementById("ses_tipo").value || "Sesión de Fotos";
+      const horaInicio = document.getElementById("ses_hora_inicio").value || "16:00";
+      const horaFin = document.getElementById("ses_hora_fin").value || "18:00";
+      const lugar = document.getElementById("ses_lugar").value.trim() || "Por confirmar";
+      const telefono = document.getElementById("ses_telefono").value.trim();
+      const notas = document.getElementById("ses_notas").value.trim();
+      const editId = document.getElementById("ses_edit_id").value;
+
+      if (!cliente || !fecha) {
+        notificar("Escribe al menos el Nombre del Cliente y la Fecha de la Sesión / Cita.", "error");
+        document.getElementById("ses_cliente").focus();
+        return;
+      }
+
+      if (!Array.isArray(state.sesiones)) state.sesiones = [];
+
+      const sesObj = {
+        id: editId || ("ses_" + Date.now()),
+        contratoId: contratoId || "",
+        tipo,
+        fecha,
+        horaInicio,
+        horaFin,
+        cliente,
+        telefono,
+        lugar,
+        notas
+      };
+
+      if (editId) {
+        const idx = state.sesiones.findIndex(s => s.id === editId);
+        if (idx >= 0) state.sesiones[idx] = sesObj;
+        else state.sesiones.push(sesObj);
+      } else {
+        // Si vinculó un contrato y ya existía una sesión para ese contrato, actualizarla para no duplicar
+        const idxPorContrato = contratoId ? state.sesiones.findIndex(s => s.contratoId === contratoId) : -1;
+        if (idxPorContrato >= 0) {
+          sesObj.id = state.sesiones[idxPorContrato].id;
+          state.sesiones[idxPorContrato] = sesObj;
+        } else {
+          state.sesiones.push(sesObj);
+        }
+      }
+
+      // Si está vinculada a un contrato ya realizado, guardar también la fecha de sesión directamente en ese contrato
+      if (contratoId) {
+        const ev = state.eventos.find(e => e.id === contratoId);
+        if (ev) {
+          ev.fechaSesion = fecha;
+          ev.horaSesion = horaInicio;
+          ev.lugarSesion = lugar;
+        }
+      }
+
+      state.sesiones.sort((a, b) => a.fecha.localeCompare(b.fecha));
+      calSelectedDate = fecha;
+      const parts = fecha.split("-").map(Number);
+      if (parts.length === 3) {
+        calYear = parts[0];
+        calMonth = parts[1] - 1;
+      }
+
+      guardarEstado();
+      limpiarFormularioSesionCalendario(true);
+      refrescarTodo();
+      notificar(`📷✅ ${tipo} de ${cliente} agendada para el día ${fecha}.`);
+    }
+
+    function cargarSesionEnFormulario(sesId) {
+      const ses = (state.sesiones || []).find(s => s.id === sesId);
+      if (!ses) return;
+      document.getElementById("ses_edit_id").value = ses.id;
+      document.getElementById("titulo_form_sesion_cal").textContent = `✏️ Editando ${ses.tipo}: ${ses.cliente}`;
+      document.getElementById("btn_guardar_sesion_cal").textContent = "💾 Actualizar Fecha / Sesión";
+      renderizarSelectorContratosParaSesion();
+      document.getElementById("ses_contrato_select").value = ses.contratoId || "";
+      document.getElementById("ses_tipo").value = ses.tipo || "Sesión de Fotos";
+      document.getElementById("ses_fecha").value = ses.fecha;
+      document.getElementById("ses_hora_inicio").value = ses.horaInicio || "16:00";
+      document.getElementById("ses_hora_fin").value = ses.horaFin || "18:00";
+      document.getElementById("ses_cliente").value = ses.cliente || "";
+      document.getElementById("ses_telefono").value = ses.telefono || "";
+      document.getElementById("ses_lugar").value = ses.lugar || "";
+      document.getElementById("ses_notas").value = ses.notas || "";
+      const card = document.getElementById("card_form_sesion_independiente");
+      if (card) card.scrollIntoView({ behavior: "smooth" });
+      notificar(`Editando fecha independiente / sesión de ${ses.cliente}`);
+    }
+
+    function eliminarSesionCalendario(sesId) {
+      const ses = (state.sesiones || []).find(s => s.id === sesId);
+      if (ses && ses.contratoId) {
+        const ev = state.eventos.find(e => e.id === ses.contratoId);
+        if (ev) {
+          ev.fechaSesion = "";
+          ev.lugarSesion = "";
+        }
+      }
+      state.sesiones = (state.sesiones || []).filter(s => s.id !== sesId);
+      guardarEstado();
+      refrescarTodo();
+      notificar("Sesión / Fecha independiente eliminada del calendario.");
+    }
+
+    function enviarSesionActualAGoogleCalendar() {
+      const cliente = document.getElementById("ses_cliente").value.trim() || "Cliente";
+      const tipo = document.getElementById("ses_tipo").value || "Sesión de Fotos";
+      const fecha = document.getElementById("ses_fecha").value;
+      const horaInicio = document.getElementById("ses_hora_inicio").value || "16:00";
+      const horaFin = document.getElementById("ses_hora_fin").value || "18:00";
+      const lugar = document.getElementById("ses_lugar").value.trim() || "Por confirmar";
+      const tel = document.getElementById("ses_telefono").value.trim();
+      const notas = document.getElementById("ses_notas").value.trim();
+
+      const url = generarUrlGoogleCalendar({
+        titulo: `📷 ${tipo} - ${cliente}`,
+        fecha,
+        horaInicio,
+        horaFin,
+        locacion: lugar,
+        descripcion: `Cliente: ${cliente} (${tel})
+Tipo: ${tipo}
+Lugar: ${lugar}
+Notas: ${notas}`
+      });
+      window.open(url, "_blank");
+    }
+
+    // Obtener todas las sesiones de un día (tanto independientes como las asignadas a contratos realizados)
+    function obtenerSesionesDeDia(fechaStr) {
+      const independientes = (state.sesiones || []).filter(s => s.fecha === fechaStr);
+      // También incluir contratos que tengan ev.fechaSesion === fechaStr pero que no estén ya en state.sesiones
+      const deContratos = state.eventos
+        .filter(ev => ev.fechaSesion === fechaStr && !independientes.some(s => s.contratoId === ev.id))
+        .map(ev => ({
+          id: "evses_" + ev.id,
+          esDeContratoDirecto: true,
+          contratoId: ev.id,
+          tipo: "Sesión de Fotos (De Contrato)",
+          fecha: ev.fechaSesion,
+          horaInicio: ev.horaSesion || "16:00",
+          horaFin: "18:00",
+          cliente: ev.cliente,
+          telefono: ev.telefono || "",
+          lugar: ev.lugarSesion || ev.lugar || "Por confirmar",
+          notas: `Sesión correspondiente al contrato ${ev.paqueteNombre} (Evento principal: ${ev.fecha})`
+        }));
+      return [...independientes, ...deContratos];
+    }
+
     function renderizarMiniCalendario() {
+      renderizarSelectorContratosParaSesion();
       const tituloEl = document.getElementById("cal_mes_titulo");
       const gridEl = document.getElementById("mini_cal_days");
       if (!tituloEl || !gridEl) return;
@@ -3306,6 +3713,7 @@
       for (let dia = 1; dia <= totalDiasMes; dia++) {
         const fechaStr = `${prefixMes}-${String(dia).padStart(2, "0")}`;
         const evsDia = state.eventos.filter(e => e.fecha === fechaStr);
+        const sesDia = obtenerSesionesDeDia(fechaStr);
         const rensDia = state.rentas.filter(r => r.fecha === fechaStr);
 
         const cell = document.createElement("div");
@@ -3313,10 +3721,13 @@
         if (fechaStr === hoyStr) classes.push("today");
         if (fechaStr === calSelectedDate) classes.push("selected");
 
-        if (evsDia.length > 0 && rensDia.length > 0) {
+        const tiposActivos = (evsDia.length > 0 ? 1 : 0) + (sesDia.length > 0 ? 1 : 0) + (rensDia.length > 0 ? 1 : 0);
+        if (tiposActivos > 1) {
           classes.push("has-ambos");
         } else if (evsDia.length > 0) {
           classes.push("has-evento");
+        } else if (sesDia.length > 0) {
+          classes.push("has-sesion");
         } else if (rensDia.length > 0) {
           classes.push("has-renta");
         }
@@ -3325,9 +3736,10 @@
         cell.onclick = () => seleccionarDiaCalendario(fechaStr);
 
         let dotsHtml = "";
-        if (evsDia.length > 0 || rensDia.length > 0) {
+        if (evsDia.length > 0 || sesDia.length > 0 || rensDia.length > 0) {
           dotsHtml = `<div class="cal-dots">
-            ${evsDia.map(() => `<span class="cal-dot ev" title="Evento"></span>`).join("")}
+            ${evsDia.map(() => `<span class="cal-dot ev" title="Evento Principal"></span>`).join("")}
+            ${sesDia.map(() => `<span class="cal-dot ses" title="Sesión de Fotos / Fecha Independiente"></span>`).join("")}
             ${rensDia.map(() => `<span class="cal-dot ren" title="Renta de Equipo"></span>`).join("")}
           </div>`;
         }
@@ -3339,12 +3751,13 @@
       document.getElementById("cal_fecha_seleccionada_lbl").textContent = calSelectedDate;
       const contDetalle = document.getElementById("cal_detalle_dia");
       const evsSel = state.eventos.filter(e => e.fecha === calSelectedDate);
+      const sesSel = obtenerSesionesDeDia(calSelectedDate);
       const rensSel = state.rentas.filter(r => r.fecha === calSelectedDate);
 
-      if (evsSel.length === 0 && rensSel.length === 0) {
+      if (evsSel.length === 0 && sesSel.length === 0 && rensSel.length === 0) {
         contDetalle.innerHTML = `
           <div style="padding:1rem; background:var(--bg-subtle); border-radius:10px; color:var(--text-muted); font-size:0.86rem;">
-            ✅ Día libre. No hay eventos ni rentas de equipo agendados para el <strong>${calSelectedDate}</strong>.
+            ✅ Día libre. No hay eventos, sesiones de fotos ni rentas agendadas para el <strong>${calSelectedDate}</strong>. Usa el formulario de abajo si deseas agendar una Sesión de Fotos o Fecha Independiente este día.
           </div>
         `;
       } else {
@@ -3360,13 +3773,49 @@
                 </div>
                 <div style="display:flex; gap:0.35rem;">
                   <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')">📄 Ver Contrato</button>
-                  <button type="button" class="btn btn-warning btn-sm" onclick="enviarEventoGuardadoARemision('${ev.id}')">🧾 Nota 10x15</button>
+                  <button type="button" class="btn btn-warning btn-sm" onclick="enviarEventoGuardadoARemision('${ev.id}')">🧾 Nota</button>
                 </div>
               </div>
               <div style="font-size:0.82rem; color:#334155; margin-top:0.45rem;">
                 <div>📍 <strong>Misa:</strong> ${ev.dirCeremonia || "-"} | <strong>Recepción:</strong> ${ev.dirRecepcion} (${ev.lugar || ""})</div>
-                <div>⏰ <strong>Horario:</strong> ${ev.modoHorario === "pendiente" ? "Pendiente" : (ev.bloquesTexto || "").split("\n").join(" | ")}</div>
+                <div>⏰ <strong>Horario:</strong> ${ev.modoHorario === "pendiente" ? "Pendiente" : (ev.bloquesTexto || "").split("
+").join(" | ")}</div>
+                ${ev.fechaSesion ? `<div style="color:#047857; font-weight:700;">📷 <strong>Sesión de Fotos programada:</strong> ${ev.fechaSesion} (${ev.horaSesion || '16:00'} hrs) — ${ev.lugarSesion || 'Por confirmar'}</div>` : ""}
                 <div>🎥 <strong>Equipo apartado:</strong> ${eqTxt} | 💰 <strong>Resta:</strong> $${Number(ev.saldo).toLocaleString("es-MX")} MXN</div>
+              </div>
+            </div>
+          `;
+        });
+
+        sesSel.forEach(ses => {
+          const calUrl = generarUrlGoogleCalendar({
+            titulo: `📷 ${ses.tipo} - ${ses.cliente}`,
+            fecha: ses.fecha,
+            horaInicio: ses.horaInicio || "16:00",
+            horaFin: ses.horaFin || "18:00",
+            locacion: ses.lugar || "",
+            descripcion: `Cliente: ${ses.cliente} (${ses.telefono || ""})
+Notas: ${ses.notas || ""}`
+          });
+          htmlDet += `
+            <div style="padding:0.9rem; background:#ecfdf5; border:1.5px solid #6ee7b7; border-radius:10px; margin-bottom:0.65rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                <div>
+                  <span class="badge badge-ok">📷 ${ses.tipo.toUpperCase()}</span>
+                  <strong style="font-size:0.95rem; margin-left:0.4rem; color:#065f46;">${ses.cliente}</strong>
+                </div>
+                <div style="display:flex; gap:0.35rem;">
+                  ${!ses.esDeContratoDirecto ? `<button type="button" class="btn btn-outline btn-sm" onclick="cargarSesionEnFormulario('${ses.id}')">✏️ Editar</button>` : ""}
+                  ${ses.contratoId ? `<button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ses.contratoId}')">📄 Ver Contrato</button>` : ""}
+                  <a class="btn btn-success btn-sm" href="${calUrl}" target="_blank">📅 Calendar</a>
+                  ${!ses.esDeContratoDirecto
+                    ? `<button type="button" class="btn btn-danger btn-sm" onclick="eliminarSesionCalendario('${ses.id}')">✕</button>`
+                    : `<button type="button" class="btn btn-danger btn-sm" onclick="quitarSesionDeContrato('${ses.contratoId}')">✕</button>`}
+                </div>
+              </div>
+              <div style="font-size:0.82rem; color:#065f46; margin-top:0.4rem;">
+                <div>⏰ <strong>Horario:</strong> ${ses.horaInicio || "16:00"} a ${ses.horaFin || "18:00"} hrs &nbsp;|&nbsp; 📍 <strong>Locación:</strong> ${ses.lugar || "Por definir"}</div>
+                <div>📞 <strong>Tel:</strong> ${ses.telefono || "-"} &nbsp;|&nbsp; 📝 <strong>Notas:</strong> ${ses.notas || "-"}</div>
               </div>
             </div>
           `;
@@ -3395,14 +3844,22 @@
       }
 
       const contMes = document.getElementById("cal_resumen_mes");
-      const evsMes = state.eventos.filter(e => e.fecha.startsWith(prefixMes));
-      const rensMes = state.rentas.filter(r => r.fecha.startsWith(prefixMes));
+      const evsMes = state.eventos.filter(e => e.fecha && e.fecha.startsWith(prefixMes));
+      const rensMes = state.rentas.filter(r => r.fecha && r.fecha.startsWith(prefixMes));
 
-      if (evsMes.length === 0 && rensMes.length === 0) {
+      // Recolectar todas las sesiones del mes (independientes y de contratos)
+      const sesionesMes = [];
+      for (let d = 1; d <= totalDiasMes; d++) {
+        const fStr = `${prefixMes}-${String(d).padStart(2, "0")}`;
+        obtenerSesionesDeDia(fStr).forEach(s => sesionesMes.push(s));
+      }
+
+      if (evsMes.length === 0 && sesionesMes.length === 0 && rensMes.length === 0) {
         contMes.innerHTML = `<p style="font-size:0.84rem; color:var(--text-muted);">No hay fechas señaladas en ${MESES_NOMBRES[calMonth]} ${calYear}.</p>`;
       } else {
         const itemsMes = [
           ...evsMes.map(e => ({ fecha: e.fecha, tipo: "EVENTO", titulo: `${e.cliente} (${e.paqueteNombre})`, sub: `${e.dirRecepcion}, ${e.lugar || ""}`, color: "badge-next" })),
+          ...sesionesMes.map(s => ({ fecha: s.fecha, tipo: s.tipo.toUpperCase(), titulo: `${s.cliente}`, sub: `${s.horaInicio || "16:00"} hrs — ${s.lugar || "Por confirmar"}`, color: "badge-ok" })),
           ...rensMes.map(r => ({ fecha: r.fecha, tipo: "RENTA", titulo: `${r.cliente}`, sub: formatearEquipoTexto(r.equipo), color: "badge-purple" }))
         ].sort((a, b) => a.fecha.localeCompare(b.fecha));
 
@@ -3413,7 +3870,7 @@
                 <th>Fecha</th>
                 <th>Tipo</th>
                 <th>Cliente / Colaborador</th>
-                <th>Detalle</th>
+                <th>Detalle / Locación</th>
               </tr>
             </thead>
             <tbody>
@@ -4582,6 +5039,9 @@
         telefono2: document.getElementById("ev_telefono2").value.trim(),
         fechaCotizacion: document.getElementById("ev_fecha_cotizacion").value,
         fecha,
+        fechaSesion: document.getElementById("ev_fecha_sesion") ? document.getElementById("ev_fecha_sesion").value : "",
+        horaSesion: document.getElementById("ev_hora_sesion") ? document.getElementById("ev_hora_sesion").value : "16:00",
+        lugarSesion: document.getElementById("ev_lugar_sesion") ? document.getElementById("ev_lugar_sesion").value.trim() : "",
         lugar: document.getElementById("ev_lugar").value.trim(),
         dirCeremonia: document.getElementById("ev_dir_ceremonia").value.trim(),
         dirRecepcion,
@@ -4821,6 +5281,9 @@
       document.getElementById("ev_telefono2").value = ev.telefono2 || "";
       document.getElementById("ev_fecha_cotizacion").value = ev.fechaCotizacion || ev.fecha;
       document.getElementById("ev_fecha").value = ev.fecha;
+      if (document.getElementById("ev_fecha_sesion")) document.getElementById("ev_fecha_sesion").value = ev.fechaSesion || "";
+      if (document.getElementById("ev_hora_sesion")) document.getElementById("ev_hora_sesion").value = ev.horaSesion || "16:00";
+      if (document.getElementById("ev_lugar_sesion")) document.getElementById("ev_lugar_sesion").value = ev.lugarSesion || "";
       document.getElementById("ev_lugar").value = ev.lugar || "";
       document.getElementById("ev_dir_ceremonia").value = ev.dirCeremonia || "";
       document.getElementById("ev_dir_recepcion").value = ev.dirRecepcion || "";
@@ -4871,6 +5334,67 @@
       }
     }
 
+    function guardarSesionDirectoEnContrato(evId) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      const fInput = document.getElementById("ses_inline_fecha_" + evId);
+      const hInput = document.getElementById("ses_inline_hora_" + evId);
+      const lInput = document.getElementById("ses_inline_lugar_" + evId);
+
+      const fechaSes = fInput ? fInput.value : "";
+      const horaSes = (hInput && hInput.value) ? hInput.value : "16:00";
+      const lugarSes = (lInput && lInput.value.trim()) ? lInput.value.trim() : (ev.lugar || "Por confirmar");
+
+      if (!fechaSes) {
+        notificar("Selecciona el día de la sesión de fotos para este contrato.", "warn");
+        if (fInput) fInput.focus();
+        return;
+      }
+
+      ev.fechaSesion = fechaSes;
+      ev.horaSesion = horaSes;
+      ev.lugarSesion = lugarSes;
+
+      // Sincronizar también en state.sesiones si ya había un registro vinculado
+      if (!Array.isArray(state.sesiones)) state.sesiones = [];
+      const idxSes = state.sesiones.findIndex(s => s.contratoId === ev.id);
+      const sesData = {
+        id: idxSes >= 0 ? state.sesiones[idxSes].id : ("ses_" + Date.now()),
+        contratoId: ev.id,
+        tipo: "Sesión de Fotos",
+        fecha: fechaSes,
+        horaInicio: horaSes,
+        horaFin: "18:00",
+        cliente: ev.cliente,
+        telefono: ev.telefono || "",
+        lugar: lugarSes,
+        notas: `Sesión del contrato: ${ev.paqueteNombre} (Evento: ${ev.fecha})`
+      };
+      if (idxSes >= 0) {
+        state.sesiones[idxSes] = sesData;
+      } else {
+        state.sesiones.push(sesData);
+      }
+
+      guardarEstado();
+      refrescarTodo();
+      notificar(`📷✅ Día de sesión de fotos (${fechaSes} a las ${horaSes}) asignado al contrato de ${ev.cliente} y marcado en el Mini Calendario.`);
+    }
+
+    function quitarSesionDeContrato(evId) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (ev) {
+        ev.fechaSesion = "";
+        ev.lugarSesion = "";
+      }
+      if (Array.isArray(state.sesiones)) {
+        state.sesiones = state.sesiones.filter(s => s.contratoId !== evId);
+      }
+      guardarEstado();
+      refrescarTodo();
+      notificar("Fecha de sesión quitada del contrato.");
+    }
+
     function eliminarEvento(id) {
       state.eventos = state.eventos.filter(e => e.id !== id);
       guardarEstado();
@@ -4886,6 +5410,9 @@
       document.getElementById("ev_telefono").value = "";
       document.getElementById("ev_telefono2").value = "";
       document.getElementById("ev_fecha_cotizacion").value = hoy;
+      if (document.getElementById("ev_fecha_sesion")) document.getElementById("ev_fecha_sesion").value = "";
+      if (document.getElementById("ev_hora_sesion")) document.getElementById("ev_hora_sesion").value = "16:00";
+      if (document.getElementById("ev_lugar_sesion")) document.getElementById("ev_lugar_sesion").value = "";
       document.getElementById("ev_dir_ceremonia").value = "";
       document.getElementById("ev_dir_recepcion").value = "";
       document.getElementById("ev_modo_horario").value = "bloques";
@@ -6075,6 +6602,10 @@
       document.getElementById("rem_direccion").value = "";
       document.getElementById("rem_fecha").value = hoy;
       document.getElementById("rem_anticipo").value = 0;
+      const descEl = document.getElementById("rem_descuento");
+      if (descEl) descEl.value = 0;
+      const motEl = document.getElementById("rem_motivo_descuento");
+      if (motEl) motEl.value = "";
       document.getElementById("rem_notas").value = "Gracias por su preferencia.";
       document.getElementById("rem_estado").value = "pendiente";
       document.getElementById("rem_prioridad").value = "normal";
@@ -6087,6 +6618,104 @@
     }
 
     // ================= GUARDADO Y ACTUALIZACIÓN DE NOTA (SIN CREAR OTRA SI YA EXISTE) =================
+    // ================= DESCUENTOS Y PRECIOS DE MAYOREO EN NOTAS (EJ. 100+ FOTOS 4x6 A $8 C/U) =================
+    function aplicarMayoreoFotos4x6(modo = "descuento") {
+      if (!state.remisionItems || state.remisionItems.length === 0) {
+        notificar("Primero agrega las fotografías o productos a la nota.", "warn");
+        return;
+      }
+
+      let totalFotos4x6 = 0;
+      let ahorroCalculado = 0;
+
+      state.remisionItems.forEach(it => {
+        const es4x6 = /4\s*x\s*6|postal/i.test(it.desc || "");
+        if (es4x6) {
+          const cant = Number(it.cant) || 0;
+          totalFotos4x6 += cant;
+          if (modo === "directo") {
+            it.precio = 8;
+          } else {
+            // Si estaba en $8, restaurar a $10 para que se refleje el descuento explícito de -$2 por foto en la nota
+            if (Number(it.precio) === 8) it.precio = 10;
+            const precioNormal = Number(it.precio) || 10;
+            const diffPorFoto = Math.max(0, precioNormal - 8);
+            ahorroCalculado += cant * diffPorFoto;
+          }
+        }
+      });
+
+      const descEl = document.getElementById("rem_descuento");
+      const motEl = document.getElementById("rem_motivo_descuento");
+
+      if (totalFotos4x6 === 0) {
+        // Si no había un renglón llamado 4x6, aplicar sobre el total de artículos a -$2 c/u
+        const cantGeneral = state.remisionItems.reduce((acc, i) => acc + (Number(i.cant) || 0), 0);
+        if (modo === "directo") {
+          state.remisionItems[0].precio = 8;
+          if (descEl) descEl.value = 0;
+          if (motEl) motEl.value = "Precio mayoreo ($8 c/u)";
+        } else {
+          if (descEl) descEl.value = cantGeneral * 2;
+          if (motEl) motEl.value = `Mayoreo $8 c/u (${cantGeneral} pzas)`;
+        }
+      } else {
+        if (modo === "directo") {
+          if (descEl) descEl.value = 0;
+          if (motEl) motEl.value = `Precio mayoreo aplicado ($8 c/u en ${totalFotos4x6} fotos 4x6)`;
+          notificar(`💲 Precio unitario de ${totalFotos4x6} fotos 4×6 ajustado a $8.00 MXN c/u.`);
+        } else {
+          if (descEl) descEl.value = ahorroCalculado;
+          if (motEl) motEl.value = `Mayoreo $8 c/u (${totalFotos4x6} fotos 4x6)`;
+          notificar(`🏷️ Descuento de mayoreo aplicado: -$${ahorroCalculado.toLocaleString("es-MX")} MXN ($8 c/u en ${totalFotos4x6} fotos 4×6).`);
+        }
+      }
+
+      guardarEstado();
+      renderizarRemision();
+    }
+
+    function aplicarPorcentajeDescuentoNota(pct) {
+      const subtotal = state.remisionItems.reduce((acc, it) => acc + ((Number(it.cant) || 1) * (Number(it.precio) || 0)), 0);
+      const montoDesc = Math.round(subtotal * (pct / 100));
+      const descEl = document.getElementById("rem_descuento");
+      const motEl = document.getElementById("rem_motivo_descuento");
+      if (descEl) descEl.value = montoDesc;
+      if (motEl && !motEl.value.trim()) motEl.value = `Descuento ${pct}%`;
+      renderizarRemision();
+      notificar(`🏷️ Descuento del ${pct}% (-$${montoDesc.toLocaleString("es-MX")} MXN) aplicado a la nota.`);
+    }
+
+    function quitarDescuentoNota() {
+      const descEl = document.getElementById("rem_descuento");
+      const motEl = document.getElementById("rem_motivo_descuento");
+      if (descEl) descEl.value = 0;
+      if (motEl) motEl.value = "";
+      renderizarRemision();
+      notificar("Descuento quitado de la nota.");
+    }
+
+    function editarDescuentoNotaGuardadaInline(notaId, nuevoDescuento) {
+      const nota = state.notasGuardadas.find(n => n.id === notaId);
+      if (!nota) return;
+      const descNum = Math.max(0, Number(nuevoDescuento) || 0);
+      nota.descuento = descNum;
+      const subtotal = (nota.items || []).reduce((acc, it) => acc + ((Number(it.cant) || 1) * (Number(it.precio) || 0)), 0);
+      nota.subtotal = subtotal;
+      nota.total = Math.max(0, subtotal - descNum);
+      nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
+
+      if (document.getElementById("rem_edit_id").value === nota.id) {
+        const descEl = document.getElementById("rem_descuento");
+        if (descEl) descEl.value = descNum;
+        renderizarRemision();
+      }
+
+      guardarEstado();
+      refrescarTablas();
+      notificar(`🏷️ Descuento de -$${descNum.toLocaleString("es-MX")} MXN actualizado en la Nota N° ${nota.folio}.`);
+    }
+
     function registrarNotaAlImprimir() {
       const cliente = document.getElementById("rem_cliente").value.trim() || "Cliente Mostrador";
       const fecha = document.getElementById("rem_fecha").value || new Date().toISOString().split("T")[0];
@@ -6109,7 +6738,10 @@
       document.getElementById("rem_folio").value = folioFormateado;
       actualizarVistaPreviaTarjetasNota10x15();
 
-      const total = state.remisionItems.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      const subtotal = state.remisionItems.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      const descuento = Math.max(0, Number(document.getElementById("rem_descuento") ? document.getElementById("rem_descuento").value : 0) || 0);
+      const motivoDescuento = document.getElementById("rem_motivo_descuento") ? document.getElementById("rem_motivo_descuento").value.trim() : "";
+      const total = Math.max(0, subtotal - descuento);
       const anticipo = Number(document.getElementById("rem_anticipo").value) || 0;
       const saldo = Math.max(0, total - anticipo);
 
@@ -6122,6 +6754,9 @@
         telefono: document.getElementById("rem_telefono").value.trim(),
         direccion: document.getElementById("rem_direccion").value.trim(),
         items: JSON.parse(JSON.stringify(state.remisionItems)),
+        subtotal,
+        descuento,
+        motivoDescuento,
         total,
         anticipo,
         saldo,
@@ -6229,7 +6864,8 @@
       } else if (campo === "desc") {
         nota.items[idxItem].desc = valor;
       }
-      nota.total = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.subtotal = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.total = Math.max(0, nota.subtotal - (Number(nota.descuento) || 0));
       nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
 
       // Si esa misma nota está cargada arriba en el formulario, sincronizarla en vivo
@@ -6261,7 +6897,8 @@
 
       if (!Array.isArray(nota.items)) nota.items = [];
       nota.items.push({ cant, desc, precio });
-      nota.total = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.subtotal = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.total = Math.max(0, nota.subtotal - (Number(nota.descuento) || 0));
       nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
 
       if (document.getElementById("rem_edit_id").value === nota.id) {
@@ -6278,7 +6915,8 @@
       const nota = state.notasGuardadas.find(n => n.id === notaId);
       if (!nota || !Array.isArray(nota.items)) return;
       nota.items.splice(idxItem, 1);
-      nota.total = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.subtotal = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.total = Math.max(0, nota.subtotal - (Number(nota.descuento) || 0));
       nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
 
       if (document.getElementById("rem_edit_id").value === nota.id) {
@@ -6304,6 +6942,8 @@
       document.getElementById("rem_telefono").value = nota.telefono || "";
       document.getElementById("rem_direccion").value = nota.direccion || "";
       document.getElementById("rem_anticipo").value = nota.anticipo || 0;
+      if (document.getElementById("rem_descuento")) document.getElementById("rem_descuento").value = nota.descuento || 0;
+      if (document.getElementById("rem_motivo_descuento")) document.getElementById("rem_motivo_descuento").value = nota.motivoDescuento || "";
       document.getElementById("rem_notas").value = nota.notas || "";
       document.getElementById("rem_estado").value = nota.estado || "pendiente";
       document.getElementById("rem_prioridad").value = nota.prioridad || "normal";
@@ -6469,13 +7109,15 @@
       const cliente = document.getElementById("rem_cliente").value || "Mostrador / Cliente General";
       const tel = document.getElementById("rem_telefono").value || "-";
       const dir = document.getElementById("rem_direccion").value || "-";
+      const descuento = Math.max(0, Number(document.getElementById("rem_descuento") ? document.getElementById("rem_descuento").value : 0) || 0);
+      const motivoDesc = document.getElementById("rem_motivo_descuento") ? document.getElementById("rem_motivo_descuento").value.trim() : "";
       const anticipo = Number(document.getElementById("rem_anticipo").value) || 0;
       const notas = document.getElementById("rem_notas").value || "";
 
-      let total = 0;
+      let subtotal = 0;
       const filasHtml = state.remisionItems.map(item => {
         const imp = (Number(item.cant) || 1) * (Number(item.precio) || 0);
-        total += imp;
+        subtotal += imp;
         return `
           <tr>
             <td style="text-align:center; font-weight:700;">${item.cant}</td>
@@ -6486,7 +7128,26 @@
         `;
       }).join("");
 
-      const saldo = Math.max(0, total - anticipo);
+      const totalFinal = Math.max(0, subtotal - descuento);
+      const saldo = Math.max(0, totalFinal - anticipo);
+
+      const desgloseTotalesHtml = descuento > 0
+        ? `
+          <div><strong>Subtotal:</strong> $${subtotal.toLocaleString("es-MX")} MXN</div>
+          <div style="color:#059669; font-weight:800;"><strong>Descuento${motivoDesc ? ' (' + motivoDesc + ')' : ''}:</strong> -$${descuento.toLocaleString("es-MX")} MXN</div>
+          <div><strong>Total con Descuento:</strong> $${totalFinal.toLocaleString("es-MX")} MXN</div>
+          <div><strong>A cuenta / Anticipo:</strong> $${anticipo.toLocaleString("es-MX")} MXN</div>
+          <div style="font-size:8.2pt; font-weight:800; color:#0284c7; margin-top:0.8mm;">
+            RESTA: $${saldo.toLocaleString("es-MX")} MXN
+          </div>
+        `
+        : `
+          <div><strong>Subtotal / Total:</strong> $${totalFinal.toLocaleString("es-MX")} MXN</div>
+          <div><strong>A cuenta / Anticipo:</strong> $${anticipo.toLocaleString("es-MX")} MXN</div>
+          <div style="font-size:8.2pt; font-weight:800; color:#0284c7; margin-top:0.8mm;">
+            RESTA: $${saldo.toLocaleString("es-MX")} MXN
+          </div>
+        `;
 
       return `
         <div class="nota-10x15">
@@ -6533,16 +7194,12 @@
                 <div style="font-size:6.2pt; color:#334155;"><strong>Nota:</strong> ${notas}</div>
                 <div class="nota-10x15-sign">Firma de Conformidad</div>
               </div>
-              <div style="text-align:right; line-height:1.35;">
-                <div><strong>Subtotal / Total:</strong> $${total.toLocaleString("es-MX")} MXN</div>
-                <div><strong>A cuenta / Anticipo:</strong> $${anticipo.toLocaleString("es-MX")} MXN</div>
-                <div style="font-size:8.2pt; font-weight:800; color:#0284c7; margin-top:0.8mm;">
-                  RESTA: $${saldo.toLocaleString("es-MX")} MXN
-                </div>
+              <div style="text-align:right; line-height:1.3;">
+                ${desgloseTotalesHtml}
               </div>
             </div>
             <div style="text-align:center; font-size:5.5pt; color:#64748b; margin-top:1.5mm;">
-              Montenegro Multimedia • Formato 10 × 15 cm • montenegromultimedia@gmail.com
+              Montenegro Multimedia • montenegromultimedia@gmail.com
             </div>
           </div>
         </div>
@@ -6897,6 +7554,7 @@
       // Actualizar perfiles de clientes frecuentes y selector de rentas
       renderizarPerfilesClientesRenta();
       renderizarSelectorRentasParaNota();
+      renderizarSelectorContratosParaSesion();
 
       // 1. TABLA DE EVENTOS Y PENDIENTES DE CONTRATOS
       ordenarEventosPorFecha();
@@ -6954,6 +7612,10 @@
           badgesHtml += `<br/><span class="badge badge-unprinted" style="margin-top:4px;">⚠️ Sin Imprimir</span>`;
         }
 
+        if (ev.fechaSesion) {
+          badgesHtml += `<br/><span class="badge badge-ok" style="margin-top:4px;">📷 Sesión: ${ev.fechaSesion} (${ev.horaSesion || '16:00'})</span>`;
+        }
+
         if (infoDeuda.esMoroso3Meses) {
           badgesHtml += `<br/><span class="badge-moroso-3m">⛔ CONTRATO NO PAGADO — 3+ MESES SIN RECUPERAR MATERIAL (${infoDeuda.numSanciones} Sanciones)</span>`;
         } else if (infoDeuda.numSanciones > 0) {
@@ -6973,6 +7635,25 @@
           : (ev.modoHorario === "vacio"
               ? `<small>Horario en blanco (${ev.horasTotales}h)</small>`
               : `<small style="white-space:pre-line;">${ev.bloquesTexto}</small>`);
+
+        // Recuadro interactivo en cada contrato ya realizado para asignar o cambiar el día de su Sesión de Fotos
+        const sesionBoxHtml = `
+          <div class="sesion-inline-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.22rem;">
+              <strong>📷 Día de Sesión de Fotos:</strong>
+              ${ev.fechaSesion
+                ? `<span style="font-weight:800; color:#047857;">✅ Agendada (${ev.fechaSesion})</span>`
+                : `<span style="color:#b45309; font-weight:700;">⏳ Por asignar día</span>`}
+            </div>
+            <div style="display:flex; gap:0.25rem; flex-wrap:wrap; align-items:center;">
+              <input type="date" id="ses_inline_fecha_${ev.id}" value="${ev.fechaSesion || ''}" style="padding:0.18rem 0.35rem; font-size:0.73rem; width:122px; background:#fff;" />
+              <input type="time" id="ses_inline_hora_${ev.id}" value="${ev.horaSesion || '16:00'}" style="padding:0.18rem 0.3rem; font-size:0.73rem; width:84px; background:#fff;" />
+              <input type="text" id="ses_inline_lugar_${ev.id}" value="${(ev.lugarSesion || '').replace(/"/g, '&quot;')}" placeholder="Locación sesión..." style="padding:0.18rem 0.38rem; font-size:0.73rem; flex:1; min-width:95px; background:#fff;" />
+              <button type="button" class="btn btn-success btn-sm" style="padding:0.18rem 0.45rem; font-size:0.7rem;" onclick="guardarSesionDirectoEnContrato('${ev.id}')" title="Guardar día de sesión y señalar en el calendario">💾 Asignar</button>
+              ${ev.fechaSesion ? `<button type="button" class="btn btn-danger btn-sm" style="padding:0.15rem 0.35rem; font-size:0.68rem;" onclick="quitarSesionDeContrato('${ev.id}')" title="Quitar fecha de sesión">✕</button>` : ""}
+            </div>
+          </div>
+        `;
 
         const tr = document.createElement("tr");
         if (infoDeuda.esMoroso3Meses) {
@@ -7001,6 +7682,7 @@
             <strong>${ev.paqueteNombre}</strong> (${ev.horasTotales}h)<br/>
             <div style="background:#f0f9ff; border-left:3px solid #0284c7; padding:0.3rem 0.5rem; border-radius:4px; margin:0.25rem 0; font-size:0.75rem; color:#0f172a !important; font-weight:600; white-space:pre-line;">${construirTextoLimpioParaTabla(ev.detalles || "")}</div>
             ${horarioResumen}
+            ${sesionBoxHtml}
           </td>
           <td>
             <div style="margin-bottom:0.3rem;">${badgeMaterial}</div>
@@ -7070,7 +7752,7 @@
         tbEv.appendChild(tr);
       });
 
-      // 2. TABLA DE LISTA DE PENDIENTES DE NOTAS DE REMISIÓN (CON EDICIÓN DIRECTA DEL DESGLOSE Y EXTRAS SIN CREAR OTRA NOTA)
+      // 2. TABLA DE LISTA DE PENDIENTES DE NOTAS DE REMISIÓN (CON EDICIÓN DIRECTA DEL DESGLOSE, DESCUENTOS Y EXTRAS)
       ordenarNotasPorFecha();
       const tbNotas = document.getElementById("tabla_notas_guardadas");
       if (tbNotas) {
@@ -7102,6 +7784,8 @@
           const est = nota.estado || "pendiente";
           const { atrasado, diasTranscurridos } = evaluarRetrasoNota(nota);
           const esUrgente = nota.prioridad === "alta";
+          const subtotalNota = (nota.items || []).reduce((acc, it) => acc + ((Number(it.cant) || 1) * (Number(it.precio) || 0)), 0);
+          const descuentoNota = Number(nota.descuento) || 0;
 
           let alertaHtml = "";
           if (atrasado) {
@@ -7165,7 +7849,6 @@
                   ✏️ Desglose Editable (Cant. | Equipo/Concepto | Precio $):
                 </div>
                 ${desgloseEditableHtml}
-                <!-- Agregar algo extra directamente a esta misma nota sin crear otra -->
                 <div style="display:grid; grid-template-columns: 48px 1fr 72px auto; gap:0.25rem; align-items:center; margin-top:0.35rem; padding-top:0.3rem; border-top:1px dashed #cbd5e1;">
                   <input type="number" id="extra_inline_cant_${nota.id}" value="1" min="1" placeholder="Cant" style="padding:0.18rem 0.25rem; font-size:0.74rem;" />
                   <input type="text" id="extra_inline_desc_${nota.id}" placeholder="+ Agregar extra o equipo..." style="padding:0.18rem 0.35rem; font-size:0.74rem;"
@@ -7183,6 +7866,12 @@
               ${construirBotonesEstadoHtml(est, esUrgente, "cambiarEstadoNotaGuardada", "alternarPrioridadNotaGuardada", nota.id)}
             </td>
             <td>
+              Subtotal: $${subtotalNota.toLocaleString("es-MX")}<br/>
+              <div style="display:flex; align-items:center; gap:0.25rem; margin:2px 0;">
+                <small style="color:#059669; font-weight:800;">🏷️ Desc $:</small>
+                <input type="number" min="0" value="${descuentoNota}" style="width:68px; padding:0.12rem 0.3rem; font-size:0.74rem; font-weight:800; color:#059669; border-color:#6ee7b7;"
+                  onchange="editarDescuentoNotaGuardadaInline('${nota.id}', this.value)" title="Agregar o editar descuento en esta nota" />
+              </div>
               Total: <strong>$${Number(nota.total).toLocaleString("es-MX")}</strong><br/>
               A cuenta: $${Number(nota.anticipo).toLocaleString("es-MX")}<br/>
               <strong style="color:${Number(nota.saldo) > 0 ? '#e11d48' : '#16a34a'};">Resta: $${Number(nota.saldo).toLocaleString("es-MX")}</strong>
@@ -7190,8 +7879,8 @@
             </td>
             <td>
               <div style="display:flex; flex-direction:column; gap:0.25rem;">
-                <button type="button" class="btn btn-primary btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}')">✏️ Subir a Vista 10×15</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}', true)">🖨️ Imprimir 10×15</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}')">✏️ Ver / Editar Nota</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}', true)">🖨️ Imprimir Nota</button>
                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminarNotaGuardada('${nota.id}')">🗑️ Eliminar</button>
               </div>
             </td>
@@ -7200,7 +7889,7 @@
         });
       }
 
-      // 3. TABLA DE RENTAS DE EQUIPO (CON BOTÓN PARA EDITAR RENTA Y PARA JALAR/EDITAR SU NOTA DESGLOSADA SIN CREAR OTRA)
+      // 3. TABLA DE RENTAS DE EQUIPO (ENUMERADAS #1, #2, #3... Y CON CONTEO EN LA TARJETA SUPERIOR)
       const tbRen = document.getElementById("tabla_rentas");
       tbRen.innerHTML = "";
       if (state.rentas.length === 0) {
@@ -7208,12 +7897,25 @@
       }
 
       const kpiEv = document.getElementById("kpi_total_eventos");
-      const kpiNoImp = document.getElementById("kpi_no_impresos");
+      const kpiRentas = document.getElementById("kpi_total_rentas");
+      const kpiRentasEnumMini = document.getElementById("kpi_rentas_enum_mini");
+      const badgeTotalRentas = document.getElementById("contador_total_rentas_badge");
       const kpiUrg = document.getElementById("kpi_urgentes");
       const kpiListos = document.getElementById("kpi_listos_entregar");
 
       if (kpiEv) kpiEv.textContent = state.eventos.length;
-      if (kpiNoImp) kpiNoImp.textContent = totalEvNoImpresos;
+      if (kpiRentas) kpiRentas.textContent = state.rentas.length;
+      if (badgeTotalRentas) badgeTotalRentas.textContent = `Total: ${state.rentas.length} renta(s) de equipo`;
+
+      if (kpiRentasEnumMini) {
+        if (state.rentas.length === 0) {
+          kpiRentasEnumMini.innerHTML = "Sin rentas registradas";
+        } else {
+          kpiRentasEnumMini.innerHTML = state.rentas
+            .map((r, i) => `${i + 1}. ${r.cliente} (${r.fecha})`)
+            .join("<br/>");
+        }
+      }
 
       const urgEv = state.eventos.filter(e => (e.estadoMaterial || "pendiente") !== "entregado" && (e.prioridad === "alta" || evaluarRetrasoContrato(e).atrasado)).length;
       const urgNot = state.notasGuardadas.filter(n => (n.estado || "pendiente") !== "entregado" && (n.prioridad === "alta" || evaluarRetrasoNota(n).atrasado)).length;
@@ -7222,7 +7924,7 @@
       const listosNot = state.notasGuardadas.filter(n => n.estado === "listo").length;
       if (kpiListos) kpiListos.textContent = totalEvListos + listosNot;
 
-      state.rentas.forEach(ren => {
+      state.rentas.forEach((ren, idxRen) => {
         const eqTxt = formatearEquipoTexto(ren.equipo);
         const notaVinculada = state.notasGuardadas.find(n => n.rentaId === ren.id);
         const descRen = [
@@ -7241,7 +7943,11 @@
         });
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td><strong>${ren.fecha}</strong><br/><small>${ren.horaInicio} - ${ren.horaFin}</small></td>
+          <td>
+            <span class="badge badge-purple" style="margin-bottom:3px;">Renta #${idxRen + 1}</span><br/>
+            <strong>${ren.fecha}</strong><br/>
+            <small>${ren.horaInicio} - ${ren.horaFin}</small>
+          </td>
           <td><strong>${ren.cliente}</strong><br/><small>${ren.telefono}</small></td>
           <td>
             <strong>${eqTxt}</strong>
