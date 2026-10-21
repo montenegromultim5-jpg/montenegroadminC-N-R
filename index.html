@@ -3114,6 +3114,7 @@
     let fbDatabaseUrl = "";
     let fbDbRef = null;
     let fbEventSource = null;
+    let fbSyncInterval = null;
     let fbIgnorarProximoEco = false;
     let fbUltimaMarcaTiempoLocal = 0;
 
@@ -3179,9 +3180,14 @@
       return { databaseURL, projectId, apiKey };
     }
 
-    function aplicarDatosRecibidosDeNube(remoto) {
+    function aplicarDatosRecibidosDeNube(remoto, forzarUI = false) {
       if (!remoto || typeof remoto !== "object") return;
-      if (remoto.updatedAt && remoto.updatedAt <= fbUltimaMarcaTiempoLocal) return;
+      const horaStr = new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+      if (!forzarUI && remoto.updatedAt && remoto.updatedAt <= fbUltimaMarcaTiempoLocal) {
+        actualizarIndicadorNube("online", `✅ Sincronizado en tiempo real (${horaStr}) — ${state.eventos.length} contrato(s), ${state.rentas.length} renta(s), ${state.notasGuardadas.length} nota(s)`);
+        return;
+      }
 
       fbUltimaMarcaTiempoLocal = remoto.updatedAt || Date.now();
       const rawSaved = state.config.firebaseRawInput || localStorage.getItem("montenegro_firebase_raw") || "";
@@ -3206,7 +3212,6 @@
 
       localStorage.setItem("montenegro_multimedia_v5", JSON.stringify(state));
 
-      // Actualizar campos visuales sin interrumpir si el usuario está escribiendo
       document.getElementById("cfg_negocio").value = state.config.negocio || "Montenegro Multimedia";
       document.getElementById("cfg_representante").value = state.config.representante || "Gilberto Montenegro Ruiz";
       document.getElementById("cfg_domicilio").value = state.config.domicilio || "Porfirio Díaz #280";
@@ -3219,8 +3224,7 @@
       renderizarCatalogoProductosRemision();
       refrescarTodo();
 
-      const horaStr = new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-      actualizarIndicadorNube("online", `✅ Sincronizado en tiempo real (${horaStr}) — ${state.eventos.length} contrato(s), ${state.notasGuardadas.length} nota(s)`);
+      actualizarIndicadorNube("online", `✅ Sincronizado en tiempo real (${horaStr}) — ${state.eventos.length} contrato(s), ${state.rentas.length} renta(s), ${state.notasGuardadas.length} nota(s)`);
     }
 
     async function empujarEstadoAFirebase(mostrarToast = false) {
@@ -3235,20 +3239,17 @@
       fbIgnorarProximoEco = true;
 
       try {
-        if (fbDbRef) {
-          await fbDbRef.set(payload);
-        } else {
-          const resp = await fetch(`${fbDatabaseUrl}/montenegro_suite.json`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-          if (!resp.ok) throw new Error("HTTP " + resp.status);
-        }
+        const resp = await fetch(`${fbDatabaseUrl}/montenegro_suite.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+
         const horaStr = new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-        actualizarIndicadorNube("online", `✅ Guardado en la nube (${horaStr})`);
+        actualizarIndicadorNube("online", `✅ Guardado en la nube (${horaStr}) — ${state.eventos.length} contrato(s), ${state.rentas.length} renta(s), ${state.notasGuardadas.length} nota(s)`);
         if (mostrarToast) {
-          notificar("☁️✅ Todos tus contratos, notas e inventario se subieron a Firebase.");
+          notificar("☁️✅ Todos tus contratos, sesiones, rentas y notas se subieron a Firebase.");
         }
       } catch (err) {
         console.error("Error al sincronizar con Firebase:", err);
@@ -3277,49 +3278,14 @@
 
       actualizarIndicadorNube("syncing", "Conectando con " + fbDatabaseUrl + "...");
 
-      // 1. Intentar conexión por SDK oficial de Firebase si está cargado
-      try {
-        if (typeof firebase !== "undefined" && firebase.database) {
-          if (fbDbRef) fbDbRef.off();
-          let app;
-          if (!firebase.apps.length) {
-            app = firebase.initializeApp({
-              apiKey: cfg.apiKey || "AIzaSyDummyKeyForRealtimeDB",
-              projectId: cfg.projectId || "montenegro-multimedia",
-              databaseURL: fbDatabaseUrl
-            });
-          } else {
-            app = firebase.app();
-          }
-          fbDbRef = firebase.database(app).ref("montenegro_suite");
-
-          fbDbRef.on("value", (snapshot) => {
-            const val = snapshot.val();
-            if (val) {
-              if (!fbIgnorarProximoEco) {
-                aplicarDatosRecibidosDeNube(val);
-              }
-            } else {
-              // La base de datos en Firebase está vacía: subir los datos actuales por primera vez
-              empujarEstadoAFirebase(false);
-            }
-          }, (error) => {
-            console.warn("Aviso SDK Firebase, activando canal directo REST:", error);
-          });
-        }
-      } catch (e) {
-        console.warn("Usando canal REST directo para Firebase:", e);
-      }
-
-      // 2. Verificación inmediata por REST + Canal de Tiempo Real (Server-Sent Events) para garantizar funcionamiento con solo la URL
       try {
         const resp = await fetch(`${fbDatabaseUrl}/montenegro_suite.json`);
         if (!resp.ok) {
           throw new Error("Acceso denegado o URL incorrecta (" + resp.status + ")");
         }
         const datosRemotos = await resp.json();
-        if (datosRemotos && (datosRemotos.eventos || datosRemotos.config || datosRemotos.notasGuardadas)) {
-          aplicarDatosRecibidosDeNube(datosRemotos);
+        if (datosRemotos && typeof datosRemotos === "object") {
+          aplicarDatosRecibidosDeNube(datosRemotos, true);
           if (!silencioso) {
             notificar("☁️🎉 ¡Conectado a Firebase! Datos sincronizados en tiempo real.");
           }
@@ -3330,24 +3296,41 @@
           }
         }
 
-        // Suscripción en tiempo real mediante EventSource por si sólo puso la URL sin apiKey
+        // Suscripción en tiempo real mediante Server-Sent Events (SSE)
         if (fbEventSource) fbEventSource.close();
-        if (!fbDbRef && typeof EventSource !== "undefined") {
-          fbEventSource = new EventSource(`${fbDatabaseUrl}/montenegro_suite.json`);
-          fbEventSource.addEventListener("put", (e) => {
-            if (fbIgnorarProximoEco) return;
-            try {
-              const packet = JSON.parse(e.data);
-              if (packet && packet.path === "/" && packet.data) {
-                aplicarDatosRecibidosDeNube(packet.data);
-              } else {
-                fetch(`${fbDatabaseUrl}/montenegro_suite.json`)
-                  .then(r => r.json())
-                  .then(d => { if (d) aplicarDatosRecibidosDeNube(d); });
-              }
-            } catch (err) {}
-          });
+        if (typeof EventSource !== "undefined") {
+          try {
+            fbEventSource = new EventSource(`${fbDatabaseUrl}/montenegro_suite.json`);
+            fbEventSource.addEventListener("put", (e) => {
+              if (fbIgnorarProximoEco) return;
+              try {
+                const packet = JSON.parse(e.data);
+                if (packet && packet.path === "/" && packet.data) {
+                  aplicarDatosRecibidosDeNube(packet.data, false);
+                } else {
+                  fetch(`${fbDatabaseUrl}/montenegro_suite.json`)
+                    .then(r => r.json())
+                    .then(d => { if (d) aplicarDatosRecibidosDeNube(d, false); });
+                }
+              } catch (err) {}
+            });
+          } catch (sseErr) {
+            console.warn("SSE fallback activo:", sseErr);
+          }
         }
+
+        // Respaldo de sincronización automática cada 5 segundos entre Celular y PC
+        if (fbSyncInterval) clearInterval(fbSyncInterval);
+        fbSyncInterval = setInterval(async () => {
+          if (!fbDatabaseUrl || fbIgnorarProximoEco) return;
+          try {
+            const r = await fetch(`${fbDatabaseUrl}/montenegro_suite.json`);
+            if (r.ok) {
+              const d = await r.json();
+              if (d) aplicarDatosRecibidosDeNube(d, false);
+            }
+          } catch (e) {}
+        }, 5000);
       } catch (err) {
         actualizarIndicadorNube("offline", "⚠️ No se pudo conectar. Revisa la URL y que las Reglas estén en true.");
         if (!silencioso) {
@@ -3384,6 +3367,10 @@
       if (fbEventSource) {
         fbEventSource.close();
         fbEventSource = null;
+      }
+      if (fbSyncInterval) {
+        clearInterval(fbSyncInterval);
+        fbSyncInterval = null;
       }
       fbDatabaseUrl = "";
       state.config.firebaseRawInput = "";
@@ -3659,10 +3646,7 @@
         horaInicio,
         horaFin,
         locacion: lugar,
-        descripcion: `Cliente: ${cliente} (${tel})
-Tipo: ${tipo}
-Lugar: ${lugar}
-Notas: ${notas}`
+        descripcion: `Cliente: ${cliente} (${tel})\nTipo: ${tipo}\nLugar: ${lugar}\nNotas: ${notas}`
       });
       window.open(url, "_blank");
     }
@@ -3778,8 +3762,7 @@ Notas: ${notas}`
               </div>
               <div style="font-size:0.82rem; color:#334155; margin-top:0.45rem;">
                 <div>📍 <strong>Misa:</strong> ${ev.dirCeremonia || "-"} | <strong>Recepción:</strong> ${ev.dirRecepcion} (${ev.lugar || ""})</div>
-                <div>⏰ <strong>Horario:</strong> ${ev.modoHorario === "pendiente" ? "Pendiente" : (ev.bloquesTexto || "").split("
-").join(" | ")}</div>
+                <div>⏰ <strong>Horario:</strong> ${ev.modoHorario === "pendiente" ? "Pendiente" : (ev.bloquesTexto || "").split("\n").join(" | ")}</div>
                 ${ev.fechaSesion ? `<div style="color:#047857; font-weight:700;">📷 <strong>Sesión de Fotos programada:</strong> ${ev.fechaSesion} (${ev.horaSesion || '16:00'} hrs) — ${ev.lugarSesion || 'Por confirmar'}</div>` : ""}
                 <div>🎥 <strong>Equipo apartado:</strong> ${eqTxt} | 💰 <strong>Resta:</strong> $${Number(ev.saldo).toLocaleString("es-MX")} MXN</div>
               </div>
@@ -3794,8 +3777,7 @@ Notas: ${notas}`
             horaInicio: ses.horaInicio || "16:00",
             horaFin: ses.horaFin || "18:00",
             locacion: ses.lugar || "",
-            descripcion: `Cliente: ${ses.cliente} (${ses.telefono || ""})
-Notas: ${ses.notas || ""}`
+            descripcion: `Cliente: ${ses.cliente} (${ses.telefono || ""})\nNotas: ${ses.notas || ""}`
           });
           htmlDet += `
             <div style="padding:0.9rem; background:#ecfdf5; border:1.5px solid #6ee7b7; border-radius:10px; margin-bottom:0.65rem;">
@@ -4461,6 +4443,11 @@ Notas: ${ses.notas || ""}`
     }
 
     function renderizarAbonosDOM(recalcular = true) {
+      if (abonosFormulario[0]) {
+        document.getElementById("ev_anticipo").value = Number(abonosFormulario[0].monto) || 0;
+      }
+      if (recalcular) calcularSaldoEvento();
+
       const cont = document.getElementById("lista_abonos_dom");
       if (!cont) return;
       cont.innerHTML = "";
