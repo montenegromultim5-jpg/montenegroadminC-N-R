@@ -3119,6 +3119,8 @@
       document.getElementById("rem_fecha").value = hoy;
       const inpSesFecha = document.getElementById("ses_fecha");
       if (inpSesFecha) inpSesFecha.value = hoy;
+      const inpEvRapFecha = document.getElementById("evrap_fecha");
+      if (inpEvRapFecha) inpEvRapFecha.value = hoy;
       const inpAbonoFecha = document.getElementById("nuevo_abono_fecha");
       if (inpAbonoFecha) inpAbonoFecha.value = hoy;
 
@@ -3484,14 +3486,27 @@
       calSelectedDate = hoy.toISOString().split("T")[0];
       const inpSesFecha = document.getElementById("ses_fecha");
       if (inpSesFecha) inpSesFecha.value = calSelectedDate;
+      const inpEvRapFecha = document.getElementById("evrap_fecha");
+      if (inpEvRapFecha) inpEvRapFecha.value = calSelectedDate;
       renderizarMiniCalendario();
     }
 
     function seleccionarDiaCalendario(fechaStr) {
+      if (!fechaStr) return;
       calSelectedDate = fechaStr;
+      // Si selecciona una fecha de otro mes desde la lista por meses, mover el mini calendario a ese mes
+      const partes = fechaStr.split("-").map(Number);
+      if (partes.length === 3 && !isNaN(partes[0]) && !isNaN(partes[1])) {
+        calYear = partes[0];
+        calMonth = partes[1] - 1;
+      }
       const inpSesFecha = document.getElementById("ses_fecha");
       if (inpSesFecha && !document.getElementById("ses_edit_id").value) {
         inpSesFecha.value = fechaStr;
+      }
+      const inpEvRapFecha = document.getElementById("evrap_fecha");
+      if (inpEvRapFecha && !document.getElementById("evrap_edit_id").value) {
+        inpEvRapFecha.value = fechaStr;
       }
       renderizarMiniCalendario();
     }
@@ -3513,6 +3528,156 @@
       }
     }
 
+    // --- Menú Desplegable 1: Agregar Evento Rápido (Sin Hacer Contrato / Contrato Anterior) ---
+    function actualizarBotonToggleEventoRapidoCal(estaAbierto) {
+      const btn = document.getElementById("btn_toggle_form_evento_rapido_cal");
+      if (!btn) return;
+      if (estaAbierto) {
+        btn.innerHTML = "✕ Cerrar Menú de Evento";
+        btn.className = "btn btn-danger btn-sm";
+      } else {
+        btn.innerHTML = "➕ Agregar Evento (Sin Contrato)";
+        btn.className = "btn btn-primary btn-sm";
+      }
+    }
+
+    function cerrarMenuEventoRapidoCalendario() {
+      const card = document.getElementById("card_form_evento_rapido_cal");
+      if (card) card.style.display = "none";
+      actualizarBotonToggleEventoRapidoCal(false);
+    }
+
+    function toggleMenuEventoRapidoCalendario() {
+      const card = document.getElementById("card_form_evento_rapido_cal");
+      if (!card) return;
+      const estaVisible = card.style.display !== "none" && card.style.display !== "";
+      if (estaVisible) {
+        cerrarMenuEventoRapidoCalendario();
+        return;
+      }
+      // Cerrar el otro menú si estaba abierto para mantener limpia la vista
+      cerrarMenuSesionCalendario();
+      card.style.display = "block";
+      actualizarBotonToggleEventoRapidoCal(true);
+      limpiarFormularioEventoRapidoCal(true);
+      document.getElementById("evrap_fecha").value = calSelectedDate;
+      document.getElementById("evrap_cliente").focus();
+    }
+
+    function limpiarFormularioEventoRapidoCal(silencioso = false) {
+      document.getElementById("evrap_edit_id").value = "";
+      document.getElementById("titulo_form_evrap_cal").textContent = "📸 Agregar Evento al Calendario (Sin Hacer Contrato / Contrato Anterior)";
+      document.getElementById("btn_guardar_evrap_cal").textContent = "📸💾 Guardar Evento en mi Calendario";
+      document.getElementById("evrap_cliente").value = "";
+      document.getElementById("evrap_lugar").value = "";
+      document.getElementById("evrap_fecha").value = calSelectedDate || new Date().toISOString().split("T")[0];
+      document.getElementById("evrap_notas").value = "";
+      document.getElementById("evrap_telefono").value = "";
+      if (!silencioso) notificar("Formulario de evento rápido limpio.");
+    }
+
+    function guardarEventoRapidoCalendario() {
+      const cliente = document.getElementById("evrap_cliente").value.trim();
+      const lugar = document.getElementById("evrap_lugar").value.trim();
+      const fecha = document.getElementById("evrap_fecha").value;
+      const notas = document.getElementById("evrap_notas").value.trim();
+      const telefono = document.getElementById("evrap_telefono").value.trim();
+      const editId = document.getElementById("evrap_edit_id").value;
+
+      if (!cliente || !lugar || !fecha) {
+        notificar("Por favor escribe el Nombre, el Lugar y la Fecha del evento.", "error");
+        if (!cliente) document.getElementById("evrap_cliente").focus();
+        else if (!lugar) document.getElementById("evrap_lugar").focus();
+        else document.getElementById("evrap_fecha").focus();
+        return;
+      }
+
+      if (editId) {
+        const idx = state.eventos.findIndex(e => e.id === editId);
+        if (idx >= 0) {
+          state.eventos[idx].cliente = cliente;
+          state.eventos[idx].lugar = lugar;
+          state.eventos[idx].dirRecepcion = lugar;
+          state.eventos[idx].fecha = fecha;
+          if (telefono) state.eventos[idx].telefono = telefono;
+          if (notas) {
+            state.eventos[idx].bloquesTexto = notas;
+            state.eventos[idx].detalles = notas;
+          }
+        }
+      } else {
+        const nuevoEv = {
+          id: "ev_" + Date.now(),
+          esEventoSinContrato: true,
+          cliente,
+          telefono,
+          telefono2: "",
+          fechaCotizacion: fecha,
+          fecha,
+          fechaSesion: "",
+          horaSesion: "16:00",
+          lugarSesion: "",
+          lugar,
+          dirCeremonia: "",
+          dirRecepcion: lugar,
+          paqueteId: "",
+          paqueteNombre: "Contrato Anterior / Evento Agendado",
+          horasTotales: 6,
+          detalles: notas || "1. [FOTO] Evento registrado directamente en calendario (Contrato anterior)",
+          modoHorario: "bloques",
+          bloques: [],
+          horarioCeremonia: "",
+          horarioRecepcion: "",
+          bloquesTexto: notas || "Horario en contrato anterior",
+          total: 0,
+          anticipo: 0,
+          totalAbonado: 0,
+          abonos: [],
+          saldo: 0,
+          estadoMaterial: "pendiente",
+          prioridad: "normal",
+          impreso: true,
+          equipo: {}
+        };
+        state.eventos.push(nuevoEv);
+      }
+
+      ordenarEventosPorFecha();
+      calSelectedDate = fecha;
+      const parts = fecha.split("-").map(Number);
+      if (parts.length === 3) {
+        calYear = parts[0];
+        calMonth = parts[1] - 1;
+      }
+
+      guardarEstado();
+      limpiarFormularioEventoRapidoCal(true);
+      cerrarMenuEventoRapidoCalendario();
+      refrescarTodo();
+      notificar(`📸✅ Evento de "${cliente}" en "${lugar}" agendado para el ${fecha}.`);
+    }
+
+    function cargarEventoRapidoEnCalendario(evId) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      cerrarMenuSesionCalendario();
+      const card = document.getElementById("card_form_evento_rapido_cal");
+      if (card) {
+        card.style.display = "block";
+        actualizarBotonToggleEventoRapidoCal(true);
+      }
+      document.getElementById("evrap_edit_id").value = ev.id;
+      document.getElementById("titulo_form_evrap_cal").textContent = "✏️ Editando Evento del Calendario: " + ev.cliente;
+      document.getElementById("btn_guardar_evrap_cal").textContent = "💾 Actualizar Evento en Calendario";
+      document.getElementById("evrap_cliente").value = ev.cliente || "";
+      document.getElementById("evrap_lugar").value = ev.dirRecepcion || ev.lugar || "";
+      document.getElementById("evrap_fecha").value = ev.fecha || "";
+      document.getElementById("evrap_notas").value = ev.bloquesTexto || "";
+      document.getElementById("evrap_telefono").value = ev.telefono || "";
+      if (card) card.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // --- Menú Desplegable 2: Agendar Fecha Independiente / Sesión de Fotos ---
     function actualizarBotonToggleSesionCal(estaAbierto) {
       const btn = document.getElementById("btn_toggle_form_sesion_cal");
       if (!btn) return;
@@ -3536,11 +3701,10 @@
       if (!card) return;
       const estaVisible = card.style.display !== "none" && card.style.display !== "";
       if (estaVisible) {
-        // Si ya está abierto y vuelve a picar el botón, se cierra
         cerrarMenuSesionCalendario();
         return;
       }
-      // Si está cerrado, se abre
+      cerrarMenuEventoRapidoCalendario();
       card.style.display = "block";
       actualizarBotonToggleSesionCal(true);
       limpiarFormularioSesionCalendario(true);
@@ -3638,7 +3802,6 @@
         if (idx >= 0) state.sesiones[idx] = sesObj;
         else state.sesiones.push(sesObj);
       } else {
-        // Si vinculó un contrato y ya existía una sesión para ese contrato, actualizarla para no duplicar
         const idxPorContrato = contratoId ? state.sesiones.findIndex(s => s.contratoId === contratoId) : -1;
         if (idxPorContrato >= 0) {
           sesObj.id = state.sesiones[idxPorContrato].id;
@@ -3648,7 +3811,6 @@
         }
       }
 
-      // Si está vinculada a un contrato ya realizado, guardar también la fecha de sesión directamente en ese contrato
       if (contratoId) {
         const ev = state.eventos.find(e => e.id === contratoId);
         if (ev) {
@@ -3676,6 +3838,7 @@
     function cargarSesionEnFormulario(sesId) {
       const ses = (state.sesiones || []).find(s => s.id === sesId);
       if (!ses) return;
+      cerrarMenuEventoRapidoCalendario();
       document.getElementById("ses_edit_id").value = ses.id;
       document.getElementById("titulo_form_sesion_cal").textContent = `✏️ Editando ${ses.tipo}: ${ses.cliente}`;
       document.getElementById("btn_guardar_sesion_cal").textContent = "💾 Actualizar Fecha / Sesión";
@@ -3737,7 +3900,6 @@
     // Obtener todas las sesiones de un día (tanto independientes como las asignadas a contratos realizados)
     function obtenerSesionesDeDia(fechaStr) {
       const independientes = (state.sesiones || []).filter(s => s.fecha === fechaStr);
-      // También incluir contratos que tengan ev.fechaSesion === fechaStr pero que no estén ya en state.sesiones
       const deContratos = state.eventos
         .filter(ev => ev.fechaSesion === fechaStr && !independientes.some(s => s.contratoId === ev.id))
         .map(ev => ({
@@ -3754,6 +3916,37 @@
           notas: `Sesión correspondiente al contrato ${ev.paqueteNombre} (Evento principal: ${ev.fecha})`
         }));
       return [...independientes, ...deContratos];
+    }
+
+    // Obtener absolutamente todas las sesiones registradas en cualquier fecha (para agruparlas por mes)
+    function obtenerTodasLasSesionesRegistradas() {
+      const independientes = (state.sesiones || []).filter(s => Boolean(s.fecha));
+      const deContratos = state.eventos
+        .filter(ev => Boolean(ev.fechaSesion) && !independientes.some(s => s.contratoId === ev.id))
+        .map(ev => ({
+          id: "evses_" + ev.id,
+          esDeContratoDirecto: true,
+          contratoId: ev.id,
+          tipo: "Sesión de Fotos (De Contrato)",
+          fecha: ev.fechaSesion,
+          horaInicio: ev.horaSesion || "16:00",
+          horaFin: "18:00",
+          cliente: ev.cliente,
+          telefono: ev.telefono || "",
+          lugar: ev.lugarSesion || ev.lugar || "Por confirmar",
+          notas: `Sesión correspondiente al contrato ${ev.paqueteNombre} (Evento principal: ${ev.fecha})`
+        }));
+      return [...independientes, ...deContratos];
+    }
+
+    function obtenerNombreCompletoMesAnio(ymKey) {
+      // ymKey tiene formato "YYYY-MM"
+      const partes = (ymKey || "").split("-");
+      if (partes.length < 2) return ymKey;
+      const anio = partes[0];
+      const mesIdx = parseInt(partes[1], 10) - 1;
+      const nombreMes = MESES_NOMBRES[mesIdx] || "Mes";
+      return `${nombreMes} ${anio}`;
     }
 
     function renderizarMiniCalendario() {
@@ -3824,30 +4017,35 @@
       if (evsSel.length === 0 && sesSel.length === 0 && rensSel.length === 0) {
         contDetalle.innerHTML = `
           <div style="padding:1rem; background:var(--bg-subtle); border-radius:10px; color:var(--text-muted); font-size:0.86rem;">
-            ✅ Día libre. No hay eventos, sesiones de fotos ni rentas agendadas para el <strong>${calSelectedDate}</strong>. Usa el formulario de abajo si deseas agendar una Sesión de Fotos o Fecha Independiente este día.
+            ✅ Día libre. No hay eventos, sesiones de fotos ni rentas agendadas para el <strong>${calSelectedDate}</strong>. Usa los botones de arriba si deseas agregar un Evento Rápido (sin contrato) o una Sesión de Fotos este día.
           </div>
         `;
       } else {
         let htmlDet = "";
         evsSel.forEach(ev => {
           const eqTxt = formatearEquipoTexto(ev.equipo);
+          const lugarMostrado = ev.dirRecepcion && ev.lugar && ev.dirRecepcion !== ev.lugar
+            ? `${ev.dirRecepcion} (${ev.lugar})`
+            : (ev.dirRecepcion || ev.lugar || "Por confirmar");
           htmlDet += `
             <div style="padding:0.9rem; background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; margin-bottom:0.65rem;">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
                 <div>
                   <span class="badge badge-next">📸 EVENTO</span>
-                  <strong style="font-size:0.95rem; margin-left:0.4rem;">${ev.cliente} — ${ev.paqueteNombre}</strong>
+                  <strong style="font-size:0.95rem; margin-left:0.4rem;">${ev.cliente} — ${ev.paqueteNombre || "Evento"}</strong>
                 </div>
-                <div style="display:flex; gap:0.35rem;">
-                  <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')">📄 Ver Contrato</button>
+                <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-outline btn-sm" onclick="cargarEventoRapidoEnCalendario('${ev.id}')">✏️ Editar Rápido</button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')">📄 Ver en Contratos</button>
                   <button type="button" class="btn btn-warning btn-sm" onclick="enviarEventoGuardadoARemision('${ev.id}')">🧾 Nota</button>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="eliminarEvento('${ev.id}')">✕</button>
                 </div>
               </div>
               <div style="font-size:0.82rem; color:#334155; margin-top:0.45rem;">
-                <div>📍 <strong>Misa:</strong> ${ev.dirCeremonia || "-"} | <strong>Recepción:</strong> ${ev.dirRecepcion} (${ev.lugar || ""})</div>
-                <div>⏰ <strong>Horario:</strong> ${ev.modoHorario === "pendiente" ? "Pendiente" : (ev.bloquesTexto || "").split("\n").join(" | ")}</div>
+                <div>📍 <strong>Lugar:</strong> ${lugarMostrado} ${ev.dirCeremonia ? `| <strong>Misa:</strong> ${ev.dirCeremonia}` : ""}</div>
+                <div>⏰ <strong>Horario / Notas:</strong> ${ev.modoHorario === "pendiente" ? "Pendiente" : (ev.bloquesTexto || "").split("\n").join(" | ")}</div>
                 ${ev.fechaSesion ? `<div style="color:#047857; font-weight:700;">📷 <strong>Sesión de Fotos programada:</strong> ${ev.fechaSesion} (${ev.horaSesion || '16:00'} hrs) — ${ev.lugarSesion || 'Por confirmar'}</div>` : ""}
-                <div>🎥 <strong>Equipo apartado:</strong> ${eqTxt} | 💰 <strong>Resta:</strong> $${Number(ev.saldo).toLocaleString("es-MX")} MXN</div>
+                ${Number(ev.total) > 0 ? `<div>🎥 <strong>Equipo apartado:</strong> ${eqTxt} | 💰 <strong>Resta:</strong> $${Number(ev.saldo).toLocaleString("es-MX")} MXN</div>` : ""}
               </div>
             </div>
           `;
@@ -3908,48 +4106,113 @@
         contDetalle.innerHTML = htmlDet;
       }
 
+      // ================= RESUMEN AGRUPADO POR MES (SOLO MESES CON AGENDA, CON NOMBRE COMPLETO DEL MES) =================
       const contMes = document.getElementById("cal_resumen_mes");
-      const evsMes = state.eventos.filter(e => e.fecha && e.fecha.startsWith(prefixMes));
-      const rensMes = state.rentas.filter(r => r.fecha && r.fecha.startsWith(prefixMes));
+      const badgeTotalMeses = document.getElementById("badge_total_meses_agendados");
 
-      // Recolectar todas las sesiones del mes (independientes y de contratos)
-      const sesionesMes = [];
-      for (let d = 1; d <= totalDiasMes; d++) {
-        const fStr = `${prefixMes}-${String(d).padStart(2, "0")}`;
-        obtenerSesionesDeDia(fStr).forEach(s => sesionesMes.push(s));
-      }
+      const todosEventos = state.eventos.filter(e => Boolean(e.fecha));
+      const todasSesiones = obtenerTodasLasSesionesRegistradas();
+      const todasRentas = state.rentas.filter(r => Boolean(r.fecha));
 
-      if (evsMes.length === 0 && sesionesMes.length === 0 && rensMes.length === 0) {
-        contMes.innerHTML = `<p style="font-size:0.84rem; color:var(--text-muted);">No hay fechas señaladas en ${MESES_NOMBRES[calMonth]} ${calYear}.</p>`;
+      const todosItemsAgenda = [
+        ...todosEventos.map(e => {
+          const lug = (e.dirRecepcion && e.lugar && e.dirRecepcion !== e.lugar)
+            ? `${e.dirRecepcion}, ${e.lugar}`
+            : (e.dirRecepcion || e.lugar || "Por confirmar");
+          return {
+            fecha: e.fecha,
+            tipo: "📸 EVENTO",
+            titulo: e.cliente,
+            sub: `📍 ${lug}${e.paqueteNombre ? " • " + e.paqueteNombre : ""}`,
+            color: "badge-next",
+            editFn: `cargarEventoRapidoEnCalendario('${e.id}')`,
+            delFn: `eliminarEvento('${e.id}')`
+          };
+        }),
+        ...todasSesiones.map(s => ({
+          fecha: s.fecha,
+          tipo: `📷 ${s.tipo.toUpperCase()}`,
+          titulo: s.cliente,
+          sub: `📍 ${s.lugar || "Por confirmar"} (${s.horaInicio || "16:00"} hrs)`,
+          color: "badge-ok",
+          editFn: !s.esDeContratoDirecto ? `cargarSesionEnFormulario('${s.id}')` : `switchTab('contratos'); cargarEventoEnFormulario('${s.contratoId}')`,
+          delFn: !s.esDeContratoDirecto ? `eliminarSesionCalendario('${s.id}')` : `quitarSesionDeContrato('${s.contratoId}')`
+        })),
+        ...todasRentas.map(r => ({
+          fecha: r.fecha,
+          tipo: "🎥 RENTA",
+          titulo: r.cliente,
+          sub: `📦 ${formatearEquipoTexto(r.equipo)} (${r.horaInicio || "09:00"} a ${r.horaFin || "21:00"})`,
+          color: "badge-purple",
+          editFn: `switchTab('inventario'); cargarRentaEnFormulario('${r.id}')`,
+          delFn: `eliminarRenta('${r.id}')`
+        }))
+      ].sort((a, b) => a.fecha.localeCompare(b.fecha));
+
+      if (todosItemsAgenda.length === 0) {
+        if (badgeTotalMeses) badgeTotalMeses.textContent = "Sin fechas agendadas";
+        contMes.innerHTML = `<p style="font-size:0.84rem; color:var(--text-muted);">No hay fechas agendadas todavía. Usa el botón <strong>"➕ Agregar Evento (Sin Contrato)"</strong> o <strong>"📷 Agendar Sesión"</strong> arriba para agregar tus fechas.</p>`;
       } else {
-        const itemsMes = [
-          ...evsMes.map(e => ({ fecha: e.fecha, tipo: "EVENTO", titulo: `${e.cliente} (${e.paqueteNombre})`, sub: `${e.dirRecepcion}, ${e.lugar || ""}`, color: "badge-next" })),
-          ...sesionesMes.map(s => ({ fecha: s.fecha, tipo: s.tipo.toUpperCase(), titulo: `${s.cliente}`, sub: `${s.horaInicio || "16:00"} hrs — ${s.lugar || "Por confirmar"}`, color: "badge-ok" })),
-          ...rensMes.map(r => ({ fecha: r.fecha, tipo: "RENTA", titulo: `${r.cliente}`, sub: formatearEquipoTexto(r.equipo), color: "badge-purple" }))
-        ].sort((a, b) => a.fecha.localeCompare(b.fecha));
+        // Agrupar por clave de mes "YYYY-MM"
+        const mapaMeses = {};
+        todosItemsAgenda.forEach(item => {
+          const ym = item.fecha.slice(0, 7); // "YYYY-MM"
+          if (!mapaMeses[ym]) mapaMeses[ym] = [];
+          mapaMeses[ym].push(item);
+        });
 
-        contMes.innerHTML = `
-          <table>
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Cliente / Colaborador</th>
-                <th>Detalle / Locación</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsMes.map(it => `
-                <tr style="cursor:pointer;" onclick="seleccionarDiaCalendario('${it.fecha}')">
-                  <td><strong>${it.fecha}</strong></td>
-                  <td><span class="badge ${it.color}">${it.tipo}</span></td>
-                  <td><strong>${it.titulo}</strong></td>
-                  <td><small>${it.sub}</small></td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        `;
+        const clavesMesesOrdenadas = Object.keys(mapaMeses).sort();
+        if (badgeTotalMeses) {
+          badgeTotalMeses.textContent = `${clavesMesesOrdenadas.length} mes(es) con agenda (${todosItemsAgenda.length} fecha(s) en total)`;
+        }
+
+        contMes.innerHTML = clavesMesesOrdenadas.map(ym => {
+          const nombreMesCompleto = obtenerNombreCompletoMesAnio(ym);
+          const listaDelMes = mapaMeses[ym];
+          return `
+            <div class="mes-agenda-bloque">
+              <div class="mes-agenda-header">
+                <div class="mes-agenda-titulo">
+                  <span>📅 ${nombreMesCompleto}</span>
+                </div>
+                <span class="badge badge-next">${listaDelMes.length} agendado(s) en ${nombreMesCompleto.split(" ")[0]}</span>
+              </div>
+              <div style="overflow-x:auto;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:125px;">Fecha</th>
+                      <th style="width:155px;">Tipo</th>
+                      <th>Cliente / Evento</th>
+                      <th>Lugar / Detalle</th>
+                      <th style="width:90px; text-align:right;">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${listaDelMes.map(it => {
+                      const diaNum = it.fecha.split("-")[2] || "";
+                      return `
+                        <tr style="cursor:pointer;" onclick="seleccionarDiaCalendario('${it.fecha}')" title="Haz clic para ver el día ${it.fecha} en el Mini Calendario">
+                          <td>
+                            <strong>Día ${diaNum}</strong><br/>
+                            <small style="color:var(--text-muted);">${it.fecha}</small>
+                          </td>
+                          <td><span class="badge ${it.color}">${it.tipo}</span></td>
+                          <td><strong>${it.titulo}</strong></td>
+                          <td><small>${it.sub}</small></td>
+                          <td style="text-align:right; white-space:nowrap;" onclick="event.stopPropagation();">
+                            <button type="button" class="btn btn-outline btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.editFn}" title="Editar">✏️</button>
+                            <button type="button" class="btn btn-danger btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.delFn}" title="Eliminar">✕</button>
+                          </td>
+                        </tr>
+                      `;
+                    }).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        }).join("");
       }
     }
 
