@@ -2071,9 +2071,13 @@
     <section id="tab-inventario" class="tab-content no-print">
       <div class="grid-2">
         <div class="card">
-          <h2>🎥 Consultar Disponibilidad y Rentar Equipo (Colaboradores)</h2>
+          <h2>
+            <span id="titulo_form_renta">🎥 Consultar Disponibilidad y Rentar Equipo (Colaboradores)</span>
+            <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormularioRenta()">🧹 Limpiar</button>
+          </h2>
+          <input type="hidden" id="ren_edit_id" value="" />
           <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.9rem;">
-            Selecciona la fecha para ver qué cámaras o equipos están disponibles (descontando automáticamente los que ya están apartados en tus eventos de ese mismo día).
+            Selecciona la fecha para ver qué cámaras o equipos están disponibles. Puedes desglosar precios por equipo o agregar extras y jalar todo directo a su Nota de Remisión.
           </p>
 
           <div class="form-row">
@@ -2093,7 +2097,7 @@
               <input type="text" id="ren_telefono" placeholder="Teléfono" />
             </div>
             <div class="form-group">
-              <label>Costo de Renta ($ MXN)</label>
+              <label>Costo Total de Renta ($ MXN)</label>
               <input type="number" id="ren_total" value="0" min="0" />
             </div>
           </div>
@@ -2110,19 +2114,24 @@
           </div>
 
           <div class="form-group">
-            <label>Equipos Disponibles en Almacén para esa Fecha *</label>
-            <div id="ren_equipo_lista" class="equip-selector"></div>
+            <label>Equipos Disponibles en Almacén para esa Fecha (Cantidad y Precio Unitario opcional) *</label>
+            <div id="ren_equipo_lista" class="equip-selector" style="max-height:220px;"></div>
           </div>
 
           <div class="form-group">
-            <label>Notas / Identificación en garantía</label>
+            <label>Accesorios / Extras Adicionales en esta Renta (Opcional — Se desglosan en la nota)</label>
+            <input type="text" id="ren_extras" placeholder="Ej. 2 Baterías extra, Tripié, Memoria SD 128GB, Micrófono inalámbrico" />
+          </div>
+
+          <div class="form-group">
+            <label>Notas / Identificación dejada en garantía</label>
             <input type="text" id="ren_notas" placeholder="Ej. Deja INE en garantía, recoge en Porfirio Díaz #280" />
           </div>
 
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" onclick="guardarRenta()">📦 Registrar Renta y Apartar</button>
-            <button type="button" class="btn btn-success" onclick="agregarRentaCalendar()">📅 Agregar a Google Calendar</button>
-            <button type="button" class="btn btn-warning" onclick="enviarRentaARemision()">🧾 Crear Nota 10x15 cm</button>
+            <button type="button" class="btn btn-primary" id="btn_guardar_renta" onclick="guardarRenta()">📦 Registrar Renta y Apartar</button>
+            <button type="button" class="btn btn-warning" style="font-weight:800;" onclick="enviarRentaARemision()">🧾 Jalar a Nota 10×15 (Con Desglose Editable)</button>
+            <button type="button" class="btn btn-success" onclick="agregarRentaCalendar()">📅 Google Calendar</button>
           </div>
         </div>
 
@@ -2236,6 +2245,33 @@
             </div>
           </div>
 
+          <!-- Panel para Jalar Renta de Equipo con Desglose Automático y Editable -->
+          <div style="background:linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border:1.5px solid #c4b5fd; border-radius:10px; padding:0.75rem 0.9rem; margin-bottom:0.85rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.45rem;">
+              <span style="font-size:0.82rem; font-weight:800; color:#5b21b6;">
+                🎥 Jalar Nota para Renta de Equipo (Con Desglose Editable)
+              </span>
+              <span id="badge_vinculo_renta_nota" class="badge badge-purple" style="display:none;">Vinculada a Renta</span>
+            </div>
+            <p style="font-size:0.75rem; color:#4c1d95; margin-bottom:0.5rem;">
+              Selecciona una renta agendada para <strong>jalar automáticamente el desglose de cada equipo rentado</strong>. Si esa renta ya tenía nota, se abrirá <strong>esa misma nota</strong> para que agregues extras o la modifiques allí mismo sin crear otra.
+            </p>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <select id="rem_select_renta_jalar" style="flex:1; min-width:210px; font-size:0.82rem; font-weight:600; border-color:#a78bfa;"></select>
+              <button type="button" class="btn btn-primary btn-sm" style="background:#7c3aed; border-color:#7c3aed; font-weight:800;" onclick="jalarRentaSeleccionadaANota()">
+                📥 Jalar Desglose de Renta
+              </button>
+            </div>
+            <div style="margin-top:0.45rem;">
+              <small style="font-size:0.72rem; color:#5b21b6; font-weight:700; display:block; margin-bottom:0.25rem;">
+                ➕ ¿Pidió algún equipo extra de tu almacén? Tócalo para sumarlo directo al desglose de esta nota:
+              </small>
+              <div id="chips_equipos_renta_nota" style="display:flex; flex-wrap:wrap; gap:0.3rem;"></div>
+            </div>
+          </div>
+
+          <input type="hidden" id="rem_renta_id" value="" />
+
           <!-- Datos del Cliente y Fecha de la Nota -->
           <div class="form-row-3">
             <div class="form-group">
@@ -2313,20 +2349,26 @@
             <button type="button" class="btn btn-outline btn-sm" onclick="agregarConceptoRemision()">➕ Agregar Manual</button>
           </div>
 
-          <!-- Tabla de artículos en la nota actual -->
-          <div style="margin: 0.75rem 0; max-height: 170px; overflow-y: auto; border:1px solid var(--border); border-radius:8px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cant.</th>
-                  <th>Concepto</th>
-                  <th>P. Unit</th>
-                  <th>Importe</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="tabla_items_remision"></tbody>
-            </table>
+          <!-- Tabla de artículos en la nota actual (100% Editable Allí Mismo) -->
+          <div style="margin: 0.75rem 0; border:1.5px solid #cbd5e1; border-radius:8px; overflow:hidden;">
+            <div style="background:#f1f5f9; padding:0.4rem 0.65rem; font-size:0.75rem; font-weight:800; color:#0f172a; display:flex; justify-content:space-between; align-items:center;">
+              <span>✏️ Desglose de la Nota (Puedes editar Cantidad, Concepto/Equipo y Precio allí mismo):</span>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:0.15rem 0.45rem; font-size:0.7rem;" onclick="agregarRenglonVacioNota()">➕ Añadir Renglón Extra</button>
+            </div>
+            <div style="max-height: 220px; overflow-y: auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:65px;">Cant.</th>
+                    <th>Concepto / Equipo Desglosado (Editable)</th>
+                    <th style="width:95px;">P. Unit ($)</th>
+                    <th style="width:85px;">Importe</th>
+                    <th style="width:38px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_items_remision"></tbody>
+              </table>
+            </div>
           </div>
 
           <div class="form-row">
@@ -2335,7 +2377,7 @@
               <input type="number" id="rem_anticipo" value="0" min="0" oninput="renderizarRemision()" />
             </div>
             <div class="form-group">
-              <label>Observaciones</label>
+              <label>Observaciones / Garantía / Horario de Renta</label>
               <input type="text" id="rem_notas" value="Gracias por su preferencia." oninput="renderizarRemision()" />
             </div>
           </div>
@@ -2357,8 +2399,13 @@
             </div>
           </div>
 
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary" style="width:100%; padding:0.7rem 1rem; font-size:0.92rem;" onclick="imprimirRemision10x15()">🖨️ Imprimir Nota 10 × 15 cm (Se Guarda y Folia Automáticamente)</button>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
+            <button type="button" class="btn btn-primary" style="padding:0.7rem 0.85rem; font-size:0.88rem; font-weight:800;" onclick="imprimirRemision10x15()">
+              🖨️ Imprimir y Guardar Nota 10×15
+            </button>
+            <button type="button" class="btn btn-success" id="btn_guardar_cambios_nota" style="padding:0.7rem 0.85rem; font-size:0.88rem; font-weight:800;" onclick="guardarCambiosNotaSinImprimir()">
+              💾 Guardar / Modificar Nota (Sin Imprimir)
+            </button>
           </div>
         </div>
 
@@ -3726,7 +3773,7 @@
     }
 
     // ================= DISPONIBILIDAD DE INVENTARIO POR DÍA =================
-    function obtenerDisponibilidadPorFecha(fecha, ignoreEventoId = "") {
+    function obtenerDisponibilidadPorFecha(fecha, ignoreEventoId = "", ignoreRentaId = "") {
       const resultado = {};
       state.inventario.forEach(item => {
         resultado[item.id] = {
@@ -3750,7 +3797,7 @@
         });
 
       state.rentas
-        .filter(ren => ren.fecha === fecha)
+        .filter(ren => ren.fecha === fecha && ren.id !== ignoreRentaId)
         .forEach(ren => {
           if (ren.equipo) {
             Object.entries(ren.equipo).forEach(([eqId, cant]) => {
@@ -4965,7 +5012,7 @@
       window.open(url, "_blank");
     }
 
-    // ================= INVENTARIO Y RENTAS =================
+    // ================= INVENTARIO Y RENTAS (CON DESGLOSE Y EDICIÓN SIN DUPLICAR) =================
     function agregarEquipoInventario() {
       const nombre = document.getElementById("inv_nombre").value.trim();
       const total = Number(document.getElementById("inv_cantidad").value) || 1;
@@ -4997,30 +5044,45 @@
       notificar("Equipo eliminado del almacén.");
     }
 
-    function actualizarVistaDisponibilidadRenta() {
+    function actualizarVistaDisponibilidadRenta(equipoPreseleccionado = null, preciosPreseleccionados = null) {
       const fecha = document.getElementById("ren_fecha").value;
+      const editRentaId = document.getElementById("ren_edit_id") ? document.getElementById("ren_edit_id").value : "";
       document.getElementById("lbl_fecha_stock").textContent = fecha;
-      const disp = obtenerDisponibilidadPorFecha(fecha);
+      const disp = obtenerDisponibilidadPorFecha(fecha, "", editRentaId);
       const contenedor = document.getElementById("ren_equipo_lista");
       contenedor.innerHTML = "";
 
       Object.values(disp).forEach(item => {
-        const badgeClass = item.disponible > 0 ? "badge-ok" : "badge-zero";
+        const cantActual = (equipoPreseleccionado && equipoPreseleccionado[item.id]) ? Number(equipoPreseleccionado[item.id]) : 0;
+        const precioActual = (preciosPreseleccionados && preciosPreseleccionados[item.id] !== undefined) ? Number(preciosPreseleccionados[item.id]) : 0;
+        const maxPermitido = item.disponible;
+        const badgeClass = maxPermitido > 0 ? "badge-ok" : "badge-zero";
         const detalleUso = (item.usadoEventos > 0 || item.usadoRentas > 0)
           ? `<small style="display:block; color:var(--text-muted);">En eventos ese día: ${item.usadoEventos} | En renta: ${item.usadoRentas}</small>`
           : "";
 
         const row = document.createElement("div");
         row.className = "equip-row";
+        row.style.gap = "0.5rem";
         row.innerHTML = `
-          <div>
+          <div style="flex:1;">
             <strong>${item.nombre}</strong>
-            <span class="badge ${badgeClass}">Disponibles: ${item.disponible} de ${item.total}</span>
+            <span class="badge ${badgeClass}">Disponibles: ${maxPermitido} de ${item.total}</span>
             ${detalleUso}
           </div>
-          <div style="width: 90px;">
-            <input type="number" min="0" max="${item.disponible}" value="0"
-              data-eq-ren="${item.id}" ${item.disponible === 0 ? "disabled" : ""} />
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <div style="width: 72px;">
+              <small style="display:block; font-size:0.65rem; color:var(--text-muted);">Cant.</small>
+              <input type="number" min="0" max="${maxPermitido}" value="${cantActual}"
+                data-eq-ren="${item.id}" ${maxPermitido === 0 && cantActual === 0 ? "disabled" : ""}
+                oninput="recalcularTotalRentaDesdeEquipos()" />
+            </div>
+            <div style="width: 92px;">
+              <small style="display:block; font-size:0.65rem; color:var(--text-muted);">Precio c/u ($)</small>
+              <input type="number" min="0" value="${precioActual}" placeholder="$ c/u"
+                data-eq-ren-precio="${item.id}" ${maxPermitido === 0 && cantActual === 0 ? "disabled" : ""}
+                oninput="recalcularTotalRentaDesdeEquipos()" />
+            </div>
           </div>
         `;
         contenedor.appendChild(row);
@@ -5054,44 +5116,214 @@
       return seleccion;
     }
 
-    function guardarRenta() {
+    function obtenerPreciosPorEquipoRenta() {
+      const precios = {};
+      document.querySelectorAll("[data-eq-ren-precio]").forEach(input => {
+        const val = Number(input.value) || 0;
+        const eqId = input.getAttribute("data-eq-ren-precio");
+        if (val > 0) precios[eqId] = val;
+      });
+      return precios;
+    }
+
+    function recalcularTotalRentaDesdeEquipos() {
+      const equipo = obtenerEquipoSeleccionadoRenta();
+      const precios = obtenerPreciosPorEquipoRenta();
+      let suma = 0;
+      let hayPrecioUnitario = false;
+      Object.entries(equipo).forEach(([eqId, cant]) => {
+        if (precios[eqId] && precios[eqId] > 0) {
+          hayPrecioUnitario = true;
+          suma += Number(cant) * Number(precios[eqId]);
+        }
+      });
+      if (hayPrecioUnitario) {
+        document.getElementById("ren_total").value = suma;
+      }
+    }
+
+    // Construye el desglose ítem por ítem de lo que se está rentando para la Nota de Remisión
+    function construirDesgloseItemsDesdeRenta(renObj) {
+      const items = [];
+      const equipoObj = renObj.equipo || {};
+      const preciosObj = renObj.preciosEquipo || {};
+      const horarioStr = (renObj.horaInicio && renObj.horaFin) ? ` (${renObj.horaInicio} a ${renObj.horaFin} hrs)` : "";
+      const entries = Object.entries(equipoObj).filter(([_, cant]) => Number(cant) > 0);
+      const totalRenta = Number(renObj.total) || 0;
+
+      // Verificar si se especificaron precios individuales por equipo
+      let sumaPreciosIndividuales = 0;
+      entries.forEach(([eqId, cant]) => {
+        if (preciosObj[eqId]) {
+          sumaPreciosIndividuales += Number(cant) * Number(preciosObj[eqId]);
+        }
+      });
+
+      const totalUnidades = entries.reduce((acc, [_, c]) => acc + Number(c), 0);
+
+      entries.forEach(([eqId, cant], idx) => {
+        const invItem = state.inventario.find(i => i.id === eqId);
+        const nombreEq = invItem ? invItem.nombre : "Equipo Fotográfico/Video";
+        const cNum = Number(cant) || 1;
+        let precioUnit = 0;
+
+        if (preciosObj[eqId] !== undefined && Number(preciosObj[eqId]) > 0) {
+          precioUnit = Number(preciosObj[eqId]);
+        } else if (sumaPreciosIndividuales === 0 && totalRenta > 0) {
+          // Si solo puso el costo total general, asignarlo proporcionalmente o en el primer renglón para que cuadre el total y pueda editarlo
+          if (entries.length === 1) {
+            precioUnit = Math.round((totalRenta / cNum) * 100) / 100;
+          } else if (idx === 0) {
+            precioUnit = Math.round((totalRenta / cNum) * 100) / 100;
+          } else {
+            precioUnit = 0;
+          }
+        }
+
+        items.push({
+          cant: cNum,
+          desc: `Renta: ${nombreEq}${horarioStr}`,
+          precio: precioUnit,
+          origenRentaEqId: eqId
+        });
+      });
+
+      // Si estipuló accesorios o extras adicionales, desglosarlos también en renglones editables
+      if (renObj.extras && renObj.extras.trim()) {
+        const extrasPartes = renObj.extras.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+        extrasPartes.forEach(ext => {
+          items.push({
+            cant: 1,
+            desc: `Extra / Accesorio en renta: ${ext}`,
+            precio: 0,
+            origenRentaExtra: true
+          });
+        });
+      }
+
+      if (items.length === 0) {
+        items.push({
+          cant: 1,
+          desc: `Renta de equipo fotográfico/video${horarioStr}`,
+          precio: totalRenta
+        });
+      }
+
+      return items;
+    }
+
+    function limpiarFormularioRenta() {
+      const hoy = new Date().toISOString().split("T")[0];
+      document.getElementById("ren_edit_id").value = "";
+      document.getElementById("titulo_form_renta").textContent = "🎥 Consultar Disponibilidad y Rentar Equipo (Colaboradores)";
+      document.getElementById("btn_guardar_renta").textContent = "📦 Registrar Renta y Apartar";
+      document.getElementById("ren_fecha").value = hoy;
+      document.getElementById("ren_cliente").value = "";
+      document.getElementById("ren_telefono").value = "";
+      document.getElementById("ren_total").value = 0;
+      document.getElementById("ren_hora_inicio").value = "09:00";
+      document.getElementById("ren_hora_fin").value = "21:00";
+      const extEl = document.getElementById("ren_extras");
+      if (extEl) extEl.value = "";
+      document.getElementById("ren_notas").value = "";
+      actualizarVistaDisponibilidadRenta();
+    }
+
+    function cargarRentaEnFormulario(id) {
+      const ren = state.rentas.find(r => r.id === id);
+      if (!ren) return;
+      document.getElementById("ren_edit_id").value = ren.id;
+      document.getElementById("titulo_form_renta").textContent = "✏️ Editando Renta de: " + ren.cliente;
+      document.getElementById("btn_guardar_renta").textContent = "💾 Guardar Cambios en esta Renta";
+      document.getElementById("ren_fecha").value = ren.fecha;
+      document.getElementById("ren_cliente").value = ren.cliente || "";
+      document.getElementById("ren_telefono").value = ren.telefono || "";
+      document.getElementById("ren_total").value = ren.total || 0;
+      document.getElementById("ren_hora_inicio").value = ren.horaInicio || "09:00";
+      document.getElementById("ren_hora_fin").value = ren.horaFin || "21:00";
+      const extEl = document.getElementById("ren_extras");
+      if (extEl) extEl.value = ren.extras || "";
+      document.getElementById("ren_notas").value = ren.notas || "";
+
+      actualizarVistaDisponibilidadRenta(ren.equipo || {}, ren.preciosEquipo || {});
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      notificar("✏️ Renta de " + ren.cliente + " cargada para modificar o agregar equipo extra.");
+    }
+
+    function guardarRenta(silencioso = false) {
       const cliente = document.getElementById("ren_cliente").value.trim();
       const fecha = document.getElementById("ren_fecha").value;
+      const editId = document.getElementById("ren_edit_id").value;
       const equipoElegido = obtenerEquipoSeleccionadoRenta();
+      const preciosEquipo = obtenerPreciosPorEquipoRenta();
 
       if (!cliente || !fecha) {
         notificar("Ingresa el nombre del colaborador y la fecha de renta.", "error");
-        return;
+        return null;
       }
       if (Object.keys(equipoElegido).length === 0) {
         notificar("Selecciona al menos 1 equipo disponible para rentar.", "error");
-        return;
+        return null;
       }
 
-      const disp = obtenerDisponibilidadPorFecha(fecha);
+      const disp = obtenerDisponibilidadPorFecha(fecha, "", editId);
       for (const [eqId, cant] of Object.entries(equipoElegido)) {
         if (cant > disp[eqId].disponible) {
           notificar(`Solo quedan ${disp[eqId].disponible} unidades disponibles de ${disp[eqId].nombre} para el día ${fecha}.`, "error");
-          return;
+          return null;
         }
       }
 
-      state.rentas.push({
-        id: "ren_" + Date.now(),
+      const extEl = document.getElementById("ren_extras");
+      const datosRenta = {
+        id: editId || ("ren_" + Date.now()),
         cliente,
         telefono: document.getElementById("ren_telefono").value.trim(),
         fecha,
         horaInicio: document.getElementById("ren_hora_inicio").value,
         horaFin: document.getElementById("ren_hora_fin").value,
         total: Number(document.getElementById("ren_total").value) || 0,
+        extras: extEl ? extEl.value.trim() : "",
         notas: document.getElementById("ren_notas").value.trim(),
-        equipo: equipoElegido
-      });
+        equipo: equipoElegido,
+        preciosEquipo: preciosEquipo
+      };
+
+      if (editId) {
+        const idx = state.rentas.findIndex(r => r.id === editId);
+        if (idx >= 0) state.rentas[idx] = datosRenta;
+      } else {
+        state.rentas.push(datosRenta);
+      }
+
+      // Si esta renta ya tenía una Nota de Remisión vinculada, actualizar su desglose automáticamente sin crear otra nota
+      const notaVinculada = state.notasGuardadas.find(n => n.rentaId === datosRenta.id);
+      if (notaVinculada) {
+        sincronizarDesgloseRentaEnNotaExistente(datosRenta, notaVinculada);
+      }
 
       state.rentas.sort((a, b) => a.fecha.localeCompare(b.fecha));
       guardarEstado();
+      limpiarFormularioRenta();
       refrescarTodo();
-      notificar("¡Renta registrada y señalada en el Mini Calendario!");
+      if (!silencioso) {
+        notificar(editId
+          ? "💾 ¡Cambios guardados en la renta (y actualizados en su nota)!"
+          : "📦 ¡Renta registrada y señalada en el Mini Calendario!");
+      }
+      return datosRenta;
+    }
+
+    function sincronizarDesgloseRentaEnNotaExistente(renObj, notaExistente) {
+      const nuevosItemsRenta = construirDesgloseItemsDesdeRenta(renObj);
+      // Conservar los artículos extra manuales que el usuario haya agregado en esa nota y que no venían del equipo base
+      const extrasManualesEnNota = (notaExistente.items || []).filter(it => !it.origenRentaEqId && !it.origenRentaExtra);
+      notaExistente.cliente = renObj.cliente || notaExistente.cliente;
+      notaExistente.telefono = renObj.telefono || notaExistente.telefono;
+      notaExistente.fecha = renObj.fecha || notaExistente.fecha;
+      notaExistente.items = [...nuevosItemsRenta, ...extrasManualesEnNota];
+      notaExistente.total = notaExistente.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      notaExistente.saldo = Math.max(0, notaExistente.total - (Number(notaExistente.anticipo) || 0));
     }
 
     function eliminarRenta(id) {
@@ -5167,6 +5399,67 @@
       if (state.productosRemision.length > 0) {
         document.getElementById("item_precio").value = state.productosRemision[0].precio;
       }
+
+      renderizarSelectorRentasParaNota();
+    }
+
+    function renderizarSelectorRentasParaNota() {
+      const selRenta = document.getElementById("rem_select_renta_jalar");
+      const chipsEq = document.getElementById("chips_equipos_renta_nota");
+      if (selRenta) {
+        const prevVal = selRenta.value;
+        selRenta.innerHTML = "";
+        if (!state.rentas || state.rentas.length === 0) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "— No hay rentas agendadas todavía (Registra una en el apartado 3) —";
+          selRenta.appendChild(opt);
+        } else {
+          state.rentas.forEach(ren => {
+            const eqTxt = formatearEquipoTexto(ren.equipo);
+            const notaVinc = state.notasGuardadas.find(n => n.rentaId === ren.id);
+            const tagNota = notaVinc ? ` [Ya tiene Nota N° ${notaVinc.folio} — Editar]` : " [Desglosar en Nota]";
+            const opt = document.createElement("option");
+            opt.value = ren.id;
+            opt.textContent = `${ren.fecha} • ${ren.cliente} (${eqTxt}) — $${Number(ren.total).toLocaleString("es-MX")}${tagNota}`;
+            selRenta.appendChild(opt);
+          });
+          if (prevVal && state.rentas.some(r => r.id === prevVal)) {
+            selRenta.value = prevVal;
+          }
+        }
+      }
+
+      if (chipsEq) {
+        chipsEq.innerHTML = "";
+        (state.inventario || []).forEach(eq => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "catalog-chip";
+          btn.style.borderColor = "#c4b5fd";
+          btn.innerHTML = `<span>+ Renta: ${eq.nombre}</span>`;
+          btn.onclick = () => {
+            state.remisionItems.push({
+              cant: 1,
+              desc: `Renta extra: ${eq.nombre}`,
+              precio: 0
+            });
+            guardarEstado();
+            renderizarRemision();
+            notificar(`Agregado al desglose: Renta extra: ${eq.nombre}. Puedes ajustar su precio en la tabla.`);
+          };
+          chipsEq.appendChild(btn);
+        });
+      }
+    }
+
+    function jalarRentaSeleccionadaANota() {
+      const sel = document.getElementById("rem_select_renta_jalar");
+      if (!sel || !sel.value) {
+        notificar("Primero registra o selecciona una renta de equipo.", "warn");
+        return;
+      }
+      enviarRentaGuardadaARemision(sel.value);
     }
 
     function alElegirProductoFrecuente() {
@@ -5204,6 +5497,17 @@
       guardarEstado();
       renderizarRemision();
       notificar(`Agregado a la nota: ${cant}x ${desc}`);
+    }
+
+    function agregarRenglonVacioNota() {
+      state.remisionItems.push({
+        cant: 1,
+        desc: "Extra / Concepto adicional",
+        precio: 0
+      });
+      guardarEstado();
+      renderizarRemision();
+      notificar("Renglón extra añadido. Edita el concepto y el precio allí mismo.");
     }
 
     function guardarProductoCatalogo() {
@@ -5280,13 +5584,29 @@
       document.getElementById("item_desc").value = "";
     }
 
-    function cambiarCantidadItemNota(idx, nuevaCant) {
-      const val = Number(nuevaCant) || 1;
-      if (state.remisionItems[idx]) {
-        state.remisionItems[idx].cant = Math.max(1, val);
-        guardarEstado();
-        renderizarRemision();
+    // Permite editar Cantidad, Descripción/Equipo y Precio Unitario en vivo sin perder el foco del cursor
+    function cambiarCampoItemNota(idx, campo, valor) {
+      if (!state.remisionItems[idx]) return;
+      if (campo === "cant") {
+        state.remisionItems[idx].cant = Math.max(1, Number(valor) || 1);
+      } else if (campo === "precio") {
+        state.remisionItems[idx].precio = Math.max(0, Number(valor) || 0);
+      } else if (campo === "desc") {
+        state.remisionItems[idx].desc = valor;
       }
+
+      const impCell = document.getElementById("imp_item_nota_" + idx);
+      if (impCell) {
+        const imp = (Number(state.remisionItems[idx].cant) || 1) * (Number(state.remisionItems[idx].precio) || 0);
+        impCell.textContent = "$" + imp.toLocaleString("es-MX");
+      }
+
+      guardarEstado();
+      actualizarVistaPreviaTarjetasNota10x15();
+    }
+
+    function cambiarCantidadItemNota(idx, nuevaCant) {
+      cambiarCampoItemNota(idx, "cant", nuevaCant);
     }
 
     function eliminarConceptoRemision(idx) {
@@ -5325,7 +5645,7 @@
         state.config.siguienteFolio = num;
         guardarEstado();
       }
-      renderizarRemision();
+      actualizarVistaPreviaTarjetasNota10x15();
     }
 
     function reiniciarFolioA001(borrarNotasDePrueba = false) {
@@ -5334,6 +5654,9 @@
       }
       state.config.siguienteFolio = 1;
       document.getElementById("rem_edit_id").value = "";
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = "";
+      actualizarBadgeVinculoRenta("");
       document.getElementById("titulo_form_remision").textContent = "🧾 Crear Nota de Remisión (10 × 15 cm)";
       document.getElementById("rem_folio").value = "001";
       guardarEstado();
@@ -5346,9 +5669,32 @@
       }
     }
 
+    function actualizarBadgeVinculoRenta(rentaId, folioExistente = "") {
+      const badge = document.getElementById("badge_vinculo_renta_nota");
+      const btnGuardar = document.getElementById("btn_guardar_cambios_nota");
+      const editId = document.getElementById("rem_edit_id").value;
+      if (badge) {
+        if (rentaId) {
+          badge.style.display = "inline-flex";
+          badge.textContent = editId
+            ? `🔗 Editando Nota N° ${folioExistente} de esta Renta (Sin duplicar)`
+            : `🎥 Desglose de Renta Listo`;
+        } else {
+          badge.style.display = "none";
+        }
+      }
+      if (btnGuardar) {
+        btnGuardar.textContent = editId
+          ? `💾 Actualizar Nota N° ${document.getElementById("rem_folio").value} (Sin Crear Otra)`
+          : `💾 Guardar Nota en Pendientes (Sin Imprimir)`;
+      }
+    }
+
     function nuevaRemision(silencioso = false) {
       const hoy = new Date().toISOString().split("T")[0];
       document.getElementById("rem_edit_id").value = "";
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = "";
       document.getElementById("titulo_form_remision").textContent = "🧾 Crear Nota de Remisión (10 × 15 cm)";
       state.remisionItems = [];
       document.getElementById("rem_cliente").value = "";
@@ -5356,27 +5702,39 @@
       document.getElementById("rem_direccion").value = "";
       document.getElementById("rem_fecha").value = hoy;
       document.getElementById("rem_anticipo").value = 0;
+      document.getElementById("rem_notas").value = "Gracias por su preferencia.";
       document.getElementById("rem_estado").value = "pendiente";
       document.getElementById("rem_prioridad").value = "normal";
       actualizarSiguienteFolioRemision();
+      actualizarBadgeVinculoRenta("");
       renderizarRemision();
       if (!silencioso) {
         notificar("Lista nueva nota con Folio N° " + document.getElementById("rem_folio").value);
       }
     }
 
-    // ================= AUTO-GUARDADO Y FOLIADO AL IMPRIMIR NOTA DE REMISIÓN =================
+    // ================= GUARDADO Y ACTUALIZACIÓN DE NOTA (SIN CREAR OTRA SI YA EXISTE) =================
     function registrarNotaAlImprimir() {
       const cliente = document.getElementById("rem_cliente").value.trim() || "Cliente Mostrador";
       const fecha = document.getElementById("rem_fecha").value || new Date().toISOString().split("T")[0];
-      const editId = document.getElementById("rem_edit_id").value;
+      let editId = document.getElementById("rem_edit_id").value;
+      const rentaId = document.getElementById("rem_renta_id") ? document.getElementById("rem_renta_id").value : "";
+
+      // Si está vinculada a una renta que ya tenía nota guardada, usar ese mismo ID para modificarla allí mismo sin crear otra
+      if (!editId && rentaId) {
+        const existentePorRenta = state.notasGuardadas.find(n => n.rentaId === rentaId);
+        if (existentePorRenta) {
+          editId = existentePorRenta.id;
+          document.getElementById("rem_edit_id").value = editId;
+        }
+      }
+
       const folioRaw = document.getElementById("rem_folio").value.trim() || "001";
       const folioNum = parseInt(folioRaw.replace(/[^0-9]/g, ""), 10);
       const folioFormateado = !isNaN(folioNum) && folioNum >= 1 ? formatearNumeroFolio(folioNum) : folioRaw;
 
-      // Asegurar que el input muestre el folio formateado en la impresión
       document.getElementById("rem_folio").value = folioFormateado;
-      renderizarRemision();
+      actualizarVistaPreviaTarjetasNota10x15();
 
       const total = state.remisionItems.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
       const anticipo = Number(document.getElementById("rem_anticipo").value) || 0;
@@ -5384,6 +5742,7 @@
 
       const notaObj = {
         id: editId || ("nota_" + Date.now()),
+        rentaId: rentaId || "",
         folio: folioFormateado,
         fecha,
         cliente,
@@ -5400,10 +5759,17 @@
 
       if (editId) {
         const idx = state.notasGuardadas.findIndex(n => n.id === editId);
-        if (idx >= 0) state.notasGuardadas[idx] = notaObj;
+        if (idx >= 0) {
+          // Conservar fecha de entregado si ya la tenía
+          if (state.notasGuardadas[idx].fechaEntregado) {
+            notaObj.fechaEntregado = state.notasGuardadas[idx].fechaEntregado;
+          }
+          state.notasGuardadas[idx] = notaObj;
+        } else {
+          state.notasGuardadas.push(notaObj);
+        }
       } else {
         state.notasGuardadas.push(notaObj);
-        // Avanzar automáticamente el contador numérico al siguiente folio consecutivo
         if (!isNaN(folioNum) && folioNum >= 1) {
           state.config.siguienteFolio = folioNum + 1;
         } else {
@@ -5414,7 +5780,25 @@
       ordenarNotasPorFecha();
       guardarEstado();
       refrescarTablas();
-      return { folioImpreso: folioFormateado, proximoFolio: formatearNumeroFolio(state.config.siguienteFolio) };
+      return {
+        notaId: notaObj.id,
+        eraEdicion: Boolean(editId),
+        folioImpreso: folioFormateado,
+        proximoFolio: formatearNumeroFolio(state.config.siguienteFolio)
+      };
+    }
+
+    function guardarCambiosNotaSinImprimir() {
+      if (state.remisionItems.length === 0) {
+        notificar("Agrega al menos un equipo o concepto al desglose de la nota.", "error");
+        return;
+      }
+      const info = registrarNotaAlImprimir();
+      // Mantener la nota seleccionada en edición por si quiere seguir haciéndole modificaciones sin crear otra nota
+      document.getElementById("rem_edit_id").value = info.notaId;
+      document.getElementById("titulo_form_remision").textContent = `✏️ Editando Nota N° ${info.folioImpreso} — ${document.getElementById("rem_cliente").value || "Cliente"}`;
+      actualizarBadgeVinculoRenta(document.getElementById("rem_renta_id").value, info.folioImpreso);
+      notificar(`💾 ¡Nota N° ${info.folioImpreso} guardada/actualizada en el mismo registro sin crear otra nota!`);
     }
 
     function ordenarNotasPorFecha() {
@@ -5461,11 +5845,86 @@
       notificar(`💲 Nota N° ${nota.folio} liquidada al 100%.`);
     }
 
+    // Edición directa de los conceptos/desglose de una nota guardada desde la misma Lista de Pendientes (sin crear otra nota)
+    function editarItemDeNotaGuardadaInline(notaId, idxItem, campo, valor) {
+      const nota = state.notasGuardadas.find(n => n.id === notaId);
+      if (!nota || !nota.items || !nota.items[idxItem]) return;
+      if (campo === "cant") {
+        nota.items[idxItem].cant = Math.max(1, Number(valor) || 1);
+      } else if (campo === "precio") {
+        nota.items[idxItem].precio = Math.max(0, Number(valor) || 0);
+      } else if (campo === "desc") {
+        nota.items[idxItem].desc = valor;
+      }
+      nota.total = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
+
+      // Si esa misma nota está cargada arriba en el formulario, sincronizarla en vivo
+      if (document.getElementById("rem_edit_id").value === nota.id) {
+        state.remisionItems = JSON.parse(JSON.stringify(nota.items));
+        renderizarRemision();
+      }
+
+      guardarEstado();
+      refrescarTablas();
+    }
+
+    function agregarExtraANotaGuardadaInline(notaId) {
+      const nota = state.notasGuardadas.find(n => n.id === notaId);
+      if (!nota) return;
+      const inpCant = document.getElementById("extra_inline_cant_" + notaId);
+      const inpDesc = document.getElementById("extra_inline_desc_" + notaId);
+      const inpPrecio = document.getElementById("extra_inline_precio_" + notaId);
+
+      const cant = Math.max(1, Number(inpCant ? inpCant.value : 1) || 1);
+      const desc = (inpDesc ? inpDesc.value.trim() : "");
+      const precio = Math.max(0, Number(inpPrecio ? inpPrecio.value : 0) || 0);
+
+      if (!desc) {
+        notificar("Escribe qué equipo o concepto extra vas a agregar a esta nota.", "warn");
+        if (inpDesc) inpDesc.focus();
+        return;
+      }
+
+      if (!Array.isArray(nota.items)) nota.items = [];
+      nota.items.push({ cant, desc, precio });
+      nota.total = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
+
+      if (document.getElementById("rem_edit_id").value === nota.id) {
+        state.remisionItems = JSON.parse(JSON.stringify(nota.items));
+        renderizarRemision();
+      }
+
+      guardarEstado();
+      refrescarTablas();
+      notificar(`➕ Extra "${desc}" agregado directamente a la Nota N° ${nota.folio} (Sin crear otra nota).`);
+    }
+
+    function eliminarItemDeNotaGuardadaInline(notaId, idxItem) {
+      const nota = state.notasGuardadas.find(n => n.id === notaId);
+      if (!nota || !Array.isArray(nota.items)) return;
+      nota.items.splice(idxItem, 1);
+      nota.total = nota.items.reduce((acc, it) => acc + (Number(it.cant) * Number(it.precio)), 0);
+      nota.saldo = Math.max(0, nota.total - (Number(nota.anticipo) || 0));
+
+      if (document.getElementById("rem_edit_id").value === nota.id) {
+        state.remisionItems = JSON.parse(JSON.stringify(nota.items));
+        renderizarRemision();
+      }
+
+      guardarEstado();
+      refrescarTablas();
+      notificar(`Concepto eliminado de la Nota N° ${nota.folio}.`);
+    }
+
     function cargarNotaGuardadaEnFormulario(id, imprimirDirecto = false) {
       const nota = state.notasGuardadas.find(n => n.id === id);
       if (!nota) return;
       document.getElementById("rem_edit_id").value = nota.id;
-      document.getElementById("titulo_form_remision").textContent = `✏️ Editando / Reimprimiendo Nota N° ${nota.folio} — ${nota.cliente}`;
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = nota.rentaId || "";
+      document.getElementById("titulo_form_remision").textContent = `✏️ Editando / Modificando Nota N° ${nota.folio} — ${nota.cliente}`;
       document.getElementById("rem_folio").value = nota.folio || "001";
       document.getElementById("rem_fecha").value = nota.fecha;
       document.getElementById("rem_cliente").value = nota.cliente || "";
@@ -5476,13 +5935,14 @@
       document.getElementById("rem_estado").value = nota.estado || "pendiente";
       document.getElementById("rem_prioridad").value = nota.prioridad || "normal";
       state.remisionItems = JSON.parse(JSON.stringify(nota.items || []));
+      actualizarBadgeVinculoRenta(nota.rentaId || "", nota.folio);
       renderizarRemision();
 
       if (imprimirDirecto) {
         setTimeout(() => imprimirRemision10x15(true), 150);
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        notificar(`Nota N° ${nota.folio} cargada en pantalla. Al imprimir se actualizará.`);
+        notificar(`✏️ Nota N° ${nota.folio} cargada. Puedes modificar su desglose o agregar extras allí mismo sin crear otra nota.`);
       }
     }
 
@@ -5504,12 +5964,15 @@
 
     function enviarEventoARemision() {
       document.getElementById("rem_edit_id").value = "";
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = "";
       document.getElementById("rem_cliente").value = document.getElementById("ev_cliente").value;
       document.getElementById("rem_telefono").value = document.getElementById("ev_telefono").value;
       document.getElementById("rem_direccion").value = `${document.getElementById("ev_dir_recepcion").value} (${document.getElementById("ev_lugar").value})`;
       document.getElementById("rem_fecha").value = document.getElementById("ev_fecha_cotizacion").value;
       document.getElementById("rem_anticipo").value = document.getElementById("ev_anticipo").value;
       actualizarSiguienteFolioRemision();
+      actualizarBadgeVinculoRenta("");
 
       const pkgId = document.getElementById("ev_paquete_select").value;
       const pkgObj = state.paquetes.find(p => p.id === pkgId);
@@ -5527,12 +5990,15 @@
       const ev = state.eventos.find(e => e.id === id);
       if (!ev) return;
       document.getElementById("rem_edit_id").value = "";
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = "";
       document.getElementById("rem_cliente").value = ev.cliente;
       document.getElementById("rem_telefono").value = ev.telefono;
       document.getElementById("rem_direccion").value = `${ev.dirRecepcion} (${ev.lugar})`;
       document.getElementById("rem_fecha").value = ev.fechaCotizacion || ev.fecha;
       document.getElementById("rem_anticipo").value = ev.anticipo;
       actualizarSiguienteFolioRemision();
+      actualizarBadgeVinculoRenta("");
       state.remisionItems = [
         { cant: 1, desc: ev.paqueteNombre, precio: Number(ev.total) || 0 }
       ];
@@ -5540,23 +6006,88 @@
       notificar("Nota 10×15 cm creada para " + ev.cliente);
     }
 
+    // Jalar Renta desde el formulario de Inventario y Renta hacia la Nota de Remisión (Desglosando cada equipo)
     function enviarRentaARemision() {
-      document.getElementById("rem_edit_id").value = "";
-      document.getElementById("rem_cliente").value = document.getElementById("ren_cliente").value;
-      document.getElementById("rem_telefono").value = document.getElementById("ren_telefono").value;
-      document.getElementById("rem_direccion").value = "Renta de Equipo";
-      document.getElementById("rem_fecha").value = document.getElementById("ren_fecha").value;
-      document.getElementById("rem_anticipo").value = 0;
-      actualizarSiguienteFolioRemision();
+      const equipoElegido = obtenerEquipoSeleccionadoRenta();
+      const clienteForm = document.getElementById("ren_cliente").value.trim();
 
-      const equipoTexto = formatearEquipoTexto(obtenerEquipoSeleccionadoRenta());
-      const total = Number(document.getElementById("ren_total").value) || 0;
+      // Si llenó datos en el formulario de renta y aún no la había guardado, guardarla/actualizarla primero para que quede vinculada
+      if (clienteForm && Object.keys(equipoElegido).length > 0) {
+        const editIdPrevio = document.getElementById("ren_edit_id").value;
+        const guardada = guardarRenta(true);
+        if (guardada) {
+          enviarRentaGuardadaARemision(guardada.id);
+          return;
+        }
+      }
 
-      state.remisionItems = [
-        { cant: 1, desc: `Renta: ${equipoTexto}`, precio: total }
-      ];
-      switchTab("remisiones");
-      notificar("Renta enviada a la Nota de Remisión 10×15 cm.");
+      // Si no llenó cliente pero seleccionó equipos, armar el desglose directo en la nota
+      const extEl = document.getElementById("ren_extras");
+      const tempRenta = {
+        id: "",
+        cliente: clienteForm || "Colaborador / Renta de Equipo",
+        telefono: document.getElementById("ren_telefono").value.trim(),
+        fecha: document.getElementById("ren_fecha").value,
+        horaInicio: document.getElementById("ren_hora_inicio").value,
+        horaFin: document.getElementById("ren_hora_fin").value,
+        total: Number(document.getElementById("ren_total").value) || 0,
+        extras: extEl ? extEl.value.trim() : "",
+        notas: document.getElementById("ren_notas").value.trim(),
+        equipo: equipoElegido,
+        preciosEquipo: obtenerPreciosPorEquipoRenta()
+      };
+
+      cargarDesgloseDeRentaEnNota(tempRenta);
+    }
+
+    function enviarRentaGuardadaARemision(rentaId) {
+      const ren = state.rentas.find(r => r.id === rentaId);
+      if (!ren) return;
+      cargarDesgloseDeRentaEnNota(ren);
+    }
+
+    function cargarDesgloseDeRentaEnNota(renObj) {
+      // Buscar si esta renta ya tiene una Nota de Remisión creada para NO duplicarla
+      const notaExistente = renObj.id
+        ? state.notasGuardadas.find(n => n.rentaId === renObj.id)
+        : null;
+
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = renObj.id || "";
+
+      const horarioTxt = (renObj.horaInicio && renObj.horaFin) ? `Horario: ${renObj.horaInicio} a ${renObj.horaFin} hrs` : "";
+      const garantiaTxt = renObj.notas ? `Garantía/Notas: ${renObj.notas}` : "";
+      const obsCombinadas = [horarioTxt, garantiaTxt].filter(Boolean).join(" | ") || "Renta de equipo sujeta a cuidado y devolución puntual.";
+
+      if (notaExistente) {
+        // Sincronizar el desglose actualizado de la renta conservando los extras manuales que ya tuviera la nota
+        sincronizarDesgloseRentaEnNotaExistente(renObj, notaExistente);
+        guardarEstado();
+        switchTab("remisiones");
+        const selRenta = document.getElementById("rem_select_renta_jalar");
+        if (selRenta && renObj.id) selRenta.value = renObj.id;
+        cargarNotaGuardadaEnFormulario(notaExistente.id, false);
+        notificar(`🔗 Se abrió la misma Nota N° ${notaExistente.folio} de ${renObj.cliente} con su desglose para que la modifiques o agregues extras sin crear otra nota.`);
+      } else {
+        document.getElementById("rem_edit_id").value = "";
+        document.getElementById("titulo_form_remision").textContent = `🧾 Nota de Renta de Equipo — ${renObj.cliente || "Colaborador"}`;
+        document.getElementById("rem_cliente").value = renObj.cliente || "";
+        document.getElementById("rem_telefono").value = renObj.telefono || "";
+        document.getElementById("rem_direccion").value = `Renta de Equipo (${renObj.horaInicio || "09:00"} a ${renObj.horaFin || "21:00"} hrs)`;
+        document.getElementById("rem_fecha").value = renObj.fecha || new Date().toISOString().split("T")[0];
+        document.getElementById("rem_anticipo").value = 0;
+        document.getElementById("rem_notas").value = obsCombinadas;
+        actualizarSiguienteFolioRemision();
+
+        state.remisionItems = construirDesgloseItemsDesdeRenta(renObj);
+        actualizarBadgeVinculoRenta(renObj.id || "", "");
+
+        switchTab("remisiones");
+        const selRenta = document.getElementById("rem_select_renta_jalar");
+        if (selRenta && renObj.id) selRenta.value = renObj.id;
+        renderizarRemision();
+        notificar(`🎥 Desglose de renta cargado (${state.remisionItems.length} concepto(s)). Puedes editar cualquier renglón o agregar extras allí mismo.`);
+      }
     }
 
     function construirHtmlNota10x15(tipoCopia) {
@@ -5570,7 +6101,7 @@
 
       let total = 0;
       const filasHtml = state.remisionItems.map(item => {
-        const imp = item.cant * item.precio;
+        const imp = (Number(item.cant) || 1) * (Number(item.precio) || 0);
         total += imp;
         return `
           <tr>
@@ -5612,13 +6143,13 @@
               <thead>
                 <tr>
                   <th style="width:10mm; text-align:center;">Cant</th>
-                  <th>Concepto / Producto</th>
+                  <th>Concepto / Desglose</th>
                   <th style="width:16mm; text-align:right;">P. Unit</th>
                   <th style="width:18mm; text-align:right;">Importe</th>
                 </tr>
               </thead>
               <tbody>
-                ${filasHtml || '<tr><td colspan="4" style="text-align:center; padding:4mm;">Selecciona productos de tu catálogo</td></tr>'}
+                ${filasHtml || '<tr><td colspan="4" style="text-align:center; padding:4mm;">Selecciona una renta o agrega productos de tu catálogo</td></tr>'}
               </tbody>
             </table>
           </div>
@@ -5645,26 +6176,10 @@
       `;
     }
 
-    function renderizarRemision() {
-      const tbody = document.getElementById("tabla_items_remision");
-      tbody.innerHTML = "";
-      state.remisionItems.forEach((item, idx) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td style="width:65px;">
-            <input type="number" min="1" value="${item.cant}" style="padding:0.2rem 0.4rem; font-size:0.8rem;"
-              onchange="cambiarCantidadItemNota(${idx}, this.value)" />
-          </td>
-          <td><strong>${item.desc}</strong></td>
-          <td>$${Number(item.precio).toLocaleString("es-MX")}</td>
-          <td><strong>$${(item.cant * item.precio).toLocaleString("es-MX")}</strong></td>
-          <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarConceptoRemision(${idx})">✕</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-
+    function actualizarVistaPreviaTarjetasNota10x15() {
       const modoCopias = document.getElementById("rem_modo_copias").value;
       const contenedor = document.getElementById("remision_printable");
+      if (!contenedor) return;
       if (modoCopias === "simple") {
         contenedor.innerHTML = construirHtmlNota10x15("ORIGINAL - CLIENTE");
       } else {
@@ -5675,6 +6190,38 @@
       }
     }
 
+    function renderizarRemision() {
+      const tbody = document.getElementById("tabla_items_remision");
+      tbody.innerHTML = "";
+      state.remisionItems.forEach((item, idx) => {
+        const imp = (Number(item.cant) || 1) * (Number(item.precio) || 0);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="width:65px;">
+            <input type="number" min="1" value="${item.cant}" style="padding:0.25rem 0.4rem; font-size:0.8rem; font-weight:700;"
+              oninput="cambiarCampoItemNota(${idx}, 'cant', this.value)" />
+          </td>
+          <td>
+            <input type="text" value="${(item.desc || '').replace(/"/g, '&quot;')}" style="padding:0.25rem 0.45rem; font-size:0.8rem; font-weight:600; width:100%;"
+              oninput="cambiarCampoItemNota(${idx}, 'desc', this.value)" />
+          </td>
+          <td style="width:95px;">
+            <input type="number" min="0" value="${item.precio}" style="padding:0.25rem 0.4rem; font-size:0.8rem; font-weight:700; color:#0369a1;"
+              oninput="cambiarCampoItemNota(${idx}, 'precio', this.value)" />
+          </td>
+          <td style="width:85px; font-weight:800; vertical-align:middle;" id="imp_item_nota_${idx}">
+            $${imp.toLocaleString("es-MX")}
+          </td>
+          <td style="width:38px;">
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarConceptoRemision(${idx})" title="Quitar renglón">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      actualizarVistaPreviaTarjetasNota10x15();
+    }
+
     // ================= IMPRESIÓN INTELIGENTE (CALIBRACIÓN DE PAPEL 10x15 / CARTA) =================
     function aplicarReglaPaginaImpresion(modoPapel) {
       const styleEl = document.getElementById("dynamic_print_page_rule");
@@ -5682,7 +6229,6 @@
       if (!styleEl) return;
 
       if (modoPapel === "4x6") {
-        // 4in x 6in (101.6mm x 152.4mm) es el estándar exacto de los drivers de impresora para papel 10x15 cm
         styleEl.innerHTML = "@media print { @page { size: 4in 6in portrait; margin: 0mm; } }";
         document.body.classList.add("print-paper-4x6");
       } else {
@@ -5727,7 +6273,6 @@
         return;
       }
 
-      // Crear clon limpio y calibrado para que el Contrato 1 quepa completo en 1 sola hoja sin desbordarse
       const contenedorTemp = document.createElement("div");
       contenedorTemp.style.padding = "3mm 6mm";
       contenedorTemp.style.background = "#ffffff";
@@ -5737,7 +6282,6 @@
       contenedorTemp.style.lineHeight = "1.38";
       contenedorTemp.innerHTML = preview.innerHTML;
 
-      // Ocultar texto del separador punteado y aplicar salto de página real en el PDF
       contenedorTemp.querySelectorAll(".page-break").forEach(pb => {
         pb.style.border = "none";
         pb.style.margin = "0";
@@ -5773,14 +6317,12 @@
       const clon = document.createElement("div");
       clon.innerHTML = preview.innerHTML;
 
-      // Eliminar marcas de agua flotantes y textos de línea punteada para que en Google Docs salga 100% limpio
       clon.querySelectorAll(".contract-watermark").forEach(el => el.remove());
       clon.querySelectorAll(".page-break").forEach(pb => {
         pb.innerHTML = "";
         pb.setAttribute("style", "page-break-before: always; break-before: page; border: none; height: 0; margin: 0;");
       });
 
-      // Convertir el recuadro de 2 columnas (Foto | Video) en una tabla real de 2 columnas compatible al 100% con Google Docs y Word
       clon.querySelectorAll(".contract-includes-split").forEach(splitEl => {
         const cols = splitEl.querySelectorAll(".contract-includes-col");
         if (cols.length === 2) {
@@ -5805,7 +6347,6 @@
 
     function guardarYDescargarContratoGoogleDocs() {
       actualizarVistaContrato();
-      // Se guarda automáticamente en la Agenda / Lista de Pendientes como Impreso
       const guardado = guardarEventoInterno(true);
       if (!guardado) return;
 
@@ -5847,7 +6388,6 @@
 
     async function copiarContratoYAbrirGoogleDocs() {
       actualizarVistaContrato();
-      // Se guarda automáticamente en la Agenda / Lista de Pendientes
       const guardado = guardarEventoInterno(true);
       if (!guardado) return;
 
@@ -5896,10 +6436,8 @@
 
       notificar(`🖨️ Nota N° ${infoFolio.folioImpreso} guardada en pendientes. Siguiente folio listo: ${infoFolio.proximoFolio}`);
 
-      // Disparar impresión con la vista previa del folio actual
       window.print();
 
-      // Respaldo por si el navegador bloquea o cierra rápido el diálogo de impresión
       setTimeout(() => {
         if (pendienteAvanzarFolioTrasImprimir) {
           pendienteAvanzarFolioTrasImprimir = false;
@@ -5910,6 +6448,9 @@
 
     function prepararFormularioSiguienteFolio() {
       document.getElementById("rem_edit_id").value = "";
+      const renIdInput = document.getElementById("rem_renta_id");
+      if (renIdInput) renIdInput.value = "";
+      actualizarBadgeVinculoRenta("");
       document.getElementById("titulo_form_remision").textContent = "🧾 Crear Nota de Remisión (10 × 15 cm)";
       actualizarSiguienteFolioRemision();
       renderizarRemision();
@@ -5980,6 +6521,9 @@
     }
 
     function refrescarTablas() {
+      // Actualizar selector de rentas dentro del apartado de Notas
+      renderizarSelectorRentasParaNota();
+
       // 1. TABLA DE EVENTOS Y PENDIENTES DE CONTRATOS
       ordenarEventosPorFecha();
       const tbEv = document.getElementById("tabla_eventos");
@@ -5988,7 +6532,6 @@
       const hoyStr = new Date().toISOString().split("T")[0];
       let proximoMarcado = false;
 
-      // Contar pendientes y contratos no impresos para el resumen y KPIs
       const totalEvPendientes = state.eventos.filter(e => (e.estadoMaterial || "pendiente") === "pendiente" || e.estadoMaterial === "proceso").length;
       const totalEvListos = state.eventos.filter(e => e.estadoMaterial === "listo").length;
       const totalEvNoImpresos = state.eventos.filter(e => e.impreso === false).length;
@@ -6037,7 +6580,6 @@
           badgesHtml += `<br/><span class="badge badge-unprinted" style="margin-top:4px;">⚠️ Sin Imprimir</span>`;
         }
 
-        // Distintivo Especial cuando acumula 3 sanciones (3 meses / 90+ días sin pagar ni recuperar su material)
         if (infoDeuda.esMoroso3Meses) {
           badgesHtml += `<br/><span class="badge-moroso-3m">⛔ CONTRATO NO PAGADO — 3+ MESES SIN RECUPERAR MATERIAL (${infoDeuda.numSanciones} Sanciones)</span>`;
         } else if (infoDeuda.numSanciones > 0) {
@@ -6116,7 +6658,6 @@
               </div>
 
               ${infoDeuda.deudaBase > 0 ? `
-                <!-- Control de Sanciones del 10% sobre lo que deben (cada 30 días) -->
                 <div style="background:${infoDeuda.esMoroso3Meses ? '#ffe4e6' : '#fff7ed'}; border:1px solid ${infoDeuda.esMoroso3Meses ? '#f43f5e' : '#fdba74'}; border-radius:6px; padding:0.32rem 0.45rem; margin-top:0.3rem; font-size:0.73rem;">
                   <div style="display:flex; justify-content:space-between; align-items:center; gap:0.25rem;">
                     <span><strong>Sanción 10%</strong> ($${infoDeuda.montoPorSancion10.toLocaleString("es-MX")} c/30d):</span>
@@ -6134,7 +6675,6 @@
                   ` : ''}
                 </div>
 
-                <!-- Agregar Anticipo / Abono directo desde la Agenda -->
                 <div class="quick-abono-inline">
                   <input type="number" id="abono_rapido_monto_${ev.id}" placeholder="Monto abono $" min="1" style="flex:1; min-width:85px;" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarAbonoRapidoEvento('${ev.id}');}" />
                   <button type="button" class="btn btn-success btn-sm" onclick="agregarAbonoRapidoEvento('${ev.id}')">➕ Abonar</button>
@@ -6156,7 +6696,7 @@
         tbEv.appendChild(tr);
       });
 
-      // 2. TABLA DE LISTA DE PENDIENTES DE NOTAS DE REMISIÓN
+      // 2. TABLA DE LISTA DE PENDIENTES DE NOTAS DE REMISIÓN (CON EDICIÓN DIRECTA DEL DESGLOSE Y EXTRAS SIN CREAR OTRA NOTA)
       ordenarNotasPorFecha();
       const tbNotas = document.getElementById("tabla_notas_guardadas");
       if (tbNotas) {
@@ -6181,7 +6721,7 @@
         });
 
         if (notasFiltradas.length === 0) {
-          tbNotas.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:1.2rem;">No hay notas de remisión en esta vista. Al pulsar "🖨️ Imprimir Nota 10 × 15 cm" arriba, la nota se guardará y foliará aquí automáticamente.</td></tr>`;
+          tbNotas.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:1.2rem;">No hay notas de remisión en esta vista. Jala una renta o crea una nota arriba.</td></tr>`;
         }
 
         notasFiltradas.forEach(nota => {
@@ -6198,13 +6738,32 @@
             alertaHtml = `<br/><small style="color:var(--text-muted);">${diasTranscurridos === 0 ? "Pedida hoy" : "Hace " + diasTranscurridos + " día(s)"}</small>`;
           }
 
+          if (nota.rentaId) {
+            alertaHtml += `<br/><span class="badge badge-purple" style="margin-top:3px;">🎥 Nota de Renta de Equipo</span>`;
+          }
+
           let badgeEstadoNota = "";
           if (est === "pendiente") badgeEstadoNota = `<span class="badge badge-warn">⏳ Pendiente por Hacer</span>`;
           if (est === "proceso") badgeEstadoNota = `<span class="badge badge-blue">⚙️ En Proceso / Imprimiendo</span>`;
           if (est === "listo") badgeEstadoNota = `<span class="badge badge-ok">✅ Material Listo para Entregar</span>`;
           if (est === "entregado") badgeEstadoNota = `<span class="badge" style="background:#0f172a; color:#fff;">📦 Entregado ${nota.fechaEntregado ? '(' + nota.fechaEntregado + ')' : ''}</span>`;
 
-          const resumenItems = (nota.items || []).map(it => `• <strong>${it.cant}x</strong> ${it.desc} ($${Number(it.cant * it.precio).toLocaleString("es-MX")})`).join("<br/>");
+          // Desglose editable directamente allí mismo en la fila de la nota
+          const desgloseEditableHtml = (nota.items || []).map((it, i) => `
+            <div style="display:grid; grid-template-columns: 50px 1fr 75px auto; gap:0.25rem; align-items:center; margin-bottom:0.25rem;">
+              <input type="number" min="1" value="${it.cant}" title="Cantidad"
+                style="padding:0.18rem 0.3rem; font-size:0.75rem; font-weight:700;"
+                onchange="editarItemDeNotaGuardadaInline('${nota.id}', ${i}, 'cant', this.value)" />
+              <input type="text" value="${(it.desc || '').replace(/"/g, '&quot;')}" title="Editar equipo o concepto"
+                style="padding:0.18rem 0.4rem; font-size:0.75rem; font-weight:600;"
+                onchange="editarItemDeNotaGuardadaInline('${nota.id}', ${i}, 'desc', this.value)" />
+              <input type="number" min="0" value="${it.precio}" title="Precio unitario ($)"
+                style="padding:0.18rem 0.3rem; font-size:0.75rem; font-weight:700; color:#0369a1;"
+                onchange="editarItemDeNotaGuardadaInline('${nota.id}', ${i}, 'precio', this.value)" />
+              <button type="button" class="btn btn-danger btn-sm" style="padding:0.12rem 0.38rem; font-size:0.68rem;"
+                onclick="eliminarItemDeNotaGuardadaInline('${nota.id}', ${i})" title="Quitar del desglose">✕</button>
+            </div>
+          `).join("");
 
           const tr = document.createElement("tr");
           if (atrasado || (esUrgente && est !== "entregado")) {
@@ -6226,8 +6785,23 @@
               <small>Tel: ${nota.telefono || "-"}</small><br/>
               <small style="color:var(--text-muted);">${nota.direccion || ""}</small>
             </td>
-            <td>
-              <div style="font-size:0.82rem; line-height:1.45;">${resumenItems}</div>
+            <td style="min-width:290px;">
+              <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; padding:0.4rem;">
+                <div style="font-size:0.7rem; font-weight:800; color:#475569; margin-bottom:0.25rem;">
+                  ✏️ Desglose Editable (Cant. | Equipo/Concepto | Precio $):
+                </div>
+                ${desgloseEditableHtml}
+                <!-- Agregar algo extra directamente a esta misma nota sin crear otra -->
+                <div style="display:grid; grid-template-columns: 48px 1fr 72px auto; gap:0.25rem; align-items:center; margin-top:0.35rem; padding-top:0.3rem; border-top:1px dashed #cbd5e1;">
+                  <input type="number" id="extra_inline_cant_${nota.id}" value="1" min="1" placeholder="Cant" style="padding:0.18rem 0.25rem; font-size:0.74rem;" />
+                  <input type="text" id="extra_inline_desc_${nota.id}" placeholder="+ Agregar extra o equipo..." style="padding:0.18rem 0.35rem; font-size:0.74rem;"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();agregarExtraANotaGuardadaInline('${nota.id}');}" />
+                  <input type="number" id="extra_inline_precio_${nota.id}" value="0" min="0" placeholder="$" style="padding:0.18rem 0.25rem; font-size:0.74rem;"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();agregarExtraANotaGuardadaInline('${nota.id}');}" />
+                  <button type="button" class="btn btn-success btn-sm" style="padding:0.18rem 0.42rem; font-size:0.72rem;"
+                    onclick="agregarExtraANotaGuardadaInline('${nota.id}')" title="Sumar a esta misma nota">➕</button>
+                </div>
+              </div>
               ${nota.notas ? `<small style="color:var(--text-muted); display:block; margin-top:3px;">Nota: ${nota.notas}</small>` : ""}
             </td>
             <td>
@@ -6235,14 +6809,14 @@
               ${construirBotonesEstadoHtml(est, esUrgente, "cambiarEstadoNotaGuardada", "alternarPrioridadNotaGuardada", nota.id)}
             </td>
             <td>
-              Total: $${Number(nota.total).toLocaleString("es-MX")}<br/>
+              Total: <strong>$${Number(nota.total).toLocaleString("es-MX")}</strong><br/>
               A cuenta: $${Number(nota.anticipo).toLocaleString("es-MX")}<br/>
               <strong style="color:${Number(nota.saldo) > 0 ? '#e11d48' : '#16a34a'};">Resta: $${Number(nota.saldo).toLocaleString("es-MX")}</strong>
               ${Number(nota.saldo) > 0 ? `<br/><button type="button" class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="liquidarSaldoNotaGuardada('${nota.id}')">💲 Liquidar</button>` : ''}
             </td>
             <td>
               <div style="display:flex; flex-direction:column; gap:0.25rem;">
-                <button type="button" class="btn btn-primary btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}')">📄 Ver / Editar</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}')">✏️ Subir a Vista 10×15</button>
                 <button type="button" class="btn btn-outline btn-sm" onclick="cargarNotaGuardadaEnFormulario('${nota.id}', true)">🖨️ Imprimir 10×15</button>
                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminarNotaGuardada('${nota.id}')">🗑️ Eliminar</button>
               </div>
@@ -6252,13 +6826,13 @@
         });
       }
 
-      // 3. TABLA DE RENTAS DE EQUIPO
+      // 3. TABLA DE RENTAS DE EQUIPO (CON BOTÓN PARA EDITAR RENTA Y PARA JALAR/EDITAR SU NOTA DESGLOSADA SIN CREAR OTRA)
       const tbRen = document.getElementById("tabla_rentas");
       tbRen.innerHTML = "";
       if (state.rentas.length === 0) {
         tbRen.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:1rem;">No hay rentas de equipo registradas.</td></tr>`;
       }
-      // Actualizar Tarjetas de Resumen Ejecutivo (KPIs)
+
       const kpiEv = document.getElementById("kpi_total_eventos");
       const kpiNoImp = document.getElementById("kpi_no_impresos");
       const kpiUrg = document.getElementById("kpi_urgentes");
@@ -6276,9 +6850,11 @@
 
       state.rentas.forEach(ren => {
         const eqTxt = formatearEquipoTexto(ren.equipo);
+        const notaVinculada = state.notasGuardadas.find(n => n.rentaId === ren.id);
         const descRen = [
           `Colaborador: ${ren.cliente} (${ren.telefono})`,
           `Equipo: ${eqTxt}`,
+          `Extras: ${ren.extras || "-"}`,
           `Notas: ${ren.notas}`
         ].join("\n");
         const calUrl = generarUrlGoogleCalendar({
@@ -6292,13 +6868,22 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${ren.fecha}</strong><br/><small>${ren.horaInicio} - ${ren.horaFin}</small></td>
-          <td>${ren.cliente}<br/><small>${ren.telefono}</small></td>
-          <td><strong>${eqTxt}</strong></td>
-          <td>$${Number(ren.total).toLocaleString("es-MX")}</td>
+          <td><strong>${ren.cliente}</strong><br/><small>${ren.telefono}</small></td>
+          <td>
+            <strong>${eqTxt}</strong>
+            ${ren.extras ? `<br/><small style="color:#6d28d9; font-weight:700;">+ Extras: ${ren.extras}</small>` : ""}
+          </td>
+          <td><strong>$${Number(ren.total).toLocaleString("es-MX")}</strong></td>
           <td><small>${ren.notas || "-"}</small></td>
           <td>
-            <a class="btn btn-success btn-sm" href="${calUrl}" target="_blank">📅 Calendar</a>
-            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRenta('${ren.id}')">✕</button>
+            <div style="display:flex; flex-direction:column; gap:0.25rem;">
+              <button type="button" class="btn btn-warning btn-sm" style="font-weight:800;" onclick="enviarRentaGuardadaARemision('${ren.id}')">
+                ${notaVinculada ? `🧾 Editar su Nota N° ${notaVinculada.folio}` : `🧾 Jalar a Nota (Desglosar)`}
+              </button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="cargarRentaEnFormulario('${ren.id}')">✏️ Editar / Agregar Equipo</button>
+              <a class="btn btn-success btn-sm" href="${calUrl}" target="_blank">📅 Calendar</a>
+              <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRenta('${ren.id}')">🗑️ Eliminar</button>
+            </div>
           </td>
         `;
         tbRen.appendChild(tr);
