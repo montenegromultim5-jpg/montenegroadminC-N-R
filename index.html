@@ -2180,7 +2180,7 @@
             <h2>
               <span>📌 Actividad del Día Seleccionado: <strong id="cal_fecha_seleccionada_lbl" style="color:var(--accent);"></strong></span>
               <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
-                <button type="button" class="btn btn-success btn-sm" onclick="prepararNuevaSesionEnDiaSeleccionado()">📷 Agendar Sesión / Fecha Independiente</button>
+                <button type="button" class="btn btn-success btn-sm" id="btn_toggle_form_sesion_cal" onclick="prepararNuevaSesionEnDiaSeleccionado()">📷 Agendar Sesión / Fecha Independiente</button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="agendarEnFechaSeleccionada('evento')">➕ Nuevo Evento</button>
                 <button type="button" class="btn btn-outline btn-sm" onclick="agendarEnFechaSeleccionada('renta')">🎥 Rentar Equipo</button>
               </div>
@@ -2188,11 +2188,14 @@
             <div id="cal_detalle_dia"></div>
           </div>
 
-          <!-- Formulario para Agendar Fechas Independientes / Sesiones de Fotos en el Calendario -->
-          <div class="card" id="card_form_sesion_independiente" style="border: 1.5px solid #6ee7b7; background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);">
+          <!-- Formulario Desplegable para Agendar Fechas Independientes / Sesiones de Fotos (Oculto por defecto; se abre/cierra al picar el botón) -->
+          <div class="card" id="card_form_sesion_independiente" style="display: none; border: 1.5px solid #6ee7b7; background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);">
             <h2>
               <span id="titulo_form_sesion_cal">📷 Agendar Fecha Independiente / Sesión de Fotos</span>
-              <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormularioSesionCalendario()">🧹 Limpiar</button>
+              <div style="display:flex; gap:0.35rem;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormularioSesionCalendario()">🧹 Limpiar</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="cerrarMenuSesionCalendario()">✕ Cerrar</button>
+              </div>
             </h2>
             <input type="hidden" id="ses_edit_id" value="" />
             <p style="font-size:0.79rem; color:#065f46; margin-bottom:0.75rem;">
@@ -2476,37 +2479,6 @@
             <div style="display:flex; flex-wrap:wrap; gap:0.35rem;">
               <button type="button" class="btn btn-outline btn-sm" onclick="reiniciarFolioA001(false)" title="Pone el folio en 001 para volver a foliar 001, 002, 003...">🔄 Poner Folio en 001</button>
               <button type="button" class="btn btn-danger btn-sm" onclick="reiniciarFolioA001(true)" title="Borra las notas de prueba guardadas y reinicia el folio en 001">🧹 Terminar Pruebas (Limpiar y Folio 001)</button>
-            </div>
-          </div>
-
-          <!-- Panel para Jalar Renta de Equipo con Desglose Automático y Editable -->
-          <div style="background:linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border:1.5px solid #c4b5fd; border-radius:10px; padding:0.75rem 0.9rem; margin-bottom:0.85rem;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.45rem;">
-              <span style="font-size:0.82rem; font-weight:800; color:#5b21b6;">
-                🎥 Jalar Nota para Renta de Equipo (Con Desglose Editable)
-              </span>
-              <span id="badge_vinculo_renta_nota" class="badge badge-purple" style="display:none;">Vinculada a Renta</span>
-            </div>
-            <p style="font-size:0.75rem; color:#4c1d95; margin-bottom:0.5rem;">
-              Selecciona una renta agendada para <strong>jalar automáticamente el desglose de cada equipo rentado</strong>. Si esa renta ya tenía nota, se abrirá <strong>esa misma nota</strong> para que agregues extras o la modifiques allí mismo sin crear otra.
-            </p>
-            <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.4rem;">
-              <select id="rem_select_renta_jalar" style="flex:1; min-width:210px; font-size:0.8rem; font-weight:600; border-color:#a78bfa;"></select>
-              <button type="button" class="btn btn-primary btn-sm" style="background:#7c3aed; border-color:#7c3aed; font-weight:800;" onclick="jalarRentaSeleccionadaANota()">
-                📥 Jalar Renta Agendada
-              </button>
-            </div>
-            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-              <select id="rem_select_perfil_jalar" style="flex:1; min-width:210px; font-size:0.8rem; font-weight:600; border-color:#a78bfa;"></select>
-              <button type="button" class="btn btn-outline btn-sm" style="background:#fff; border-color:#7c3aed; color:#5b21b6; font-weight:800;" onclick="jalarPerfilClienteDirectoANota()">
-                👤 Jalar Perfil de Cliente Frecuente
-              </button>
-            </div>
-            <div style="margin-top:0.45rem;">
-              <small style="font-size:0.72rem; color:#5b21b6; font-weight:700; display:block; margin-bottom:0.25rem;">
-                ➕ ¿Pidió algún equipo extra de tu almacén? Tócalo para sumarlo directo al desglose de esta nota:
-              </small>
-              <div id="chips_equipos_renta_nota" style="display:flex; flex-wrap:wrap; gap:0.3rem;"></div>
             </div>
           </div>
 
@@ -3461,13 +3433,39 @@
       }
     }
 
+    function actualizarBotonToggleSesionCal(estaAbierto) {
+      const btn = document.getElementById("btn_toggle_form_sesion_cal");
+      if (!btn) return;
+      if (estaAbierto) {
+        btn.innerHTML = "✕ Cerrar Menú de Fecha Independiente";
+        btn.className = "btn btn-danger btn-sm";
+      } else {
+        btn.innerHTML = "📷 Agendar Sesión / Fecha Independiente";
+        btn.className = "btn btn-success btn-sm";
+      }
+    }
+
+    function cerrarMenuSesionCalendario() {
+      const card = document.getElementById("card_form_sesion_independiente");
+      if (card) card.style.display = "none";
+      actualizarBotonToggleSesionCal(false);
+    }
+
     function prepararNuevaSesionEnDiaSeleccionado() {
+      const card = document.getElementById("card_form_sesion_independiente");
+      if (!card) return;
+      const estaVisible = card.style.display !== "none" && card.style.display !== "";
+      if (estaVisible) {
+        // Si ya está abierto y vuelve a picar el botón, se cierra
+        cerrarMenuSesionCalendario();
+        return;
+      }
+      // Si está cerrado, se abre
+      card.style.display = "block";
+      actualizarBotonToggleSesionCal(true);
       limpiarFormularioSesionCalendario(true);
       document.getElementById("ses_fecha").value = calSelectedDate;
-      const card = document.getElementById("card_form_sesion_independiente");
-      if (card) card.scrollIntoView({ behavior: "smooth" });
       document.getElementById("ses_cliente").focus();
-      notificar("📷 Día " + calSelectedDate + " listo para agendar Sesión de Fotos o Fecha Independiente.");
     }
 
     function renderizarSelectorContratosParaSesion() {
@@ -3590,6 +3588,7 @@
 
       guardarEstado();
       limpiarFormularioSesionCalendario(true);
+      cerrarMenuSesionCalendario();
       refrescarTodo();
       notificar(`📷✅ ${tipo} de ${cliente} agendada para el día ${fecha}.`);
     }
@@ -3611,7 +3610,11 @@
       document.getElementById("ses_lugar").value = ses.lugar || "";
       document.getElementById("ses_notas").value = ses.notas || "";
       const card = document.getElementById("card_form_sesion_independiente");
-      if (card) card.scrollIntoView({ behavior: "smooth" });
+      if (card) {
+        card.style.display = "block";
+        actualizarBotonToggleSesionCal(true);
+        card.scrollIntoView({ behavior: "smooth" });
+      }
       notificar(`Editando fecha independiente / sesión de ${ses.cliente}`);
     }
 
