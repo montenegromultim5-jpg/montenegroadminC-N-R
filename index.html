@@ -1535,6 +1535,66 @@
       margin-bottom: 0.25rem;
     }
 
+    
+    /* ================= PERFILES DE CLIENTES FRECUENTES DE RENTA ================= */
+    .profiles-banner-box {
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+      border: 1.5px solid #c4b5fd;
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.65rem;
+    }
+
+    .profile-client-card {
+      background: #ffffff;
+      border: 1.5px solid #ddd6fe;
+      border-left: 5px solid #7c3aed;
+      border-radius: 10px;
+      padding: 0.75rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .profile-client-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(124, 58, 237, 0.12);
+      border-color: #a78bfa;
+    }
+
+    .profile-client-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
+    .profile-client-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .profile-client-equip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.76rem;
+      color: #334155;
+      line-height: 1.35;
+    }
+
     /* ================= IMPRESIÓN 100% AISLADA Y LIMPIA ================= */
     #print_only_stage {
       display: none;
@@ -2069,6 +2129,26 @@
 
     <!-- ================= TAB 3: INVENTARIO Y RENTA DE EQUIPO ================= -->
     <section id="tab-inventario" class="tab-content no-print">
+
+      <!-- Panel de Perfiles de Clientes Frecuentes de Renta -->
+      <div class="profiles-banner-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h3 style="font-size:1rem; font-weight:900; color:#5b21b6; display:flex; align-items:center; gap:0.4rem;">
+              👤 Perfiles de Clientes Frecuentes (Renta Habitual en 1 Clic)
+            </h3>
+            <p style="font-size:0.78rem; color:#4c1d95; margin-top:2px;">
+              Selecciona el perfil de tu cliente frecuente para <strong>cargar automáticamente todo lo que siempre renta</strong>. Si hoy te pide algo extra, solo súmalo abajo en el formulario o en su nota.
+            </p>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" style="background:#fff; border-color:#a78bfa; color:#5b21b6; font-weight:800;" onclick="guardarFormularioComoPerfilCliente()">
+            ⭐ Guardar Datos del Formulario como Perfil Frecuente
+          </button>
+        </div>
+
+        <div id="contenedor_perfiles_clientes" class="profiles-grid"></div>
+      </div>
+
       <div class="grid-2">
         <div class="card">
           <h2>
@@ -2079,6 +2159,14 @@
           <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.9rem;">
             Selecciona la fecha para ver qué cámaras o equipos están disponibles. Puedes desglosar precios por equipo o agregar extras y jalar todo directo a su Nota de Remisión.
           </p>
+
+          <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:8px; padding:0.5rem 0.65rem; margin-bottom:0.75rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.4rem;">
+            <label style="margin:0; font-size:0.76rem; font-weight:800; color:#5b21b6;">⚡ Autocompletar con Perfil de Cliente:</label>
+            <div style="display:flex; gap:0.35rem; flex:1; min-width:200px;">
+              <select id="ren_perfil_select" onchange="cargarPerfilClienteEnFormulario(this.value)" style="font-size:0.8rem; font-weight:700; border-color:#c4b5fd; padding:0.32rem 0.5rem;"></select>
+            </div>
+          </div>
+          <input type="hidden" id="ren_perfil_edit_id" value="" />
 
           <div class="form-row">
             <div class="form-group">
@@ -2131,6 +2219,7 @@
           <div class="btn-group">
             <button type="button" class="btn btn-primary" id="btn_guardar_renta" onclick="guardarRenta()">📦 Registrar Renta y Apartar</button>
             <button type="button" class="btn btn-warning" style="font-weight:800;" onclick="enviarRentaARemision()">🧾 Jalar a Nota 10×15 (Con Desglose Editable)</button>
+            <button type="button" class="btn btn-outline" style="border-color:#7c3aed; color:#5b21b6; font-weight:800;" onclick="guardarFormularioComoPerfilCliente()">⭐ Guardar/Actualizar Perfil de este Cliente</button>
             <button type="button" class="btn btn-success" onclick="agregarRentaCalendar()">📅 Google Calendar</button>
           </div>
         </div>
@@ -2256,10 +2345,16 @@
             <p style="font-size:0.75rem; color:#4c1d95; margin-bottom:0.5rem;">
               Selecciona una renta agendada para <strong>jalar automáticamente el desglose de cada equipo rentado</strong>. Si esa renta ya tenía nota, se abrirá <strong>esa misma nota</strong> para que agregues extras o la modifiques allí mismo sin crear otra.
             </p>
-            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-              <select id="rem_select_renta_jalar" style="flex:1; min-width:210px; font-size:0.82rem; font-weight:600; border-color:#a78bfa;"></select>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.4rem;">
+              <select id="rem_select_renta_jalar" style="flex:1; min-width:210px; font-size:0.8rem; font-weight:600; border-color:#a78bfa;"></select>
               <button type="button" class="btn btn-primary btn-sm" style="background:#7c3aed; border-color:#7c3aed; font-weight:800;" onclick="jalarRentaSeleccionadaANota()">
-                📥 Jalar Desglose de Renta
+                📥 Jalar Renta Agendada
+              </button>
+            </div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <select id="rem_select_perfil_jalar" style="flex:1; min-width:210px; font-size:0.8rem; font-weight:600; border-color:#a78bfa;"></select>
+              <button type="button" class="btn btn-outline btn-sm" style="background:#fff; border-color:#7c3aed; color:#5b21b6; font-weight:800;" onclick="jalarPerfilClienteDirectoANota()">
+                👤 Jalar Perfil de Cliente Frecuente
               </button>
             </div>
             <div style="margin-top:0.45rem;">
@@ -2727,6 +2822,7 @@
         { id: "eq2", nombre: "Cámara de Fotografía", total: 2 },
         { id: "eq3", nombre: "Dron", total: 1 }
       ],
+      perfilesClientesRenta: [],
       eventos: [],
       rentas: [],
       notasGuardadas: [],
@@ -2763,6 +2859,9 @@
           }
           if (!state.notasGuardadas) {
             state.notasGuardadas = [];
+          }
+          if (!Array.isArray(state.perfilesClientesRenta)) {
+            state.perfilesClientesRenta = [];
           }
           // Asegurar que los paquetes existentes tengan su descripción claramente numerada por puntos (1., 2., 3...)
           if (Array.isArray(state.paquetes)) {
@@ -2911,6 +3010,7 @@
           ...(remoto.config || {}),
           firebaseRawInput: rawSaved
         },
+        perfilesClientesRenta: Array.isArray(remoto.perfilesClientesRenta) ? remoto.perfilesClientesRenta : (state.perfilesClientesRenta || []),
         eventos: Array.isArray(remoto.eventos) ? remoto.eventos : [],
         rentas: Array.isArray(remoto.rentas) ? remoto.rentas : [],
         notasGuardadas: Array.isArray(remoto.notasGuardadas) ? remoto.notasGuardadas : [],
@@ -5212,9 +5312,282 @@
       return items;
     }
 
+    // ================= PERFILES DE CLIENTES FRECUENTES DE RENTA =================
+    function renderizarPerfilesClientesRenta() {
+      if (!Array.isArray(state.perfilesClientesRenta)) {
+        state.perfilesClientesRenta = [];
+      }
+      const cont = document.getElementById("contenedor_perfiles_clientes");
+      const selForm = document.getElementById("ren_perfil_select");
+      const selNota = document.getElementById("rem_select_perfil_jalar");
+
+      // Actualizar select en Formulario de Renta
+      if (selForm) {
+        const valPrev = selForm.value;
+        selForm.innerHTML = `<option value="">— Seleccionar cliente frecuente para autocompletar —</option>`;
+        state.perfilesClientesRenta.forEach(pf => {
+          const eqTxt = formatearEquipoTexto(pf.equipo);
+          const opt = document.createElement("option");
+          opt.value = pf.id;
+          opt.textContent = `👤 ${pf.cliente} (${eqTxt}) — $${Number(pf.total || 0).toLocaleString("es-MX")}`;
+          selForm.appendChild(opt);
+        });
+        if (valPrev && state.perfilesClientesRenta.some(p => p.id === valPrev)) {
+          selForm.value = valPrev;
+        }
+      }
+
+      // Actualizar select en Notas 10x15
+      if (selNota) {
+        const valPrevN = selNota.value;
+        selNota.innerHTML = `<option value="">— O elige un Perfil de Cliente Frecuente para desglosar su equipo habitual —</option>`;
+        state.perfilesClientesRenta.forEach(pf => {
+          const eqTxt = formatearEquipoTexto(pf.equipo);
+          const opt = document.createElement("option");
+          opt.value = pf.id;
+          opt.textContent = `👤 ${pf.cliente} — Siempre renta: ${eqTxt} ($${Number(pf.total || 0).toLocaleString("es-MX")})`;
+          selNota.appendChild(opt);
+        });
+        if (valPrevN && state.perfilesClientesRenta.some(p => p.id === valPrevN)) {
+          selNota.value = valPrevN;
+        }
+      }
+
+      if (!cont) return;
+      cont.innerHTML = "";
+
+      if (state.perfilesClientesRenta.length === 0) {
+        cont.innerHTML = `
+          <div style="grid-column: 1 / -1; background:#ffffff; border:1px dashed #c4b5fd; border-radius:8px; padding:0.75rem 1rem; font-size:0.8rem; color:#4c1d95;">
+            💡 <strong>Aún no tienes perfiles guardados.</strong> Llena abajo los datos de tu cliente frecuente (nombre, qué cámaras/equipos siempre renta y precio) y pulsa <strong>"⭐ Guardar/Actualizar Perfil de este Cliente"</strong>. La próxima vez podrás cargarlo con 1 solo clic.
+          </div>
+        `;
+        return;
+      }
+
+      state.perfilesClientesRenta.forEach(pf => {
+        const eqTxt = formatearEquipoTexto(pf.equipo);
+        const card = document.createElement("div");
+        card.className = "profile-client-card";
+        card.innerHTML = `
+          <div>
+            <div class="profile-client-header">
+              <div>
+                <div class="profile-client-name">👤 ${pf.cliente}</div>
+                <small style="color:var(--text-muted); font-size:0.74rem;">📞 ${pf.telefono || "Sin teléfono"} • ⏰ ${pf.horaInicio || "09:00"} a ${pf.horaFin || "21:00"}</small>
+              </div>
+              <span class="badge badge-purple" style="font-size:0.76rem;">$${Number(pf.total || 0).toLocaleString("es-MX")} MXN</span>
+            </div>
+
+            <div class="profile-client-equip" style="margin-top:0.45rem;">
+              <div><strong>🎥 Siempre renta:</strong> ${eqTxt}</div>
+              ${pf.extras ? `<div style="color:#6d28d9; font-weight:700; margin-top:2px;">➕ Extras habituales: ${pf.extras}</div>` : ""}
+              ${pf.notas ? `<div style="color:#64748b; font-size:0.71rem; margin-top:2px;">🪪 ${pf.notas}</div>` : ""}
+            </div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.25rem;">
+            <button type="button" class="btn btn-primary btn-sm" style="flex:1; background:#7c3aed; border-color:#7c3aed; font-weight:800;"
+              onclick="cargarPerfilClienteEnFormulario('${pf.id}')" title="Carga sus datos y equipos en el formulario por si hoy pide algo extra">
+              ⚡ Cargar (Por si pide extra)
+            </button>
+            <button type="button" class="btn btn-success btn-sm"
+              onclick="rentarDirectoDesdePerfil('${pf.id}')" title="Agenda su renta habitual para la fecha seleccionada en 1 clic">
+              📦 Rentar Hoy
+            </button>
+            <button type="button" class="btn btn-warning btn-sm"
+              onclick="enviarPerfilClienteARemision('${pf.id}')" title="Jalar su equipo habitual directo a una Nota 10×15">
+              🧾 Nota 10×15
+            </button>
+            <button type="button" class="btn btn-danger btn-sm"
+              onclick="eliminarPerfilClienteRenta('${pf.id}')" title="Eliminar este perfil">
+              ✕
+            </button>
+          </div>
+        `;
+        cont.appendChild(card);
+      });
+    }
+
+    function guardarFormularioComoPerfilCliente() {
+      const cliente = document.getElementById("ren_cliente").value.trim();
+      const equipoElegido = obtenerEquipoSeleccionadoRenta();
+      const preciosEquipo = obtenerPreciosPorEquipoRenta();
+
+      if (!cliente) {
+        notificar("Escribe el nombre del cliente frecuente en el formulario antes de guardar su perfil.", "error");
+        document.getElementById("ren_cliente").focus();
+        return;
+      }
+      if (Object.keys(equipoElegido).length === 0) {
+        notificar("Selecciona las cámaras o equipos que este cliente suele rentar normalmente.", "error");
+        return;
+      }
+
+      if (!Array.isArray(state.perfilesClientesRenta)) {
+        state.perfilesClientesRenta = [];
+      }
+
+      const editPerfilId = document.getElementById("ren_perfil_edit_id") ? document.getElementById("ren_perfil_edit_id").value : "";
+      // Buscar si ya existe un perfil con ese ID o con el mismo nombre de cliente para actualizarlo sin duplicar
+      let existenteIdx = state.perfilesClientesRenta.findIndex(p =>
+        (editPerfilId && p.id === editPerfilId) || p.cliente.toLowerCase() === cliente.toLowerCase()
+      );
+
+      const extEl = document.getElementById("ren_extras");
+      const perfilObj = {
+        id: existenteIdx >= 0 ? state.perfilesClientesRenta[existenteIdx].id : ("pf_" + Date.now()),
+        cliente,
+        telefono: document.getElementById("ren_telefono").value.trim(),
+        horaInicio: document.getElementById("ren_hora_inicio").value || "09:00",
+        horaFin: document.getElementById("ren_hora_fin").value || "21:00",
+        total: Number(document.getElementById("ren_total").value) || 0,
+        extras: extEl ? extEl.value.trim() : "",
+        notas: document.getElementById("ren_notas").value.trim(),
+        equipo: equipoElegido,
+        preciosEquipo: preciosEquipo
+      };
+
+      if (existenteIdx >= 0) {
+        state.perfilesClientesRenta[existenteIdx] = perfilObj;
+        notificar(`⭐ Perfil frecuente de "${cliente}" actualizado con su equipo habitual.`);
+      } else {
+        state.perfilesClientesRenta.push(perfilObj);
+        notificar(`⭐ ¡Perfil frecuente creado para "${cliente}"! Ahora puedes cargarlo con 1 clic cada vez que venga.`);
+      }
+
+      guardarEstado();
+      renderizarPerfilesClientesRenta();
+    }
+
+    function guardarRentaExistenteComoPerfil(rentaId) {
+      const ren = state.rentas.find(r => r.id === rentaId);
+      if (!ren) return;
+      if (!Array.isArray(state.perfilesClientesRenta)) {
+        state.perfilesClientesRenta = [];
+      }
+      const existenteIdx = state.perfilesClientesRenta.findIndex(p => p.cliente.toLowerCase() === (ren.cliente || "").toLowerCase());
+      const perfilObj = {
+        id: existenteIdx >= 0 ? state.perfilesClientesRenta[existenteIdx].id : ("pf_" + Date.now()),
+        cliente: ren.cliente,
+        telefono: ren.telefono || "",
+        horaInicio: ren.horaInicio || "09:00",
+        horaFin: ren.horaFin || "21:00",
+        total: Number(ren.total) || 0,
+        extras: ren.extras || "",
+        notas: ren.notas || "",
+        equipo: JSON.parse(JSON.stringify(ren.equipo || {})),
+        preciosEquipo: JSON.parse(JSON.stringify(ren.preciosEquipo || {}))
+      };
+
+      if (existenteIdx >= 0) {
+        state.perfilesClientesRenta[existenteIdx] = perfilObj;
+      } else {
+        state.perfilesClientesRenta.push(perfilObj);
+      }
+
+      guardarEstado();
+      renderizarPerfilesClientesRenta();
+      notificar(`⭐ "${ren.cliente}" guardado en tus Perfiles de Clientes Frecuentes.`);
+    }
+
+    function cargarPerfilClienteEnFormulario(perfilId) {
+      if (!perfilId) return;
+      const pf = (state.perfilesClientesRenta || []).find(p => p.id === perfilId);
+      if (!pf) return;
+
+      document.getElementById("ren_edit_id").value = "";
+      const pfEditInput = document.getElementById("ren_perfil_edit_id");
+      if (pfEditInput) pfEditInput.value = pf.id;
+
+      document.getElementById("titulo_form_renta").textContent = `👤 Perfil Cargado: ${pf.cliente} (Puedes agregar extras si hoy pidió algo más)`;
+      document.getElementById("btn_guardar_renta").textContent = "📦 Registrar Renta y Apartar";
+      document.getElementById("ren_cliente").value = pf.cliente || "";
+      document.getElementById("ren_telefono").value = pf.telefono || "";
+      document.getElementById("ren_hora_inicio").value = pf.horaInicio || "09:00";
+      document.getElementById("ren_hora_fin").value = pf.horaFin || "21:00";
+      document.getElementById("ren_total").value = pf.total || 0;
+      const extEl = document.getElementById("ren_extras");
+      if (extEl) extEl.value = pf.extras || "";
+      document.getElementById("ren_notas").value = pf.notas || "";
+
+      const fechaActual = document.getElementById("ren_fecha").value || new Date().toISOString().split("T")[0];
+      const disp = obtenerDisponibilidadPorFecha(fechaActual);
+      const equipoAjustado = {};
+      let avisoStock = [];
+
+      Object.entries(pf.equipo || {}).forEach(([eqId, cantHabitual]) => {
+        const libre = disp[eqId] ? disp[eqId].disponible : 0;
+        const cHab = Number(cantHabitual) || 0;
+        if (cHab <= libre) {
+          equipoAjustado[eqId] = cHab;
+        } else {
+          equipoAjustado[eqId] = libre;
+          const nom = disp[eqId] ? disp[eqId].nombre : "Equipo";
+          avisoStock.push(`${nom} (Pide ${cHab}, libres hoy: ${libre})`);
+        }
+      });
+
+      actualizarVistaDisponibilidadRenta(equipoAjustado, pf.preciosEquipo || {});
+
+      const selForm = document.getElementById("ren_perfil_select");
+      if (selForm) selForm.value = pf.id;
+
+      if (avisoStock.length > 0) {
+        notificar(`⚠️ Perfil de ${pf.cliente} cargado, pero revisa disponibilidad para esa fecha: ${avisoStock.join(", ")}`, "warn");
+      } else {
+        notificar(`⚡ Perfil de "${pf.cliente}" cargado con su equipo habitual. Si hoy pidió algo extra, agrégalo abajo.`);
+      }
+    }
+
+    function rentarDirectoDesdePerfil(perfilId) {
+      cargarPerfilClienteEnFormulario(perfilId);
+      guardarRenta(false);
+    }
+
+    function enviarPerfilClienteARemision(perfilId) {
+      const pf = (state.perfilesClientesRenta || []).find(p => p.id === perfilId);
+      if (!pf) return;
+      const fechaHoy = document.getElementById("ren_fecha").value || new Date().toISOString().split("T")[0];
+      const tempRenta = {
+        id: "",
+        cliente: pf.cliente,
+        telefono: pf.telefono || "",
+        fecha: fechaHoy,
+        horaInicio: pf.horaInicio || "09:00",
+        horaFin: pf.horaFin || "21:00",
+        total: Number(pf.total) || 0,
+        extras: pf.extras || "",
+        notas: pf.notas || "",
+        equipo: JSON.parse(JSON.stringify(pf.equipo || {})),
+        preciosEquipo: JSON.parse(JSON.stringify(pf.preciosEquipo || {}))
+      };
+      cargarDesgloseDeRentaEnNota(tempRenta);
+    }
+
+    function jalarPerfilClienteDirectoANota() {
+      const sel = document.getElementById("rem_select_perfil_jalar");
+      if (!sel || !sel.value) {
+        notificar("Selecciona un Perfil de Cliente Frecuente de la lista.", "warn");
+        return;
+      }
+      enviarPerfilClienteARemision(sel.value);
+    }
+
+    function eliminarPerfilClienteRenta(perfilId) {
+      state.perfilesClientesRenta = (state.perfilesClientesRenta || []).filter(p => p.id !== perfilId);
+      guardarEstado();
+      renderizarPerfilesClientesRenta();
+      notificar("Perfil de cliente frecuente eliminado.");
+    }
+
     function limpiarFormularioRenta() {
       const hoy = new Date().toISOString().split("T")[0];
       document.getElementById("ren_edit_id").value = "";
+      const pfEdit = document.getElementById("ren_perfil_edit_id");
+      if (pfEdit) pfEdit.value = "";
+      const pfSel = document.getElementById("ren_perfil_select");
+      if (pfSel) pfSel.value = "";
       document.getElementById("titulo_form_renta").textContent = "🎥 Consultar Disponibilidad y Rentar Equipo (Colaboradores)";
       document.getElementById("btn_guardar_renta").textContent = "📦 Registrar Renta y Apartar";
       document.getElementById("ren_fecha").value = hoy;
@@ -6521,7 +6894,8 @@
     }
 
     function refrescarTablas() {
-      // Actualizar selector de rentas dentro del apartado de Notas
+      // Actualizar perfiles de clientes frecuentes y selector de rentas
+      renderizarPerfilesClientesRenta();
       renderizarSelectorRentasParaNota();
 
       // 1. TABLA DE EVENTOS Y PENDIENTES DE CONTRATOS
@@ -6881,6 +7255,7 @@
                 ${notaVinculada ? `🧾 Editar su Nota N° ${notaVinculada.folio}` : `🧾 Jalar a Nota (Desglosar)`}
               </button>
               <button type="button" class="btn btn-primary btn-sm" onclick="cargarRentaEnFormulario('${ren.id}')">✏️ Editar / Agregar Equipo</button>
+              <button type="button" class="btn btn-outline btn-sm" style="border-color:#a78bfa; color:#5b21b6; font-weight:700;" onclick="guardarRentaExistenteComoPerfil('${ren.id}')">⭐ Guardar como Perfil</button>
               <a class="btn btn-success btn-sm" href="${calUrl}" target="_blank">📅 Calendar</a>
               <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRenta('${ren.id}')">🗑️ Eliminar</button>
             </div>
