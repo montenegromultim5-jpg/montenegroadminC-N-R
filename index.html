@@ -1712,6 +1712,550 @@
       color: #0f172a !important;
     }
 
+    
+    /* ================= CENTRO DE COMANDO OPERATIVO (DISEÑO VERTICAL MÓVIL ESTILO CRM) ================= */
+    .crm-command-header {
+      background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 1.25rem 1.35rem;
+      margin-bottom: 1.25rem;
+      border-left: 5px solid #d97706;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .crm-pill-tag {
+      display: inline-block;
+      background: #27272a;
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+    }
+
+    .crm-stats-2x2 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 1.35rem;
+    }
+
+    @media (max-width: 768px) {
+      .crm-stats-2x2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .crm-stat-box {
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 16px;
+      padding: 1.1rem 0.85rem;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .crm-stat-box:hover {
+      transform: translateY(-2px);
+    }
+
+    .crm-stat-num {
+      font-size: 1.9rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+
+    .crm-stat-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #78716c;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Tarjetas Verticales de Proceso de Producción Activo (4 Etapas) */
+    .prod-stage-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .prod-stage-card {
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 16px;
+      padding: 1.1rem 1.25rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prod-stage-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .prod-stage-card.stage-1 { border-top: 4.5px solid #64748b; }
+    .prod-stage-card.stage-2 { border-top: 4.5px solid #c26d53; }
+    .prod-stage-card.stage-3 { border-top: 4.5px solid #d97706; }
+    .prod-stage-card.stage-4 { border-top: 4.5px solid #15803d; }
+
+    .prod-stage-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .prod-stage-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .stage-1 .prod-stage-title, .stage-1 .prod-stage-num { color: #334155; }
+    .stage-2 .prod-stage-title, .stage-2 .prod-stage-num { color: #b45339; }
+    .stage-3 .prod-stage-title, .stage-3 .prod-stage-num { color: #d97706; }
+    .stage-4 .prod-stage-title, .stage-4 .prod-stage-num { color: #15803d; }
+
+    .prod-stage-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    .stage-1 .prod-stage-icon { background: #f1f5f9; color: #334155; }
+    .stage-2 .prod-stage-icon { background: #ffedd5; color: #b45339; }
+    .stage-3 .prod-stage-icon { background: #fef3c7; color: #d97706; }
+    .stage-4 .prod-stage-icon { background: #dcfce7; color: #15803d; }
+
+    .prod-stage-num {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+    }
+
+    .prod-stage-sub {
+      font-size: 0.82rem;
+      color: #78716c;
+    }
+
+    /* Agenda de los Próximos 14 Días y Cobros Próximos */
+    .crm-list-card {
+      background: #fafaf9;
+      border: 1px solid #e7e5e4;
+      border-radius: 14px;
+      padding: 0.95rem 1.1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .crm-cobro-card {
+      background: #fff8f6;
+      border: 1px solid #fed7aa;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .crm-days-pill {
+      display: inline-block;
+      background: #f1f5f9;
+      color: #334155;
+      font-size: 0.73rem;
+      font-weight: 800;
+      padding: 0.18rem 0.55rem;
+      border-radius: 6px;
+      margin-left: 0.35rem;
+    }
+
+    .crm-days-pill.hoy {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .btn-whatsapp-crm {
+      background: #22c55e;
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 0.42rem 0.85rem;
+      border-radius: 8px;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(34, 197, 94, 0.28);
+    }
+
+    .btn-whatsapp-crm:hover {
+      background: #16a34a;
+    }
+
+    .btn-expediente-crm {
+      background: #ffffff;
+      color: #1c1917;
+      border: 1px solid #d6d3d1;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0.42rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-expediente-crm:hover {
+      background: #f5f5f4;
+    }
+
+    /* Balance Financiero del Mes (Estilo Captura 3) */
+    .fin-balance-box {
+      border-radius: 14px;
+      padding: 1.05rem 1.15rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid #e7e5e4;
+      background: #fafaf9;
+    }
+
+    .fin-balance-box.cobrado {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+
+    .fin-balance-box.liquidar {
+      background: #fff7ed;
+      border-color: #fed7aa;
+    }
+
+    .fin-balance-lbl {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #57534e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fin-balance-box.cobrado .fin-balance-lbl,
+    .fin-balance-box.cobrado .fin-balance-amount {
+      color: #15803d;
+    }
+
+    .fin-balance-box.liquidar .fin-balance-lbl {
+      color: #9a3412;
+    }
+
+    .fin-balance-box.liquidar .fin-balance-amount {
+      color: #c2410c;
+    }
+
+    .fin-balance-amount {
+      font-size: 1.85rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin: 0.25rem 0;
+      color: #1c1917;
+    }
+
+    /* Píldora para etapa 3: Selección de Fotos */
+    .status-pill.active-seleccion {
+      background: #fef3c7;
+      border-color: #d97706;
+      color: #92400e;
+      font-weight: 800;
+    }
+
+    /* Campanita Flotante de Notificaciones (Esquina Inferior Izquierda como en la Captura 4) */
+    #floating_bell_btn {
+      position: fixed;
+      bottom: 22px;
+      left: 20px;
+      z-index: 9990;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #18181b;
+      color: #ffffff;
+      border: 2px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #floating_bell_btn:hover {
+      transform: scale(1.06);
+    }
+
+    #floating_bell_badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #dc2626;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 900;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      border: 2px solid #ffffff;
+    }
+
+    #notif_drawer_panel {
+      position: fixed;
+      bottom: 86px;
+      left: 20px;
+      z-index: 9995;
+      width: 360px;
+      max-width: calc(100vw - 32px);
+      max-height: 75vh;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+      padding: 1rem;
+      display: none;
+    }
+
+    /* Barra de Navegación Inferior Fija para Celulares en Formato Vertical */
+    .mobile-bottom-nav {
+      display: none;
+    }
+
+    @media (max-width: 820px) {
+      body {
+        padding-bottom: 76px;
+      }
+
+      header {
+        padding: 0.75rem 0.9rem;
+        gap: 0.65rem;
+      }
+
+      header .nav-tabs {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+        padding: 0.3rem;
+        gap: 0.3rem;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      header .tab-btn {
+        font-size: 0.76rem;
+        padding: 0.42rem 0.7rem;
+        flex-shrink: 0;
+      }
+
+      main {
+        margin: 0.85rem auto;
+        padding: 0 0.75rem;
+      }
+
+      .card {
+        padding: 1rem;
+        border-radius: 14px;
+      }
+
+      #floating_bell_btn {
+        bottom: 76px;
+        left: 14px;
+        width: 48px;
+        height: 48px;
+      }
+
+      #notif_drawer_panel {
+        bottom: 132px;
+        left: 14px;
+      }
+
+      .mobile-bottom-nav {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: #0f172a;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        z-index: 9980;
+        padding: 0.25rem 0.2rem;
+        box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.25);
+      }
+
+      .mob-nav-item {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.64rem;
+        font-weight: 700;
+        gap: 2px;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+
+      .mob-nav-item .mob-ico {
+        font-size: 1.15rem;
+        line-height: 1;
+      }
+
+      .mob-nav-item.active {
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.12);
+      }
+    }
+
+    
+    /* ================= LIMPIEZA VISUAL DEFINITIVA (V24) ================= */
+    #kpi_dashboard_bar,
+    #proximo_evento_banner,
+    #card_contratos_anteriores_cmd {
+      display: none !important;
+    }
+
+    .clean-finance-box {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 0.7rem 0.8rem;
+      min-width: 270px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    }
+
+    .clean-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.38rem 0.55rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .clean-total-row label {
+      margin: 0;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .clean-total-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .clean-total-input {
+      width: 105px !important;
+      padding: 0.24rem 0.45rem !important;
+      font-size: 0.86rem !important;
+      font-weight: 900 !important;
+      color: #0369a1 !important;
+      text-align: right;
+      border: 1.5px solid #7dd3fc !important;
+      border-radius: 6px !important;
+      background: #ffffff !important;
+    }
+
+    .clean-abonos-list {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      margin-bottom: 0.45rem;
+      max-height: 135px;
+      overflow-y: auto;
+    }
+
+    .clean-abono-item {
+      display: grid;
+      grid-template-columns: auto 82px 108px auto;
+      gap: 0.25rem;
+      align-items: center;
+      padding: 0.2rem 0;
+      border-bottom: 1px dashed #bbf7d0;
+      font-size: 0.73rem;
+    }
+
+    .clean-abono-item:last-child {
+      border-bottom: none;
+    }
+
+    .clean-add-abono-box {
+      background: #f8fafc;
+      border: 1px dashed #94a3b8;
+      border-radius: 8px;
+      padding: 0.42rem 0.5rem;
+      margin-top: 0.35rem;
+    }
+
+    .clean-extra-details {
+      margin-top: 0.45rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.35rem 0.55rem;
+      font-size: 0.75rem;
+    }
+
+    .clean-extra-details summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #475569;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .clean-extra-details summary::after {
+      content: "▾";
+      font-size: 0.8rem;
+    }
+
+    .clean-extra-details[open] summary::after {
+      content: "▴";
+    }
+
     /* ================= IMPRESIÓN 100% AISLADA Y LIMPIA ================= */
     #print_only_stage {
       display: none;
@@ -1812,11 +2356,13 @@
       </div>
     </div>
     <nav class="nav-tabs">
-      <button type="button" class="tab-btn active" id="nav_btn_contratos" onclick="switchTab('contratos')">📄 1. Contratos y Eventos</button>
-      <button type="button" class="tab-btn" id="nav_btn_calendario" onclick="switchTab('calendario')">📅 2. Mini Calendario</button>
-      <button type="button" class="tab-btn" id="nav_btn_inventario" onclick="switchTab('inventario')">🎥 3. Inventario y Renta</button>
-      <button type="button" class="tab-btn" id="nav_btn_remisiones" onclick="switchTab('remisiones')">🧾 4. Notas 10x15 y Pendientes</button>
-      <button type="button" class="tab-btn" id="nav_btn_config" onclick="switchTab('config')">☁️ 5. Firebase y Respaldo</button>
+      <button type="button" class="tab-btn active" id="nav_btn_comando" onclick="switchTab('comando')">📱 Centro de Comando</button>
+      <button type="button" class="tab-btn" id="nav_btn_contratos" onclick="switchTab('contratos')">📄 Contratos y Agenda</button>
+      <button type="button" class="tab-btn" id="nav_btn_calendario" onclick="switchTab('calendario')">📅 Calendario</button>
+      <button type="button" class="tab-btn" id="nav_btn_maquila" onclick="switchTab('maquila')">🧮 Maquila e Inversión</button>
+      <button type="button" class="tab-btn" id="nav_btn_inventario" onclick="switchTab('inventario')">🎥 Rentas</button>
+      <button type="button" class="tab-btn" id="nav_btn_remisiones" onclick="switchTab('remisiones')">🧾 Notas 10x15</button>
+      <button type="button" class="tab-btn" id="nav_btn_config" onclick="switchTab('config')">☁️ Firebase</button>
     </nav>
     <div id="cloud_status_badge" class="cloud-status-pill" onclick="switchTab('config')" title="Haz clic para configurar o ver el estado de sincronización con Firebase">
       <span class="cloud-dot"></span>
@@ -1857,8 +2403,279 @@
         <div class="kpi-icon">🎁</div>
       </div>
     </div>
+    <!-- ================= TAB 0: CENTRO DE COMANDO OPERATIVO (OPTIMIZADO MÓVIL VERTICAL) ================= -->
+    <section id="tab-comando" class="tab-content active no-print">
+
+      <!-- Encabezado Centro de Comando Operativo + Botón de Notificaciones -->
+      <div class="crm-command-header">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <span class="crm-pill-tag">CENTRO DE COMANDO OPERATIVO • MONTENEGRO CRM</span>
+            <h2 style="font-size:1.3rem; font-weight:900; color:#ffffff; margin-bottom:0.2rem; font-family:'Georgia', serif;">
+              Flujo de Post-Producción, Agenda & Liquidaciones
+            </h2>
+            <p style="font-size:0.82rem; color:#d4d4d8;">
+              Supervisión ejecutiva en tiempo real para tus entregas, cobros a cuenta y alertas de eventos próximos.
+            </p>
+          </div>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button type="button" class="btn btn-warning btn-sm" id="btn_activar_notif_push" style="background:#f59e0b; color:#090d16; font-weight:800;" onclick="activarYProbarNotificacionesEvento()">
+              🔔 Activar Avisos de Eventos en mi Celular
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" style="font-weight:800;" onclick="switchTab('contratos')">
+              ➕ Nuevo Contrato
+            </button>
+            <button type="button" class="btn btn-success btn-sm" style="font-weight:800;" onclick="irAContratosAnterioresComando()">
+              📂 Pasar Contrato Anterior
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Tarjetas Superiores Estilo Captura 4 (2x2 en Celular Vertical) -->
+      <div class="crm-stats-2x2">
+        <div class="crm-stat-box" onclick="switchTab('contratos'); filtrarTablaEventos('todos');">
+          <div class="crm-stat-num" id="cmd_stat_total_reservas" style="color:#1c1917;">0</div>
+          <div class="crm-stat-lbl">TOTAL RESERVAS</div>
+        </div>
+        <div class="crm-stat-box" onclick="switchTab('contratos'); filtrarTablaEventos('pendientes');">
+          <div class="crm-stat-num" id="cmd_stat_nuevas" style="color:#1d4ed8;">0</div>
+          <div class="crm-stat-lbl">POR INICIAR</div>
+        </div>
+        <div class="crm-stat-box" onclick="document.getElementById('card_cobros_proximos_cmd').scrollIntoView({behavior:'smooth'});">
+          <div class="crm-stat-num" id="cmd_stat_seguimiento" style="color:#b45309;">0</div>
+          <div class="crm-stat-lbl">CON SALDO A CUENTA</div>
+        </div>
+        <div class="crm-stat-box" onclick="switchTab('calendario');">
+          <div class="crm-stat-num" id="cmd_stat_contratadas" style="color:#15803d;">0</div>
+          <div class="crm-stat-lbl">CONTRATADAS ACTIVAS</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- COLUMNA 1: PROCESO DE PRODUCCIÓN ACTIVO (4 ETAPAS VERTICALES) + BALANCE FINANCIERO DEL MES -->
+        <div>
+          <div class="card" style="background:#faf8f5; border-color:#e7e5e4;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem;">
+              <strong style="font-size:0.95rem; font-weight:900; color:#1c1917; letter-spacing:0.3px;">
+                PROCESO DE PRODUCCIÓN ACTIVO (<span id="cmd_total_en_produccion_lbl">0</span> PROYECTOS)
+              </strong>
+              <button type="button" style="background:none; border:none; color:#b45339; font-weight:800; font-size:0.8rem; cursor:pointer;" onclick="switchTab('contratos')">
+                Ver en Producción →
+              </button>
+            </div>
+
+            <div class="prod-stage-stack">
+              <!-- Etapa 1: Por Iniciar -->
+              <div class="prod-stage-card stage-1" onclick="mostrarDetalleEtapaProduccion('pendiente')">
+                <div class="prod-stage-top">
+                  <span class="prod-stage-title">1. POR INICIAR</span>
+                  <span class="prod-stage-icon">✎</span>
+                </div>
+                <div class="prod-stage-num" id="cmd_stage_1_num">0</div>
+                <div class="prod-stage-sub">Eventos listos para cobertura</div>
+              </div>
+
+              <!-- Etapa 2: En Edición -->
+              <div class="prod-stage-card stage-2" onclick="mostrarDetalleEtapaProduccion('proceso')">
+                <div class="prod-stage-top">
+                  <span class="prod-stage-title">2. EN EDICIÓN</span>
+                  <span class="prod-stage-icon">⚙️</span>
+                </div>
+                <div class="prod-stage-num" id="cmd_stage_2_num">0</div>
+                <div class="prod-stage-sub">Retoque, color y revelado</div>
+              </div>
+
+              <!-- Etapa 3: Selección de Fotos -->
+              <div class="prod-stage-card stage-3" onclick="mostrarDetalleEtapaProduccion('seleccion')">
+                <div class="prod-stage-top">
+                  <span class="prod-stage-title">3. SELECCIÓN DE FOTOS</span>
+                  <span class="prod-stage-icon">🖼️</span>
+                </div>
+                <div class="prod-stage-num" id="cmd_stage_3_num">0</div>
+                <div class="prod-stage-sub">Galería activa con cliente / En maquila</div>
+              </div>
+
+              <!-- Etapa 4: Listos para Entrega -->
+              <div class="prod-stage-card stage-4" onclick="mostrarDetalleEtapaProduccion('listo')">
+                <div class="prod-stage-top">
+                  <span class="prod-stage-title">4. LISTOS PARA ENTREGA</span>
+                  <span class="prod-stage-icon">✓</span>
+                </div>
+                <div class="prod-stage-num" id="cmd_stage_4_num">0</div>
+                <div class="prod-stage-sub">Material terminado para cita</div>
+              </div>
+            </div>
+
+            <!-- Lista desplegable rápida cuando toca una de las 4 etapas -->
+            <div id="cmd_detalle_etapa_box" style="display:none; margin-top:0.9rem; background:#ffffff; border:1px solid #d6d3d1; border-radius:12px; padding:0.85rem;"></div>
+          </div>
+
+          <!-- BALANCE FINANCIERO DEL MES (ESTILO CAPTURA 3) -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.65rem;">
+              <div style="display:flex; align-items:center; gap:0.45rem;">
+                <span style="width:10px; height:10px; border-radius:50%; background:#15803d; display:inline-block;"></span>
+                <strong style="font-size:0.92rem; font-weight:900; color:#1c1917; text-transform:uppercase;">
+                  BALANCE FINANCIERO DEL MES:
+                </strong>
+              </div>
+              <div style="display:flex; gap:0.35rem; align-items:center;">
+                <select id="cmd_mes_balance_select" onchange="renderizarCentroDeComando()" style="width:auto; font-weight:800; font-size:0.8rem; padding:0.3rem 0.6rem; border-radius:8px;"></select>
+              </div>
+            </div>
+
+            <div style="margin-bottom:0.9rem;">
+              <span id="cmd_eventos_mes_pill" style="display:inline-block; background:#fafaf9; border:1px solid #d6d3d1; color:#57534e; font-size:0.78rem; font-weight:700; padding:0.28rem 0.85rem; border-radius:999px;">
+                0 eventos contratados en este mes
+              </span>
+            </div>
+
+            <div class="fin-balance-box">
+              <div class="fin-balance-lbl">
+                <span>INGRESOS PROYECTADOS</span>
+              </div>
+              <div class="fin-balance-amount" id="cmd_fin_proyectado">$0.00</div>
+              <div style="font-size:0.78rem; color:#78716c;">Total por eventos del periodo seleccionado</div>
+            </div>
+
+            <div class="fin-balance-box cobrado">
+              <div class="fin-balance-lbl">
+                <span>TOTAL COBRADO</span>
+                <span id="cmd_fin_pct_cobrado" class="badge badge-ok" style="font-size:0.75rem;">0%</span>
+              </div>
+              <div class="fin-balance-amount" id="cmd_fin_cobrado">$0.00</div>
+              <div style="font-size:0.78rem; color:#166534;">Anticipos y abonos recibidos a cuenta</div>
+            </div>
+
+            <div class="fin-balance-box liquidar" style="margin-bottom:0;">
+              <div class="fin-balance-lbl">
+                <span>SALDO POR LIQUIDAR</span>
+              </div>
+              <div class="fin-balance-amount" id="cmd_fin_por_liquidar">$0.00</div>
+              <div style="font-size:0.78rem; color:#9a3412;">Pendiente en entregas y contratos</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA 2: AGENDA DE LOS PRÓXIMOS 14 DÍAS + COBROS PRÓXIMOS DE ENTREGAS -->
+        <div>
+          <!-- AGENDA DE LOS PRÓXIMOS 14 DÍAS (ESTILO CAPTURA 2) -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.2rem;">
+              <strong style="font-size:1.05rem; font-weight:900; color:#1c1917;">Agenda de los Próximos 14 Días</strong>
+              <button type="button" style="background:none; border:none; color:#b45339; font-weight:800; font-size:0.8rem; cursor:pointer;" onclick="switchTab('calendario')">
+                Ver Calendario →
+              </button>
+            </div>
+            <p style="font-size:0.8rem; color:#78716c; margin-bottom:0.9rem;">Sesiones y eventos programados próximamente</p>
+
+            <div id="cmd_agenda_14_dias_list"></div>
+          </div>
+
+          <!-- COBROS PRÓXIMOS DE ENTREGAS / SALDOS A CUENTA (ESTILO CAPTURA 2) -->
+          <div class="card" id="card_cobros_proximos_cmd">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.2rem;">
+              <strong style="font-size:1.05rem; font-weight:900; color:#1c1917;">Cobros Próximos de Entregas</strong>
+              <span class="badge badge-warn" id="cmd_badge_total_deudores">0 con saldo</span>
+            </div>
+            <p style="font-size:0.8rem; color:#78716c; margin-bottom:0.9rem;">Clientes con eventos o contratos anteriores y saldo por liquidar</p>
+
+            <div id="cmd_cobros_proximos_list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APARTADO ESPECIAL: CONTRATOS AGENDADOS ANTES DE TENER LA PÁGINA (CUÁNTO ES EL CONTRATO Y LO QUE VAN DEJANDO A CUENTA) -->
+      <div class="card" id="card_contratos_anteriores_cmd" style="border: 2px solid #10b981; background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);">
+        <h2>
+          <span>📂 Contratos que Agendé Antes de Tener la Página (Control de Costo Total y Abonos a Cuenta)</span>
+          <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormContratoAnteriorCmd()">🧹 Limpiar</button>
+        </h2>
+        <p style="font-size:0.81rem; color:#065f46; margin-bottom:0.85rem;">
+          Registra aquí todos los contratos que ya tenías firmados antes de usar la página: pon <strong>cuánto es el contrato en total</strong> y <strong>lo que te van dejando a cuenta los clientes</strong> para llevar su saldo exacto, su fecha en el calendario y sus entregas.
+        </p>
+
+        <input type="hidden" id="cmd_ant_edit_id" value="" />
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Nombre del Cliente / Evento *</label>
+            <input type="text" id="cmd_ant_cliente" placeholder="Ej. Boda Chloe y Julio / XV Valeria" />
+          </div>
+          <div class="form-group">
+            <label>Fecha del Evento *</label>
+            <input type="date" id="cmd_ant_fecha" />
+          </div>
+          <div class="form-group">
+            <label>Teléfono del Cliente (Para WhatsApp)</label>
+            <input type="text" id="cmd_ant_telefono" placeholder="Ej. 722 123 4567" />
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Lugar / Salón / Localidad *</label>
+            <input type="text" id="cmd_ant_lugar" placeholder="Ej. Salón Real, Capulhuac" />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Evento o Paquete</label>
+            <input type="text" id="cmd_ant_paquete" placeholder="Ej. Boda / XV Años / Bautizo" />
+          </div>
+          <div class="form-group">
+            <label>🗺️ Link de Google Maps (Opcional)</label>
+            <input type="url" id="cmd_ant_maps" placeholder="https://maps.app.goo.gl/..." />
+          </div>
+        </div>
+
+        <div class="form-row-3" style="background:#ecfdf5; border:1px solid #6ee7b7; border-radius:10px; padding:0.65rem 0.75rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin:0;">
+            <label style="color:#065f46; font-weight:800;">💰 ¿Cuánto es el Contrato Total? ($ MXN) *</label>
+            <input type="number" id="cmd_ant_total" value="0" min="0" oninput="calcularRestaContratoAnteriorCmd()" style="font-weight:800; font-size:0.95rem;" />
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label style="color:#065f46; font-weight:800;">💵 ¿Cuánto te han dejado a cuenta? ($ MXN) *</label>
+            <input type="number" id="cmd_ant_acuenta" value="0" min="0" oninput="calcularRestaContratoAnteriorCmd()" style="font-weight:800; font-size:0.95rem; color:#15803d;" />
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label style="color:#9f1239; font-weight:800;">📉 Resta por Liquidar ($ MXN)</label>
+            <input type="number" id="cmd_ant_saldo" value="0" readonly style="background:#fff1f2; font-weight:900; font-size:0.95rem; color:#e11d48;" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Etapa Actual en Producción</label>
+            <select id="cmd_ant_etapa">
+              <option value="pendiente">1. Por Iniciar (Listo para cobertura)</option>
+              <option value="proceso">2. En Edición (Retoque, color y revelado)</option>
+              <option value="seleccion">3. Selección de Fotos (Galería con cliente / Maquila)</option>
+              <option value="listo">4. Listo para Entrega (Material terminado)</option>
+              <option value="entregado">📦 Ya Entregado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Detalles / Qué incluye / Horario</label>
+            <input type="text" id="cmd_ant_notas" placeholder="Ej. 100 fotos 4x6, Cuadro 16x20, Video USB..." />
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-success" id="btn_guardar_cmd_ant" style="font-weight:800; width:100%; padding:0.7rem;" onclick="guardarContratoAnteriorDesdeComando()">
+          📂💾 Guardar Contrato Anterior y sus Abonos a Cuenta
+        </button>
+
+        <!-- Tabla/Tarjetas de Contratos Anteriores y Abonos a Cuenta -->
+        <div style="margin-top:1.1rem;">
+          <h3 style="font-size:0.9rem; font-weight:800; color:#065f46; margin-bottom:0.55rem;">
+            📋 Mis Contratos Registrados y Lo que me van dejando a Cuenta:
+          </h3>
+          <div id="cmd_lista_contratos_acuenta"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= TAB 1: EVENTOS, PAQUETES Y CONTRATOS ================= -->
-    <section id="tab-contratos" class="tab-content active">
+    <section id="tab-contratos" class="tab-content">
 
       <!-- Banner de Próximo Contrato en Puerta -->
       <div id="proximo_evento_banner" class="next-event-banner no-print">
@@ -2128,41 +2945,56 @@
             <button type="button" class="btn btn-outline btn-sm" onclick="agregarBloqueHorario()">➕ Agregar Bloque</button>
           </div>
 
-          <div class="section-subtitle">💰 5. Costo, Anticipo Inicial y Equipo Apartado</div>
+          <div class="section-subtitle">💰 5. ¿De cuánto es el Contrato y cuánto dejan a cuenta?</div>
           <div class="form-row-3">
             <div class="form-group">
-              <label>Costo Total ($ MXN)</label>
-              <input type="number" id="ev_total" value="0" min="0" oninput="calcularSaldoEvento(); actualizarVistaContrato();" />
+              <label style="color:#0369a1; font-weight:800;">¿De cuánto es el Contrato? ($ Total)</label>
+              <input type="number" id="ev_total" value="0" min="0" oninput="calcularSaldoEvento(); actualizarSubtitulosRestaAbonos(); actualizarVistaContrato();" style="font-weight:900; color:#0369a1; border-color:#38bdf8;" />
             </div>
             <div class="form-group">
-              <label>Anticipo Inicial ($ MXN)</label>
-              <input type="number" id="ev_anticipo" value="0" min="0" oninput="sincronizarPrimerAnticipoEnAbonos(); calcularSaldoEvento(); actualizarVistaContrato();" />
+              <label style="color:#15803d; font-weight:800;">1er Anticipo a Cuenta ($ MXN)</label>
+              <input type="number" id="ev_anticipo" value="0" min="0" oninput="sincronizarPrimerAnticipoEnAbonos(); calcularSaldoEvento(); actualizarVistaContrato();" style="font-weight:800; color:#15803d;" />
             </div>
             <div class="form-group">
-              <label>Saldo Restante ($ MXN)</label>
-              <input type="number" id="ev_saldo" value="0" readonly style="background:#f1f5f9; font-weight:800; color:#e11d48;" />
+              <label style="color:#e11d48; font-weight:800;">Resta por Liquidar ($ MXN)</label>
+              <input type="number" id="ev_saldo" value="0" readonly style="background:#fff1f2; font-weight:900; color:#e11d48;" />
             </div>
           </div>
-          <small style="display:block; margin-top:-0.35rem; margin-bottom:0.75rem; font-size:0.74rem; color:var(--text-muted);">
-            💡 <em>Los abonos posteriores (semanales) y sanciones por atraso se agregan directamente seleccionando el contrato abajo en tu <strong>Agenda</strong>.</em>
-          </small>
+
+          <!-- Bloque interactivo para anotar o editar lo que van dejando a cuenta cada cierto tiempo -->
+          <div class="abonos-builder-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.45rem;">
+              <label style="margin:0; font-size:0.8rem; font-weight:800; color:#065f46;">
+                💵 Pagos que el cliente va dejando a cuenta cada cierto tiempo:
+              </label>
+              <span id="badge_resumen_abonos" class="badge badge-warn">Abonado: $0 | Resta: $0</span>
+            </div>
+
+            <div id="lista_abonos_dom" style="margin-bottom:0.5rem;"></div>
+
+            <div style="display:grid; grid-template-columns: 130px 115px 1fr auto; gap:0.35rem; align-items:center;">
+              <input type="date" id="nuevo_abono_fecha" style="padding:0.32rem 0.45rem; font-size:0.78rem;" />
+              <input type="number" id="nuevo_abono_monto" placeholder="$ Monto" min="1" style="padding:0.32rem 0.45rem; font-size:0.8rem; font-weight:800;" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarAbonoFormulario();}" />
+              <input type="text" id="nuevo_abono_nota" placeholder="Nota (Ej. 2do abono quincenal)" style="padding:0.32rem 0.45rem; font-size:0.78rem;" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarAbonoFormulario();}" />
+              <button type="button" class="btn btn-success btn-sm" style="font-weight:800;" onclick="agregarAbonoFormulario()">➕ Sumar a Cuenta</button>
+            </div>
+          </div>
 
           <input type="hidden" id="ev_estado_material" value="pendiente" />
           <input type="hidden" id="ev_prioridad" value="normal" />
 
-          <div class="form-group">
-            <label>Apartar Equipo del Almacén para este Evento</label>
-            <div id="ev_equipo_lista" class="equip-selector"></div>
-          </div>
+          <details class="clean-extra-details" style="margin-bottom:0.75rem;">
+            <summary><span>🎥 Apartar Equipo del Almacén para este Evento (Opcional)</span></summary>
+            <div id="ev_equipo_lista" class="equip-selector" style="margin-top:0.5rem;"></div>
+          </details>
 
-          <!-- ÚNICAMENTE LOS 2 BOTONES PRINCIPALES SOLICITADOS -->
           <div class="section-subtitle">🖨️ 6. Guardar o Imprimir Contrato</div>
           <div class="form-row" style="margin-top:0.5rem;">
-            <button type="button" class="btn btn-primary" style="padding:0.75rem 1rem; font-size:0.9rem; font-weight:800;" onclick="guardarEImprimirContrato()">
-              🖨️💾 Imprimir y Guardar
+            <button type="button" class="btn btn-success" id="btn_guardar_modificaciones_ev" style="padding:0.75rem 1rem; font-size:0.9rem; font-weight:800;" onclick="guardarContratoSinImprimir()">
+              💾 Guardar Contrato / Modificaciones
             </button>
-            <button type="button" class="btn btn-warning" style="background:#eab308; color:#0f172a; padding:0.75rem 1rem; font-size:0.9rem; font-weight:800;" onclick="guardarContratoSinImprimir()">
-              💾 Guardar sin Imprimir
+            <button type="button" class="btn btn-primary" style="padding:0.75rem 1rem; font-size:0.9rem; font-weight:800;" onclick="guardarEImprimirContrato()">
+              🖨️💾 Guardar e Imprimir
             </button>
           </div>
         </div>
@@ -2405,6 +3237,17 @@
               <div class="form-group">
                 <label>Teléfono (Opcional)</label>
                 <input type="text" id="evrap_telefono" placeholder="Opcional" />
+              </div>
+            </div>
+
+            <div class="form-row" style="background:#ecfdf5; border:1px solid #6ee7b7; border-radius:8px; padding:0.5rem 0.65rem; margin-bottom:0.6rem;">
+              <div class="form-group" style="margin:0;">
+                <label style="color:#065f46; font-weight:800;">💰 ¿De cuánto fue el Contrato? ($ Total - Opcional)</label>
+                <input type="number" id="evrap_total" value="0" min="0" placeholder="Ej. 6800" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label style="color:#065f46; font-weight:800;">💵 ¿Cuánto dejó a cuenta? ($ Anticipo - Opcional)</label>
+                <input type="number" id="evrap_anticipo" value="0" min="0" placeholder="Ej. 2000" />
               </div>
             </div>
 
@@ -2940,6 +3783,172 @@
       </div>
     </section>
 
+    <!-- ================= TAB MAQUILA: COSTOS DE PRODUCCIÓN, IMPRESIÓN, MARCOS Y CALCULADORA DE INVERSIÓN ================= -->
+    <section id="tab-maquila" class="tab-content no-print">
+      <div class="grid-2">
+        <!-- Columna 1: Calculadora de Inversión de un Paquete / Pedido a Maquila -->
+        <div class="card" style="border: 2px solid #0284c7;">
+          <h2>
+            <span>🧮 Calculadora de Inversión de Paquete (Cuanto gastarás al mandar a hacer tu material)</span>
+            <button type="button" class="btn btn-outline btn-sm" onclick="limpiarCalculadoraMaquila()">🧹 Limpiar</button>
+          </h2>
+          <p style="font-size:0.81rem; color:var(--text-muted); margin-bottom:0.85rem;">
+            Selecciona un paquete o un contrato de tu agenda (o toca los botones de tus insumos) para calcular exactamente <strong>cuánto vas a gastar de inversión en maquila</strong> (fotografías impresas, marcos, USB, estuches y básicos) y cuánta <strong>ganancia libre</strong> te queda.
+          </p>
+
+          <!-- Autollenado desde un Paquete o desde un Contrato de un Cliente -->
+          <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:10px; padding:0.75rem; margin-bottom:0.85rem;">
+            <label style="color:#0369a1; font-weight:800; margin-bottom:0.35rem;">⚡ Cargar automáticamente lo que lleva un Paquete o Contrato:</label>
+            <div class="form-row" style="margin-bottom:0.4rem;">
+              <div style="display:flex; gap:0.35rem;">
+                <select id="maq_select_paquete" style="flex:1; font-size:0.8rem; font-weight:600;"></select>
+                <button type="button" class="btn btn-primary btn-sm" onclick="cargarPaqueteEnCalculadoraMaquila()">📦 Calcular Paquete</button>
+              </div>
+              <div style="display:flex; gap:0.35rem;">
+                <select id="maq_select_contrato" style="flex:1; font-size:0.8rem; font-weight:600;"></select>
+                <button type="button" class="btn btn-success btn-sm" onclick="cargarContratoEnCalculadoraMaquila()">👤 Calcular Cliente</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:0.73rem;">Nombre del Cliente o Paquete para esta Orden</label>
+                <input type="text" id="maq_nombre_proyecto" placeholder="Ej. Paquete Completo — XV Años Valeria" oninput="recalcularTotalesMaquila()" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:0.73rem;">Precio en que Vendiste el Paquete ($ MXN)</label>
+                <input type="number" id="maq_precio_venta" value="6800" min="0" oninput="recalcularTotalesMaquila()" style="font-weight:800; color:#0369a1;" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones rápidos de tus insumos de maquila -->
+          <div style="margin-bottom:0.65rem;">
+            <label style="font-size:0.76rem; font-weight:800; color:#334155;">➕ Toca un insumo para sumarlo a tu cálculo de inversión:</label>
+            <div id="maq_chips_insumos" class="catalog-chips" style="max-height:145px;"></div>
+          </div>
+
+          <!-- Tabla Interactiva de la Calculadora de Maquila -->
+          <div style="border:1.5px solid #cbd5e1; border-radius:10px; overflow:hidden; margin-bottom:0.9rem;">
+            <div style="background:#0f172a; color:#fff; padding:0.45rem 0.75rem; font-size:0.76rem; font-weight:800; display:flex; justify-content:space-between; align-items:center;">
+              <span>📋 Desglose de Material a Mandar a Hacer (Editable):</span>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:0.12rem 0.45rem; font-size:0.68rem; background:#1e293b; color:#fff; border-color:#475569;" onclick="agregarRenglonVacioMaquila()">➕ Renglón Manual</button>
+            </div>
+            <div style="max-height:260px; overflow-y:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:70px;">Cant.</th>
+                    <th>Material / Foto / Marco / Básico</th>
+                    <th style="width:105px;">Costo Maquila c/u ($)</th>
+                    <th style="width:95px;">Subtotal Inversión</th>
+                    <th style="width:36px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_items_calculadora_maquila"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Resumen Final de Inversión vs Precio de Venta y Ganancia Neta -->
+          <div class="fin-balance-box liquidar" style="background:linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); border:2px solid #f43f5e;">
+            <div class="fin-balance-lbl" style="color:#9f1239;">
+              <span>💸 TOTAL QUE VAS A GASTAR DE INVERSIÓN (COSTO DE MAQUILA)</span>
+              <span id="maq_badge_num_items" class="badge badge-zero">0 pzas</span>
+            </div>
+            <div class="fin-balance-amount" id="maq_total_inversion_lbl" style="color:#be123c; font-size:2.1rem;">$0.00 MXN</div>
+            <div style="font-size:0.78rem; color:#881337;">Lo que pagarás al laboratorio / proveedor de marcos e insumos</div>
+          </div>
+
+          <div class="form-row">
+            <div class="fin-balance-box" style="margin-bottom:0;">
+              <div class="fin-balance-lbl"><span>PRECIO DEL PAQUETE</span></div>
+              <div class="fin-balance-amount" id="maq_resumen_venta_lbl" style="font-size:1.35rem; color:#0369a1;">$0.00</div>
+              <small style="color:#64748b;">Cobrado al cliente</small>
+            </div>
+            <div class="fin-balance-box cobrado" style="margin-bottom:0;">
+              <div class="fin-balance-lbl">
+                <span>TU GANANCIA LIBRE</span>
+                <span id="maq_pct_margen_lbl" class="badge badge-ok">0%</span>
+              </div>
+              <div class="fin-balance-amount" id="maq_ganancia_libre_lbl" style="font-size:1.35rem;">$0.00</div>
+              <small style="color:#166534;">Lo que te queda libre de inversión</small>
+            </div>
+          </div>
+
+          <div class="btn-group" style="margin-top:0.85rem;">
+            <button type="button" class="btn btn-primary" style="flex:1; font-weight:800;" onclick="guardarOrdenMaquilaEnHistorial()">
+              💾 Guardar en Historial de Maquila
+            </button>
+            <button type="button" class="btn btn-success" style="font-weight:800;" onclick="enviarPedidoMaquilaWhatsApp()">
+              📲 Copiar / Enviar Pedido al Laboratorio (Sin Precios)
+            </button>
+          </div>
+        </div>
+
+        <!-- Columna 2: Mi Catálogo de Costos de Maquila (Cuánto me cuesta producir fotos, marcos y básicos) -->
+        <div>
+          <div class="card">
+            <h2>
+              <span>🏷️ Mis Costos de Maquila y Producción (Fotografías, Marcos y Básicos)</span>
+            </h2>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+              Sube o ajusta aquí <strong>cuánto te cuesta a ti producir o maquilar</strong> cada tamaño de fotografía, marco, ampliación, USB o básico. Puedes editar el costo directo en la tabla o subir tu lista en <code>.txt</code>.
+            </p>
+
+            <div class="form-row" style="grid-template-columns: 1.4fr 110px 90px auto; align-items:end; margin-bottom:0.65rem;">
+              <div class="form-group" style="margin:0;">
+                <label>Nombre del Insumo / Foto / Marco *</label>
+                <input type="text" id="maq_cat_nombre" placeholder="Ej. Marco 16x20 con textura / Foto 4x6" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Categoría</label>
+                <select id="maq_cat_tipo">
+                  <option value="FOTO">🖼️ Impresión Foto</option>
+                  <option value="MARCO">🖼️ Marco / Cuadro</option>
+                  <option value="BASICO">📦 Básico / USB / Otro</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Costo Maquila ($)</label>
+                <input type="number" id="maq_cat_costo" value="10" min="0" step="0.5" />
+              </div>
+              <button type="button" class="btn btn-primary" onclick="agregarInsumoCatalogoMaquila()">➕ Guardar</button>
+            </div>
+
+            <div class="btn-group" style="margin-top:0.35rem; margin-bottom:0.75rem;">
+              <label class="btn btn-outline btn-sm" style="margin:0; cursor:pointer;">
+                📂 Subir mis costos de maquila (.txt)
+                <input type="file" accept=".txt" onchange="subirCatalogoMaquilaTxt(event)" style="display:none;" />
+              </label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="descargarCatalogoMaquilaTxt()">⬇️ Descargar lista (.txt)</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="restaurarCostosMaquilaDefault()">🔄 Restaurar Costos Base</button>
+            </div>
+
+            <div style="max-height:360px; overflow-y:auto; border:1px solid var(--border); border-radius:10px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Insumo / Material</th>
+                    <th>Tipo</th>
+                    <th style="width:120px;">Mi Costo Maquila ($)</th>
+                    <th style="width:85px;">Sumar</th>
+                    <th style="width:38px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_catalogo_costos_maquila"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Historial de Órdenes / Paquetes Mandados a Maquila -->
+          <div class="card">
+            <h2>📦 Historial de Pedidos Mandados a Maquila / Laboratorio</h2>
+            <div id="contenedor_historial_ordenes_maquila"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= TAB 5: DATOS DEL NEGOCIO Y RESPALDO ================= -->
     <section id="tab-config" class="tab-content no-print">
       <div class="grid-2">
@@ -3022,6 +4031,53 @@
   </main>
 
   <!-- Contenedor exclusivo y aislado para impresión limpia (sin ningún menú ni botón de la app) -->
+  <!-- Campanita Flotante de Alertas de Eventos Próximos (Estilo Captura 4) -->
+  <button type="button" id="floating_bell_btn" class="no-print" onclick="togglePanelNotificacionesEventos()" title="Ver alertas de eventos próximos y activar notificaciones">
+    🔔
+    <span id="floating_bell_badge">0</span>
+  </button>
+
+  <div id="notif_drawer_panel" class="no-print">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:0.55rem; margin-bottom:0.65rem;">
+      <strong style="font-size:0.92rem; color:#0f172a;">🔔 Alertas de Eventos Próximos</strong>
+      <button type="button" class="btn btn-danger btn-sm" style="padding:0.12rem 0.45rem;" onclick="togglePanelNotificacionesEventos()">✕</button>
+    </div>
+    <div style="margin-bottom:0.65rem;">
+      <button type="button" class="btn btn-warning btn-sm" style="width:100%; font-weight:800; color:#0f172a;" onclick="activarYProbarNotificacionesEvento()">
+        📲 Activar / Probar Notificación en este Celular
+      </button>
+    </div>
+    <div id="notif_drawer_list" style="display:flex; flex-direction:column; gap:0.5rem;"></div>
+  </div>
+
+  <!-- Barra de Navegación Inferior Fija para Celular en Formato Vertical -->
+  <nav class="mobile-bottom-nav no-print">
+    <button type="button" class="mob-nav-item active" id="mob_btn_comando" onclick="switchTab('comando')">
+      <span class="mob-ico">📊</span>
+      <span>Comando</span>
+    </button>
+    <button type="button" class="mob-nav-item" id="mob_btn_contratos" onclick="switchTab('contratos')">
+      <span class="mob-ico">📄</span>
+      <span>Contratos</span>
+    </button>
+    <button type="button" class="mob-nav-item" id="mob_btn_calendario" onclick="switchTab('calendario')">
+      <span class="mob-ico">📅</span>
+      <span>Calendario</span>
+    </button>
+    <button type="button" class="mob-nav-item" id="mob_btn_maquila" onclick="switchTab('maquila')">
+      <span class="mob-ico">🧮</span>
+      <span>Maquila</span>
+    </button>
+    <button type="button" class="mob-nav-item" id="mob_btn_inventario" onclick="switchTab('inventario')">
+      <span class="mob-ico">🎥</span>
+      <span>Rentas</span>
+    </button>
+    <button type="button" class="mob-nav-item" id="mob_btn_remisiones" onclick="switchTab('remisiones')">
+      <span class="mob-ico">🧾</span>
+      <span>Notas</span>
+    </button>
+  </nav>
+
   <div id="print_only_stage"></div>
 
   <script>
@@ -3257,6 +4313,23 @@
       { id: "pr_13", nombre: "Kilómetro adicional", precio: 30 }
     ];
 
+    const COSTOS_MAQUILA_DEFAULT = [
+      { id: "mq_1", nombre: "Fotografía impresa 4x6 (Maquila)", tipo: "FOTO", costo: 2.5 },
+      { id: "mq_2", nombre: "Fotografía impresa 6x8 (Maquila)", tipo: "FOTO", costo: 6.0 },
+      { id: "mq_3", nombre: "Fotografía tamaño Carta (Maquila)", tipo: "FOTO", costo: 12.0 },
+      { id: "mq_4", nombre: "Ampliación + Marco 11x14 completo (Maquila)", tipo: "MARCO", costo: 220.0 },
+      { id: "mq_5", nombre: "Ampliación + Marco 16x20 completo (Maquila)", tipo: "MARCO", costo: 420.0 },
+      { id: "mq_6", nombre: "Ampliación + Marco 20x24 completo (Maquila)", tipo: "MARCO", costo: 680.0 },
+      { id: "mq_7", nombre: "Solo Marco 11x14 (Maquila)", tipo: "MARCO", costo: 150.0 },
+      { id: "mq_8", nombre: "Solo Marco 16x20 (Maquila)", tipo: "MARCO", costo: 290.0 },
+      { id: "mq_9", nombre: "Solo Marco 20x24 (Maquila)", tipo: "MARCO", costo: 450.0 },
+      { id: "mq_10", nombre: "Memoria USB 64GB (Costo proveedor)", tipo: "BASICO", costo: 95.0 },
+      { id: "mq_11", nombre: "Estuche para USB / Fotografías (Maquila)", tipo: "BASICO", costo: 140.0 },
+      { id: "mq_12", nombre: "DVD impreso con estuche (Maquila)", tipo: "BASICO", costo: 18.0 },
+      { id: "mq_13", nombre: "Photobook / Álbum (Maquila)", tipo: "BASICO", costo: 550.0 },
+      { id: "mq_14", nombre: "Gasolina / Viáticos / Otros básicos", tipo: "BASICO", costo: 150.0 }
+    ];
+
     let vistaContratoActiva = "ambos";
     let filtroEventosActual = "todos";
     let filtroNotasActual = "todos";
@@ -3281,6 +4354,14 @@
       },
       paquetes: JSON.parse(JSON.stringify(PAQUETES_DEFAULT)),
       productosRemision: JSON.parse(JSON.stringify(PRODUCTOS_REMISION_DEFAULT)),
+      catalogoMaquila: JSON.parse(JSON.stringify(COSTOS_MAQUILA_DEFAULT)),
+      calculadoraMaquilaItems: [
+        { cant: 100, desc: "Fotografía impresa 4x6 (Maquila)", costo: 2.5 },
+        { cant: 1, desc: "Ampliación + Marco 16x20 completo (Maquila)", costo: 420 },
+        { cant: 1, desc: "Memoria USB 64GB (Costo proveedor)", costo: 95 },
+        { cant: 1, desc: "Estuche para USB / Fotografías (Maquila)", costo: 140 }
+      ],
+      ordenesMaquila: [],
       inventario: [
         { id: "eq1", nombre: "Cámara de Video", total: 2 },
         { id: "eq2", nombre: "Cámara de Fotografía", total: 2 },
@@ -3331,6 +4412,15 @@
           if (!Array.isArray(state.sesiones)) {
             state.sesiones = [];
           }
+          if (!Array.isArray(state.catalogoMaquila) || state.catalogoMaquila.length === 0) {
+            state.catalogoMaquila = JSON.parse(JSON.stringify(COSTOS_MAQUILA_DEFAULT));
+          }
+          if (!Array.isArray(state.calculadoraMaquilaItems)) {
+            state.calculadoraMaquilaItems = [];
+          }
+          if (!Array.isArray(state.ordenesMaquila)) {
+            state.ordenesMaquila = [];
+          }
           // Asegurar que los paquetes existentes tengan su descripción claramente numerada por puntos (1., 2., 3...)
           if (Array.isArray(state.paquetes)) {
             state.paquetes.forEach(p => {
@@ -3359,6 +4449,8 @@
       if (inpEvRapFecha) inpEvRapFecha.value = hoy;
       const inpAntFecha = document.getElementById("ant_fecha");
       if (inpAntFecha) inpAntFecha.value = hoy;
+      const inpCmdAntFecha = document.getElementById("cmd_ant_fecha");
+      if (inpCmdAntFecha) inpCmdAntFecha.value = hoy;
       const inpAbonoFecha = document.getElementById("nuevo_abono_fecha");
       if (inpAbonoFecha) inpAbonoFecha.value = hoy;
 
@@ -3497,6 +4589,8 @@
         notasGuardadas: Array.isArray(remoto.notasGuardadas) ? remoto.notasGuardadas : [],
         paquetes: Array.isArray(remoto.paquetes) && remoto.paquetes.length > 0 ? remoto.paquetes : state.paquetes,
         productosRemision: Array.isArray(remoto.productosRemision) && remoto.productosRemision.length > 0 ? remoto.productosRemision : state.productosRemision,
+        catalogoMaquila: Array.isArray(remoto.catalogoMaquila) && remoto.catalogoMaquila.length > 0 ? remoto.catalogoMaquila : state.catalogoMaquila,
+        ordenesMaquila: Array.isArray(remoto.ordenesMaquila) ? remoto.ordenesMaquila : (state.ordenesMaquila || []),
         inventario: Array.isArray(remoto.inventario) && remoto.inventario.length > 0 ? remoto.inventario : state.inventario
       };
 
@@ -3692,11 +4786,15 @@
     function switchTab(tabId) {
       document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
       document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".mob-nav-item").forEach(el => el.classList.remove("active"));
       const target = document.getElementById("tab-" + tabId);
       if (target) target.classList.add("active");
       const btn = document.getElementById("nav_btn_" + tabId);
       if (btn) btn.classList.add("active");
+      const mobBtn = document.getElementById("mob_btn_" + tabId);
+      if (mobBtn) mobBtn.classList.add("active");
       refrescarTodo();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     // ================= MINI CALENDARIO DE EVENTOS, SESIONES DE FOTOS / FECHAS INDEPENDIENTES Y RENTAS =================
@@ -3855,6 +4953,8 @@
       if (document.getElementById("evrap_maps_url")) document.getElementById("evrap_maps_url").value = "";
       document.getElementById("evrap_notas").value = "";
       document.getElementById("evrap_telefono").value = "";
+      if (document.getElementById("evrap_total")) document.getElementById("evrap_total").value = 0;
+      if (document.getElementById("evrap_anticipo")) document.getElementById("evrap_anticipo").value = 0;
       if (!silencioso) notificar("Formulario de evento rápido limpio.");
     }
 
@@ -3865,6 +4965,8 @@
       const mapsUrl = document.getElementById("evrap_maps_url") ? document.getElementById("evrap_maps_url").value.trim() : "";
       const notas = document.getElementById("evrap_notas").value.trim();
       const telefono = document.getElementById("evrap_telefono").value.trim();
+      const totalNum = Math.max(0, Number(document.getElementById("evrap_total") ? document.getElementById("evrap_total").value : 0) || 0);
+      const anticipoNum = Math.max(0, Number(document.getElementById("evrap_anticipo") ? document.getElementById("evrap_anticipo").value : 0) || 0);
       const editId = document.getElementById("evrap_edit_id").value;
 
       if (!cliente || !lugar || !fecha) {
@@ -3888,8 +4990,21 @@
             state.eventos[idx].bloquesTexto = notas;
             state.eventos[idx].detalles = notas;
           }
+          if (totalNum > 0) {
+            state.eventos[idx].total = totalNum;
+          }
+          if (anticipoNum > 0 && (!state.eventos[idx].abonos || state.eventos[idx].abonos.length === 0)) {
+            state.eventos[idx].anticipo = anticipoNum;
+            state.eventos[idx].totalAbonado = anticipoNum;
+            state.eventos[idx].abonos = [{ id: "ab_" + Date.now(), fecha, monto: anticipoNum, nota: "1er Anticipo a cuenta" }];
+          }
+          const infoD = calcularEstadoDeudaYSanciones(state.eventos[idx]);
+          state.eventos[idx].saldo = infoD.deudaBase;
         }
       } else {
+        const abonosInit = anticipoNum > 0
+          ? [{ id: "ab_" + Date.now(), fecha, monto: anticipoNum, nota: "1er Anticipo a cuenta" }]
+          : [];
         const nuevoEv = {
           id: "ev_" + Date.now(),
           esEventoSinContrato: true,
@@ -3914,11 +5029,11 @@
           horarioCeremonia: "",
           horarioRecepcion: "",
           bloquesTexto: notas || "Horario en contrato anterior",
-          total: 0,
-          anticipo: 0,
-          totalAbonado: 0,
-          abonos: [],
-          saldo: 0,
+          total: totalNum,
+          anticipo: anticipoNum,
+          totalAbonado: anticipoNum,
+          abonos: abonosInit,
+          saldo: Math.max(0, totalNum - anticipoNum),
           estadoMaterial: "pendiente",
           prioridad: "normal",
           impreso: true,
@@ -3960,6 +5075,8 @@
       if (document.getElementById("evrap_maps_url")) document.getElementById("evrap_maps_url").value = ev.mapsUrl || "";
       document.getElementById("evrap_notas").value = ev.bloquesTexto || "";
       document.getElementById("evrap_telefono").value = ev.telefono || "";
+      if (document.getElementById("evrap_total")) document.getElementById("evrap_total").value = ev.total || 0;
+      if (document.getElementById("evrap_anticipo")) document.getElementById("evrap_anticipo").value = ev.totalAbonado || ev.anticipo || 0;
       if (card) card.scrollIntoView({ behavior: "smooth" });
     }
 
@@ -5770,9 +6887,10 @@
       guardarEstado();
       refrescarTablas();
       const etiquetas = {
-        pendiente: "⏳ Pendiente",
-        proceso: "⚙️ En Proceso",
-        listo: "✅ Material Listo",
+        pendiente: "1. ⏳ Por Iniciar",
+        proceso: "2. ⚙️ En Edición",
+        seleccion: "3. 🖼️ Selección de Fotos",
+        listo: "4. ✅ Listo para Entrega",
         entregado: "📦 Material Entregado"
       };
       notificar(`Contrato de ${ev.cliente}: ${etiquetas[nuevoEstado]}`);
@@ -5787,14 +6905,108 @@
       notificar(ev.prioridad === "alta" ? `🔥 Prioridad Alta activada para ${ev.cliente}` : `Prioridad normal para ${ev.cliente}`);
     }
 
+    // Permite modificar directamente de cuánto fue el contrato ($) desde la Agenda o el Centro de Comando
+    function actualizarCostoTotalContratoInline(evId, nuevoTotalValor) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      const inp = document.getElementById("total_inline_ev_" + evId) || document.getElementById("cmd_total_inline_ev_" + evId);
+      const val = nuevoTotalValor !== undefined ? nuevoTotalValor : (inp ? inp.value : ev.total);
+      const totalNum = Math.max(0, Number(val) || 0);
+      ev.total = totalNum;
+
+      const pagos = (Array.isArray(ev.abonos) && ev.abonos.length > 0)
+        ? ev.abonos
+        : (Number(ev.anticipo) > 0 ? [{ id: "ab_init_" + Date.now(), fecha: ev.fechaCotizacion || ev.fecha, monto: Number(ev.anticipo), nota: "1er Anticipo" }] : []);
+      const sumaAbonos = pagos.reduce((acc, a) => acc + (Number(a.monto) || 0), 0);
+      ev.totalAbonado = sumaAbonos;
+      ev.saldo = Math.max(0, totalNum - sumaAbonos);
+
+      if (document.getElementById("ev_edit_id").value === ev.id) {
+        document.getElementById("ev_total").value = totalNum;
+        calcularSaldoEvento();
+        actualizarVistaContrato();
+      }
+
+      guardarEstado();
+      refrescarTodo();
+      notificar(`💰 Costo del contrato de ${ev.cliente} actualizado a $${totalNum.toLocaleString("es-MX")} MXN. Resta: $${ev.saldo.toLocaleString("es-MX")} MXN`);
+    }
+
+    // Permite editar la fecha o el monto de cualquier pago dejado a cuenta directamente en la Agenda
+    function editarAbonoDeEventoGuardadoInline(evId, idxAbono, campo, nuevoValor) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      if (!Array.isArray(ev.abonos) || ev.abonos.length === 0) {
+        ev.abonos = [];
+        if (Number(ev.anticipo) > 0) {
+          ev.abonos.push({
+            id: "ab_init_" + Date.now(),
+            fecha: ev.fechaCotizacion || ev.fecha,
+            monto: Number(ev.anticipo),
+            nota: "1er Anticipo"
+          });
+        }
+      }
+      if (!ev.abonos[idxAbono]) return;
+
+      if (campo === "monto") {
+        ev.abonos[idxAbono].monto = Math.max(0, Number(nuevoValor) || 0);
+      } else if (campo === "fecha") {
+        ev.abonos[idxAbono].fecha = nuevoValor;
+      } else if (campo === "nota") {
+        ev.abonos[idxAbono].nota = nuevoValor;
+      }
+
+      const sumaAbonos = ev.abonos.reduce((acc, a) => acc + (Number(a.monto) || 0), 0);
+      ev.totalAbonado = sumaAbonos;
+      ev.anticipo = ev.abonos[0] ? (Number(ev.abonos[0].monto) || 0) : 0;
+      ev.saldo = Math.max(0, (Number(ev.total) || 0) - sumaAbonos);
+
+      if (document.getElementById("ev_edit_id").value === ev.id) {
+        abonosFormulario = JSON.parse(JSON.stringify(ev.abonos));
+        renderizarAbonosDOM(true);
+        actualizarVistaContrato();
+      }
+
+      guardarEstado();
+      refrescarTodo();
+      notificar(`💵 Pago #${idxAbono + 1} de ${ev.cliente} actualizado. Total a cuenta: $${sumaAbonos.toLocaleString("es-MX")} MXN`);
+    }
+
+    // Permite modificar datos básicos del contrato (Cliente, Fecha, Lugar, Paquete, Teléfono) directamente desde su fila en la Agenda
+    function guardarDatosBasicosContratoInline(evId) {
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+      const nom = document.getElementById("edit_inline_cli_" + evId);
+      const fec = document.getElementById("edit_inline_fec_" + evId);
+      const tel = document.getElementById("edit_inline_tel_" + evId);
+      const lug = document.getElementById("edit_inline_lug_" + evId);
+      const paq = document.getElementById("edit_inline_paq_" + evId);
+
+      if (nom && nom.value.trim()) ev.cliente = nom.value.trim();
+      if (fec && fec.value) ev.fecha = fec.value;
+      if (tel) ev.telefono = tel.value.trim();
+      if (lug && lug.value.trim()) {
+        ev.dirRecepcion = lug.value.trim();
+        ev.lugar = lug.value.trim();
+      }
+      if (paq && paq.value.trim()) ev.paqueteNombre = paq.value.trim();
+
+      ordenarEventosPorFecha();
+      guardarEstado();
+      refrescarTodo();
+      notificar(`✅ Datos del contrato de ${ev.cliente} actualizados.`);
+    }
+
     function agregarAbonoRapidoEvento(id) {
       const ev = state.eventos.find(e => e.id === id);
       if (!ev) return;
       const inpMonto = document.getElementById("abono_rapido_monto_" + id);
+      const inpFecha = document.getElementById("abono_rapido_fecha_" + id);
       const inpNota = document.getElementById("abono_rapido_nota_" + id);
       const monto = Number(inpMonto ? inpMonto.value : 0) || 0;
       if (monto <= 0) {
-        notificar("Escribe el monto del abono (Ej. 1000).", "warn");
+        notificar("Escribe cuánto dejó a cuenta el cliente (Ej. 1500).", "warn");
         if (inpMonto) inpMonto.focus();
         return;
       }
@@ -5812,11 +7024,12 @@
       }
 
       const hoy = new Date().toISOString().split("T")[0];
+      const fechaPago = (inpFecha && inpFecha.value) ? inpFecha.value : hoy;
       const numPago = ev.abonos.length + 1;
       const nota = (inpNota && inpNota.value.trim()) ? inpNota.value.trim() : `Abono #${numPago}`;
       ev.abonos.push({
         id: "ab_" + Date.now(),
-        fecha: hoy,
+        fecha: fechaPago,
         monto,
         nota
       });
@@ -5834,7 +7047,7 @@
 
       guardarEstado();
       refrescarTodo();
-      notificar(`💵 Abono de $${monto.toLocaleString("es-MX")} registrado a ${ev.cliente}. Resta: $${ev.saldo.toLocaleString("es-MX")} MXN`);
+      notificar(`💵 Abono a cuenta de $${monto.toLocaleString("es-MX")} (${fechaPago}) registrado a ${ev.cliente}. Resta: $${ev.saldo.toLocaleString("es-MX")} MXN`);
     }
 
     function eliminarAbonoDeEventoGuardado(evId, idxAbono) {
@@ -8361,14 +9574,17 @@
     // ================= RENDERIZADO DE TABLAS Y LISTAS DE PENDIENTES =================
     function construirBotonesEstadoHtml(estadoActual, esUrgente, fnCambioEstado, fnToggleUrgente, id) {
       const est = estadoActual || "pendiente";
+      const esEvento = fnCambioEstado === "cambiarEstadoMaterialEvento";
       return `
         <div class="status-pill-group">
           <button type="button" class="status-pill ${est === 'pendiente' ? 'active-pendiente' : ''}"
-            onclick="${fnCambioEstado}('${id}', 'pendiente')">⏳ Pendiente</button>
+            onclick="${fnCambioEstado}('${id}', 'pendiente')">${esEvento ? '1. ⏳ Por Iniciar' : '⏳ Pendiente'}</button>
           <button type="button" class="status-pill ${est === 'proceso' ? 'active-proceso' : ''}"
-            onclick="${fnCambioEstado}('${id}', 'proceso')">⚙️ En Proceso</button>
+            onclick="${fnCambioEstado}('${id}', 'proceso')">${esEvento ? '2. ⚙️ En Edición' : '⚙️ En Proceso'}</button>
+          ${esEvento ? `<button type="button" class="status-pill ${est === 'seleccion' ? 'active-seleccion' : ''}"
+            onclick="${fnCambioEstado}('${id}', 'seleccion')">3. 🖼️ Selección Fotos</button>` : ''}
           <button type="button" class="status-pill ${est === 'listo' ? 'active-listo' : ''}"
-            onclick="${fnCambioEstado}('${id}', 'listo')">✅ Material Listo</button>
+            onclick="${fnCambioEstado}('${id}', 'listo')">${esEvento ? '4. ✅ Listo Entrega' : '✅ Material Listo'}</button>
           <button type="button" class="status-pill ${est === 'entregado' ? 'active-entregado' : ''}"
             onclick="${fnCambioEstado}('${id}', 'entregado')">📦 Entregado</button>
           <button type="button" class="status-pill ${esUrgente ? 'urgent-on' : ''}"
@@ -8406,7 +9622,7 @@
         if (filtroEventosActual === "no_impresos") return ev.impreso === false;
         if (filtroEventosActual === "morosos") return (numSanciones >= 1 || esMoroso3Meses) && est !== "entregado";
         if (filtroEventosActual === "urgentes") return urgente && est !== "entregado";
-        if (filtroEventosActual === "pendientes") return est === "pendiente" || est === "proceso";
+        if (filtroEventosActual === "pendientes") return est === "pendiente" || est === "proceso" || est === "seleccion";
         if (filtroEventosActual === "listos") return est === "listo";
         if (filtroEventosActual === "entregados") return est === "entregado";
         return true;
@@ -8417,21 +9633,21 @@
       }
 
       eventosFiltrados.forEach((ev, idx) => {
-        const eqTxt = formatearEquipoTexto(ev.equipo);
         const dias = calcularDiferenciaDias(ev.fecha);
         const est = ev.estadoMaterial || "pendiente";
         const { atrasado, diasPasados } = evaluarRetrasoContrato(ev);
         const infoDeuda = calcularEstadoDeudaYSanciones(ev);
         const esUrgente = ev.prioridad === "alta";
+        const totalContratoNum = Number(ev.total) || 0;
 
         let badgesHtml = "";
         if (ev.fecha >= hoyStr && !proximoMarcado && filtroEventosActual === "todos") {
           proximoMarcado = true;
-          badgesHtml += `<span class="badge badge-next">🔔 SIGUIENTE (${dias === 0 ? "HOY" : "En " + dias + " días"})</span> `;
+          badgesHtml += `<span class="badge badge-next">🔔 SIGUIENTE (${dias === 0 ? "HOY" : "En " + dias + " días"})</span>`;
         } else if (ev.fecha < hoyStr) {
-          badgesHtml += `<span class="badge" style="background:#e2e8f0; color:#334155;">Hace ${diasPasados} días</span> `;
+          badgesHtml += `<span class="badge" style="background:#e2e8f0; color:#334155;">Hace ${diasPasados} días</span>`;
         } else {
-          badgesHtml += `<span class="badge badge-blue">En ${dias} días</span> `;
+          badgesHtml += `<span class="badge badge-blue">En ${dias} días</span>`;
         }
 
         const noImpreso = ev.impreso === false;
@@ -8440,47 +9656,29 @@
         }
 
         if (ev.fechaSesion) {
-          badgesHtml += `<br/><span class="badge badge-ok" style="margin-top:4px;">📷 Sesión: ${ev.fechaSesion} (${ev.horaSesion || '16:00'})</span>`;
+          badgesHtml += `<br/><span class="badge badge-ok" style="margin-top:4px;">📷 Sesión: ${ev.fechaSesion}</span>`;
         }
 
         if (infoDeuda.esMoroso3Meses) {
-          badgesHtml += `<br/><span class="badge-moroso-3m">⛔ CONTRATO NO PAGADO — 3+ MESES SIN RECUPERAR MATERIAL (${infoDeuda.numSanciones} Sanciones)</span>`;
-        } else if (infoDeuda.numSanciones > 0) {
-          badgesHtml += `<br/><span class="badge-sancion-10">⚠️ ${infoDeuda.numSanciones} Sanción(es) del 10% por atraso (+30 días)</span>`;
+          badgesHtml += `<br/><span class="badge-moroso-3m">⛔ NO PAGADO (3+ MESES)</span>`;
         } else if (atrasado) {
-          badgesHtml += `<br/><span class="badge badge-overdue" style="margin-top:4px;">🚨 ¡YA SE ESTÁ TARDANDO! (${diasPasados} días)</span>`;
+          badgesHtml += `<br/><span class="badge badge-overdue" style="margin-top:4px;">🚨 ¡TARDANDO! (${diasPasados}d)</span>`;
         }
 
         let badgeMaterial = "";
-        if (est === "pendiente") badgeMaterial = `<span class="badge badge-warn">⏳ Pendiente</span>`;
-        if (est === "proceso") badgeMaterial = `<span class="badge badge-blue">⚙️ En Proceso</span>`;
-        if (est === "listo") badgeMaterial = `<span class="badge badge-ok">✅ Material Listo</span>`;
-        if (est === "entregado") badgeMaterial = `<span class="badge" style="background:#0f172a; color:#fff;">📦 Entregado ${ev.fechaEntregado ? '(' + ev.fechaEntregado + ')' : ''}</span>`;
+        if (est === "pendiente") badgeMaterial = `<span class="badge badge-warn">1. ⏳ Por Iniciar</span>`;
+        if (est === "proceso") badgeMaterial = `<span class="badge badge-blue">2. ⚙️ En Edición</span>`;
+        if (est === "seleccion") badgeMaterial = `<span class="badge badge-warn" style="background:#fef3c7; color:#92400e;">3. 🖼️ Selección de Fotos</span>`;
+        if (est === "listo") badgeMaterial = `<span class="badge badge-ok">4. ✅ Listo para Entrega</span>`;
+        if (est === "entregado") badgeMaterial = `<span class="badge" style="background:#0f172a; color:#fff;">📦 Entregado</span>`;
 
-        const horarioResumen = ev.modoHorario === "pendiente"
-          ? `<span class="badge badge-warn">Horarios Pendientes</span>`
-          : (ev.modoHorario === "vacio"
-              ? `<small>Horario en blanco (${ev.horasTotales}h)</small>`
-              : `<small style="white-space:pre-line;">${ev.bloquesTexto}</small>`);
+        const hrefMapa = construirUrlGoogleMapsValida(ev.mapsUrl, ev.dirRecepcion, ev.lugar);
+        const waHref = generarLinkWhatsAppCobro(ev.cliente, ev.telefono, ev.paqueteNombre, ev.fecha, infoDeuda.totalConSancion || infoDeuda.deudaBase);
 
-        // Recuadro interactivo en cada contrato ya realizado para asignar o cambiar el día de su Sesión de Fotos
-        const sesionBoxHtml = `
-          <div class="sesion-inline-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.22rem;">
-              <strong>📷 Día de Sesión de Fotos:</strong>
-              ${ev.fechaSesion
-                ? `<span style="font-weight:800; color:#047857;">✅ Agendada (${ev.fechaSesion})</span>`
-                : `<span style="color:#b45309; font-weight:700;">⏳ Por asignar día</span>`}
-            </div>
-            <div style="display:flex; gap:0.25rem; flex-wrap:wrap; align-items:center;">
-              <input type="date" id="ses_inline_fecha_${ev.id}" value="${ev.fechaSesion || ''}" style="padding:0.18rem 0.35rem; font-size:0.73rem; width:122px; background:#fff;" />
-              <input type="time" id="ses_inline_hora_${ev.id}" value="${ev.horaSesion || '16:00'}" style="padding:0.18rem 0.3rem; font-size:0.73rem; width:84px; background:#fff;" />
-              <input type="text" id="ses_inline_lugar_${ev.id}" value="${(ev.lugarSesion || '').replace(/"/g, '&quot;')}" placeholder="Locación sesión..." style="padding:0.18rem 0.38rem; font-size:0.73rem; flex:1; min-width:95px; background:#fff;" />
-              <button type="button" class="btn btn-success btn-sm" style="padding:0.18rem 0.45rem; font-size:0.7rem;" onclick="guardarSesionDirectoEnContrato('${ev.id}')" title="Guardar día de sesión y señalar en el calendario">💾 Asignar</button>
-              ${ev.fechaSesion ? `<button type="button" class="btn btn-danger btn-sm" style="padding:0.15rem 0.35rem; font-size:0.68rem;" onclick="quitarSesionDeContrato('${ev.id}')" title="Quitar fecha de sesión">✕</button>` : ""}
-            </div>
-          </div>
-        `;
+        // Asegurar arreglo de pagos a cuenta para mostrar y editar
+        const pagosLista = (Array.isArray(ev.abonos) && ev.abonos.length > 0)
+          ? ev.abonos
+          : (Number(ev.anticipo) > 0 ? [{ id: "ab_init", fecha: ev.fechaCotizacion || ev.fecha, monto: Number(ev.anticipo), nota: "1er Anticipo" }] : []);
 
         const tr = document.createElement("tr");
         if (infoDeuda.esMoroso3Meses) {
@@ -8497,103 +9695,131 @@
 
         tr.innerHTML = `
           <td>
-            <strong>#${idx + 1} — ${ev.fecha}</strong><br/>
+            <strong style="font-size:0.9rem;">#${idx + 1} — ${ev.fecha}</strong><br/>
             ${badgesHtml}
           </td>
           <td>
-            <strong style="font-size:0.93rem;">${ev.cliente}</strong><br/>
-            <small>Tel: ${ev.telefono || "-"} ${ev.telefono2 ? ' / ' + ev.telefono2 : ''}</small><br/>
-            <small>📍 ${ev.dirRecepcion} (${ev.lugar || ""})</small>
-            ${(() => {
-              const hrefMapa = construirUrlGoogleMapsValida(ev.mapsUrl, ev.dirRecepcion, ev.lugar);
-              return hrefMapa ? `
-                <div style="margin-top:0.35rem;">
-                  <a class="btn-maps-mobile" href="${hrefMapa}" target="_blank" rel="noopener" title="Toca aquí desde tu celular para abrir la ubicación en Google Maps">
-                    📍🗺️ ${ev.mapsUrl ? "Ir a Ubicación (Google Maps)" : "Buscar Dirección en Maps"}
-                  </a>
-                </div>
-              ` : "";
-            })()}
-            <div class="maps-inline-box">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.18rem;">
-                <strong>🗺️ Link de Google Maps:</strong>
-                ${ev.mapsUrl ? `<span style="color:#0369a1; font-weight:800;">✅ Link guardado</span>` : `<span style="color:#64748b;">Pegar link exacto</span>`}
-              </div>
-              <div style="display:flex; gap:0.22rem; align-items:center;">
-                <input type="url" id="maps_inline_url_${ev.id}" value="${(ev.mapsUrl || '').replace(/"/g, '&quot;')}" placeholder="Pega link de Google Maps..." style="padding:0.16rem 0.35rem; font-size:0.71rem; flex:1; min-width:110px; background:#fff;" onkeydown="if(event.key==='Enter'){event.preventDefault();guardarLinkMapsDirectoEnContrato('${ev.id}');}" />
-                <button type="button" class="btn btn-primary btn-sm" style="padding:0.16rem 0.42rem; font-size:0.68rem;" onclick="guardarLinkMapsDirectoEnContrato('${ev.id}')" title="Guardar link de Google Maps en este contrato">💾</button>
-                ${ev.mapsUrl ? `<button type="button" class="btn btn-danger btn-sm" style="padding:0.14rem 0.34rem; font-size:0.66rem;" onclick="quitarLinkMapsDeContrato('${ev.id}')" title="Quitar link">✕</button>` : ""}
-              </div>
+            <strong style="font-size:0.95rem; color:#0f172a;">${ev.cliente}</strong><br/>
+            <small style="color:#475569;">📍 ${ev.dirRecepcion || ev.lugar || "Por confirmar"}</small><br/>
+            <small style="color:#64748b;">📞 ${ev.telefono || "Sin tel."}</small>
+            <div style="display:flex; gap:0.3rem; flex-wrap:wrap; margin-top:0.35rem;">
+              ${hrefMapa ? `<a class="btn-maps-mobile" style="font-size:0.7rem; padding:0.22rem 0.52rem;" href="${hrefMapa}" target="_blank" rel="noopener">📍 Maps</a>` : ""}
+              <a class="btn-whatsapp-crm" style="font-size:0.7rem; padding:0.22rem 0.52rem;" href="${waHref}" target="_blank" rel="noopener">💬 WhatsApp</a>
             </div>
+
+            <!-- Desplegable limpio (oculto por defecto para no saturar la vista) para modificar datos, Maps o Sesión -->
+            <details class="clean-extra-details">
+              <summary><span>⚙️ Modificar Datos / Maps / Sesión</span></summary>
+              <div style="margin-top:0.45rem; display:flex; flex-direction:column; gap:0.35rem;">
+                <input type="text" id="edit_inline_cli_${ev.id}" value="${(ev.cliente || '').replace(/"/g, '&quot;')}" placeholder="Nombre del cliente" style="padding:0.22rem 0.4rem; font-size:0.75rem;" />
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.25rem;">
+                  <input type="date" id="edit_inline_fec_${ev.id}" value="${ev.fecha || ''}" style="padding:0.22rem 0.35rem; font-size:0.74rem;" />
+                  <input type="text" id="edit_inline_tel_${ev.id}" value="${(ev.telefono || '').replace(/"/g, '&quot;')}" placeholder="Teléfono" style="padding:0.22rem 0.35rem; font-size:0.74rem;" />
+                </div>
+                <input type="text" id="edit_inline_lug_${ev.id}" value="${(ev.dirRecepcion || ev.lugar || '').replace(/"/g, '&quot;')}" placeholder="Salón / Lugar" style="padding:0.22rem 0.4rem; font-size:0.75rem;" />
+                <input type="text" id="edit_inline_paq_${ev.id}" value="${(ev.paqueteNombre || '').replace(/"/g, '&quot;')}" placeholder="Nombre del Paquete / Evento" style="padding:0.22rem 0.4rem; font-size:0.75rem;" />
+                <button type="button" class="btn btn-primary btn-sm" onclick="guardarDatosBasicosContratoInline('${ev.id}')">💾 Guardar Datos</button>
+
+                <div style="border-top:1px dashed #cbd5e1; padding-top:0.35rem; margin-top:0.15rem;">
+                  <label style="font-size:0.7rem; color:#0369a1;">🗺️ Link de Google Maps:</label>
+                  <div style="display:flex; gap:0.2rem;">
+                    <input type="url" id="maps_inline_url_${ev.id}" value="${(ev.mapsUrl || '').replace(/"/g, '&quot;')}" placeholder="Pegar link de Maps..." style="padding:0.2rem 0.35rem; font-size:0.72rem; flex:1;" />
+                    <button type="button" class="btn btn-primary btn-sm" style="padding:0.18rem 0.4rem;" onclick="guardarLinkMapsDirectoEnContrato('${ev.id}')">💾</button>
+                  </div>
+                </div>
+
+                <div style="border-top:1px dashed #cbd5e1; padding-top:0.35rem;">
+                  <label style="font-size:0.7rem; color:#047857;">📷 Día de Sesión de Fotos:</label>
+                  <div style="display:flex; gap:0.2rem; flex-wrap:wrap;">
+                    <input type="date" id="ses_inline_fecha_${ev.id}" value="${ev.fechaSesion || ''}" style="padding:0.18rem 0.3rem; font-size:0.72rem; width:115px;" />
+                    <input type="time" id="ses_inline_hora_${ev.id}" value="${ev.horaSesion || '16:00'}" style="padding:0.18rem 0.25rem; font-size:0.72rem; width:78px;" />
+                    <input type="text" id="ses_inline_lugar_${ev.id}" value="${(ev.lugarSesion || '').replace(/"/g, '&quot;')}" placeholder="Locación" style="padding:0.18rem 0.3rem; font-size:0.72rem; flex:1; min-width:80px;" />
+                    <button type="button" class="btn btn-success btn-sm" style="padding:0.18rem 0.4rem;" onclick="guardarSesionDirectoEnContrato('${ev.id}')">💾</button>
+                  </div>
+                </div>
+              </div>
+            </details>
           </td>
           <td>
-            <strong>${ev.paqueteNombre}</strong> (${ev.horasTotales}h)<br/>
-            <div style="background:#f0f9ff; border-left:3px solid #0284c7; padding:0.3rem 0.5rem; border-radius:4px; margin:0.25rem 0; font-size:0.75rem; color:#0f172a !important; font-weight:600; white-space:pre-line;">${construirTextoLimpioParaTabla(ev.detalles || "")}</div>
-            ${horarioResumen}
-            ${sesionBoxHtml}
+            <strong style="color:#0f172a;">${ev.paqueteNombre || "Servicio"}</strong><br/>
+            <small style="color:#64748b; white-space:pre-line;">${ev.modoHorario === "pendiente" ? "Horario pendiente" : (ev.bloquesTexto || "")}</small>
           </td>
           <td>
             <div style="margin-bottom:0.3rem;">${badgeMaterial}</div>
             ${construirBotonesEstadoHtml(est, esUrgente, "cambiarEstadoMaterialEvento", "alternarPrioridadEvento", ev.id)}
           </td>
           <td>
-            <div class="agenda-finance-card">
-              <div style="display:flex; justify-content:space-between; font-size:0.78rem;">
-                <span>Costo Paquete:</span>
-                <strong>$${Number(ev.total).toLocaleString("es-MX")}</strong>
-              </div>
-              <div class="abonos-history-mini">
-                ${(() => {
-                  const pagos = (Array.isArray(ev.abonos) && ev.abonos.length > 0)
-                    ? ev.abonos
-                    : (Number(ev.anticipo) > 0 ? [{ fecha: ev.fechaCotizacion || ev.fecha, monto: Number(ev.anticipo), nota: "1er Anticipo" }] : []);
-                  if (pagos.length === 0) return '<span style="color:#64748b;">Sin anticipos registrados</span>';
-                  return pagos.map((p, i) => `
-                    <div style="display:flex; justify-content:space-between; align-items:center; gap:0.25rem;">
-                      <span>• <strong>Pago #${i + 1}:</strong> $${Number(p.monto).toLocaleString("es-MX")} <small>(${p.fecha || ''})</small></span>
-                      ${Array.isArray(ev.abonos) && ev.abonos.length > 1 ? `<button type="button" style="border:none; background:transparent; color:#e11d48; cursor:pointer; font-weight:800; font-size:0.7rem;" onclick="eliminarAbonoDeEventoGuardado('${ev.id}', ${i})" title="Quitar este abono">✕</button>` : ''}
-                    </div>
-                  `).join("");
-                })()}
-              </div>
-
-              <div style="font-size:0.82rem; margin-top:0.2rem;">
-                Debe sin sanción: <strong style="color:${infoDeuda.deudaBase > 0 ? '#e11d48' : '#16a34a'};">$${infoDeuda.deudaBase.toLocaleString("es-MX")} MXN</strong>
-              </div>
-
-              ${infoDeuda.deudaBase > 0 ? `
-                <div style="background:${infoDeuda.esMoroso3Meses ? '#ffe4e6' : '#fff7ed'}; border:1px solid ${infoDeuda.esMoroso3Meses ? '#f43f5e' : '#fdba74'}; border-radius:6px; padding:0.32rem 0.45rem; margin-top:0.3rem; font-size:0.73rem;">
-                  <div style="display:flex; justify-content:space-between; align-items:center; gap:0.25rem;">
-                    <span><strong>Sanción 10%</strong> ($${infoDeuda.montoPorSancion10.toLocaleString("es-MX")} c/30d):</span>
-                    <div style="display:flex; gap:0.2rem; align-items:center;">
-                      <button type="button" class="btn btn-outline btn-sm" style="padding:0.1rem 0.38rem; font-size:0.7rem;" onclick="ajustarSancion10Evento('${ev.id}', -1)" title="Quitar 1 sanción">-</button>
-                      <strong style="padding:0 0.25rem;">${infoDeuda.numSanciones}x</strong>
-                      <button type="button" class="btn btn-warning btn-sm" style="padding:0.1rem 0.38rem; font-size:0.7rem;" onclick="ajustarSancion10Evento('${ev.id}', 1)" title="Aplicar sanción del 10% (+30 días)">+10%</button>
-                    </div>
-                  </div>
-                  ${infoDeuda.numSanciones > 0 ? `
-                    <div style="color:#9f1239; font-weight:800; margin-top:0.2rem; border-top:1px dashed #fda4af; padding-top:0.2rem;">
-                      +${infoDeuda.numSanciones} sanción(es) (+$${infoDeuda.recargoTotalSanciones.toLocaleString("es-MX")})<br/>
-                      TOTAL A COBRAR: $${infoDeuda.totalConSancion.toLocaleString("es-MX")} MXN
-                    </div>
-                  ` : ''}
+            <div class="clean-finance-box">
+              <!-- 1. Campo directo para poner o modificar de cuánto fue el contrato -->
+              <div class="clean-total-row">
+                <label>💰 ¿De cuánto fue el contrato?</label>
+                <div class="clean-total-input-wrap">
+                  <span style="font-weight:800; color:#0369a1; font-size:0.82rem;">$</span>
+                  <input type="number" class="clean-total-input" id="total_inline_ev_${ev.id}" value="${totalContratoNum}" min="0"
+                    placeholder="Monto total"
+                    onchange="actualizarCostoTotalContratoInline('${ev.id}', this.value)"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();actualizarCostoTotalContratoInline('${ev.id}', this.value);}" />
+                  <button type="button" class="btn btn-primary btn-sm" style="padding:0.22rem 0.42rem; font-size:0.7rem;" onclick="actualizarCostoTotalContratoInline('${ev.id}')" title="Guardar costo total del contrato">💾</button>
                 </div>
+              </div>
 
-                <div class="quick-abono-inline">
-                  <input type="number" id="abono_rapido_monto_${ev.id}" placeholder="Monto abono $" min="1" style="flex:1; min-width:85px;" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarAbonoRapidoEvento('${ev.id}');}" />
-                  <button type="button" class="btn btn-success btn-sm" onclick="agregarAbonoRapidoEvento('${ev.id}')">➕ Abonar</button>
-                  <button type="button" class="btn btn-outline btn-sm" onclick="liquidarSaldoEvento('${ev.id}')" title="Marcar como liquidado al 100%">💲 Liquidar</button>
+              <!-- 2. Lista editable de los pagos que van dejando a cuenta cada cierto tiempo -->
+              <div style="font-size:0.71rem; font-weight:800; color:#065f46; margin-bottom:0.2rem;">
+                💵 Pagos que ha dejado a cuenta (${pagosLista.length}):
+              </div>
+              <div class="clean-abonos-list">
+                ${pagosLista.length === 0
+                  ? `<div style="font-size:0.72rem; color:#64748b; text-align:center; padding:0.15rem 0;">Sin abonos registrados aún</div>`
+                  : pagosLista.map((p, i) => `
+                    <div class="clean-abono-item">
+                      <strong style="color:#047857;">#${i + 1}</strong>
+                      <input type="number" min="0" value="${Number(p.monto) || 0}" title="Editar monto de este abono ($)"
+                        style="padding:0.14rem 0.3rem; font-size:0.74rem; font-weight:800; color:#065f46;"
+                        onchange="editarAbonoDeEventoGuardadoInline('${ev.id}', ${i}, 'monto', this.value)" />
+                      <input type="date" value="${p.fecha || ev.fecha || ''}" title="Editar fecha en que dejó este abono"
+                        style="padding:0.14rem 0.25rem; font-size:0.71rem;"
+                        onchange="editarAbonoDeEventoGuardadoInline('${ev.id}', ${i}, 'fecha', this.value)" />
+                      <button type="button" style="border:none; background:transparent; color:#e11d48; cursor:pointer; font-weight:900; font-size:0.75rem;"
+                        onclick="eliminarAbonoDeEventoGuardado('${ev.id}', ${i})" title="Borrar este abono">✕</button>
+                    </div>
+                  `).join("")}
+              </div>
+
+              <!-- 3. Renglón SIEMPRE visible para anotar cuánto dejan a cuenta cada cierto tiempo -->
+              <div class="clean-add-abono-box">
+                <div style="font-size:0.7rem; font-weight:800; color:#334155; margin-bottom:0.22rem;">
+                  ➕ Anotar nuevo pago a cuenta:
                 </div>
-              ` : `<div style="color:#16a34a; font-weight:800; font-size:0.78rem; margin-top:0.2rem;">✅ Pagado al 100%</div>`}
+                <div style="display:grid; grid-template-columns: 88px 112px auto; gap:0.25rem; align-items:center;">
+                  <input type="number" id="abono_rapido_monto_${ev.id}" placeholder="$ Monto" min="1"
+                    style="padding:0.24rem 0.35rem; font-size:0.76rem; font-weight:800;"
+                    onkeydown="if(event.key==='Enter'){event.preventDefault();agregarAbonoRapidoEvento('${ev.id}');}" />
+                  <input type="date" id="abono_rapido_fecha_${ev.id}" value="${hoyStr}"
+                    style="padding:0.22rem 0.28rem; font-size:0.72rem;" />
+                  <button type="button" class="btn btn-success btn-sm" style="padding:0.24rem 0.45rem; font-size:0.72rem; font-weight:800;"
+                    onclick="agregarAbonoRapidoEvento('${ev.id}')">➕ Abonar</button>
+                </div>
+              </div>
+
+              <!-- 4. Resumen de Total Abonado y Resta por Pagar -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.25rem; margin-top:0.45rem; padding-top:0.38rem; border-top:1px solid #e2e8f0; font-size:0.78rem;">
+                <span style="color:#15803d; font-weight:800;">A cuenta: $${infoDeuda.totalAbonado.toLocaleString("es-MX")}</span>
+                ${totalContratoNum === 0
+                  ? `<span class="badge badge-warn">⚠️ Anota arriba de cuánto es el contrato</span>`
+                  : (infoDeuda.deudaBase > 0
+                      ? `<strong style="color:#e11d48; font-size:0.84rem;">Resta: $${infoDeuda.deudaBase.toLocaleString("es-MX")}</strong>
+                         <button type="button" class="btn btn-outline btn-sm" style="padding:0.12rem 0.4rem; font-size:0.68rem;" onclick="liquidarSaldoEvento('${ev.id}')">💲 Liquidar</button>`
+                      : `<span class="badge badge-ok">✅ Liquidado al 100%</span>`)}
+              </div>
             </div>
           </td>
           <td>
             <div style="display:flex; flex-direction:column; gap:0.3rem;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="cargarEventoEnFormulario('${ev.id}')">📄 Seleccionar</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="cargarEventoEnFormulario('${ev.id}')">✏️ Modificar</button>
               <button type="button" class="btn btn-outline btn-sm" style="${noImpreso ? 'background:#fef08a; border-color:#eab308; color:#854d0e; font-weight:800;' : ''}" onclick="cargarEventoEnFormulario('${ev.id}', true)">
                 🖨️ Imprimir
               </button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="eliminarEvento('${ev.id}')">🗑️ Eliminar</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="eliminarEvento('${ev.id}')">🗑️</button>
             </div>
           </td>
         `;
@@ -8819,6 +10045,1130 @@
       });
     }
 
+
+    // ================= CENTRO DE COMANDO OPERATIVO (ESTILO CRM VERTICAL MÓVIL) =================
+    let etapaSeleccionadaCmd = "";
+
+    function formatearFechaCortaDMY(fechaISO) {
+      if (!fechaISO) return "-";
+      const partes = fechaISO.split("-");
+      if (partes.length !== 3) return fechaISO;
+      return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+
+    function generarLinkWhatsAppCobro(cliente, telefono, paquete, fecha, saldo) {
+      const numLimpio = (telefono || "").replace(/[^0-9]/g, "");
+      const prefijoPais = numLimpio.length === 10 ? "52" + numLimpio : numLimpio;
+      const msg = `Hola ${cliente}, te saluda Montenegro Multimedia 📸. Te escribimos para confirmar el seguimiento de tu servicio (${paquete || "Fotografía y Video"} - ${formatearFechaCortaDMY(fecha)}). Tu saldo restante por liquidar es de $${Number(saldo || 0).toLocaleString("es-MX")} MXN. ¡Quedamos a tus órdenes!`;
+      if (prefijoPais.length >= 10) {
+        return `https://wa.me/${prefijoPais}?text=${encodeURIComponent(msg)}`;
+      }
+      return `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    }
+
+    function poblarSelectorMesBalanceCmd() {
+      const sel = document.getElementById("cmd_mes_balance_select");
+      if (!sel) return;
+      const valPrev = sel.value;
+      const hoy = new Date();
+      const ymActual = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, "0")}`;
+
+      const mesesSet = new Set([ymActual]);
+      (state.eventos || []).forEach(ev => {
+        if (ev.fecha && ev.fecha.length >= 7) {
+          mesesSet.add(ev.fecha.slice(0, 7));
+        }
+      });
+
+      const listaMeses = Array.from(mesesSet).sort();
+      sel.innerHTML = `<option value="TODOS">📊 Todos los Meses (Acumulado General)</option>`;
+      listaMeses.forEach(ym => {
+        const opt = document.createElement("option");
+        opt.value = ym;
+        opt.textContent = obtenerNombreCompletoMesAnio(ym).toUpperCase();
+        sel.appendChild(opt);
+      });
+
+      if (valPrev && (valPrev === "TODOS" || mesesSet.has(valPrev))) {
+        sel.value = valPrev;
+      } else {
+        // Si el mes actual tiene eventos, seleccionarlo; si no, mostrar TODOS para que siempre vea sus números reales
+        const hayEnMesActual = (state.eventos || []).some(e => e.fecha && e.fecha.startsWith(ymActual));
+        sel.value = hayEnMesActual ? ymActual : "TODOS";
+      }
+    }
+
+    function mostrarDetalleEtapaProduccion(etapa) {
+      const box = document.getElementById("cmd_detalle_etapa_box");
+      if (!box) return;
+      if (etapaSeleccionadaCmd === etapa && box.style.display === "block") {
+        box.style.display = "none";
+        etapaSeleccionadaCmd = "";
+        return;
+      }
+      etapaSeleccionadaCmd = etapa;
+      const nombresEtapa = {
+        pendiente: "1. POR INICIAR (Listos para cobertura)",
+        proceso: "2. EN EDICIÓN (Retoque, color y revelado)",
+        seleccion: "3. SELECCIÓN DE FOTOS (Galería con cliente / En maquila)",
+        listo: "4. LISTOS PARA ENTREGA (Material terminado)"
+      };
+      const lista = (state.eventos || []).filter(e => (e.estadoMaterial || "pendiente") === etapa);
+      box.style.display = "block";
+
+      if (lista.length === 0) {
+        box.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:0.82rem;">${nombresEtapa[etapa]}</strong>
+            <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('cmd_detalle_etapa_box').style.display='none';">✕</button>
+          </div>
+          <p style="font-size:0.78rem; color:#64748b; margin-top:0.4rem;">No hay proyectos en esta etapa en este momento.</p>
+        `;
+        return;
+      }
+
+      box.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.35rem;">
+          <strong style="font-size:0.82rem; color:#0f172a;">${nombresEtapa[etapa]} (${lista.length})</strong>
+          <button type="button" class="btn btn-outline btn-sm" style="padding:0.1rem 0.4rem;" onclick="document.getElementById('cmd_detalle_etapa_box').style.display='none';">✕</button>
+        </div>
+        ${lista.map(ev => `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem; padding:0.45rem 0; border-bottom:1px dashed #e2e8f0; font-size:0.8rem;">
+            <div>
+              <strong>${ev.cliente}</strong> <small style="color:#64748b;">(${formatearFechaCortaDMY(ev.fecha)})</small><br/>
+              <small style="color:#475569;">${ev.paqueteNombre || "Evento"}</small>
+            </div>
+            <div style="display:flex; gap:0.25rem; flex-wrap:wrap;">
+              <select onchange="cambiarEstadoMaterialEvento('${ev.id}', this.value); mostrarDetalleEtapaProduccion('${etapa}');" style="width:auto; font-size:0.72rem; padding:0.2rem 0.4rem;">
+                <option value="pendiente" ${ev.estadoMaterial === 'pendiente' ? 'selected' : ''}>1. Por Iniciar</option>
+                <option value="proceso" ${ev.estadoMaterial === 'proceso' ? 'selected' : ''}>2. En Edición</option>
+                <option value="seleccion" ${ev.estadoMaterial === 'seleccion' ? 'selected' : ''}>3. Selección Fotos</option>
+                <option value="listo" ${ev.estadoMaterial === 'listo' ? 'selected' : ''}>4. Listo Entrega</option>
+                <option value="entregado" ${ev.estadoMaterial === 'entregado' ? 'selected' : ''}>📦 Entregado</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')">Ver</button>
+            </div>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    function renderizarCentroDeComando() {
+      poblarSelectorMesBalanceCmd();
+      ordenarEventosPorFecha();
+
+      const todosEv = state.eventos || [];
+      const cStage1 = todosEv.filter(e => (e.estadoMaterial || "pendiente") === "pendiente").length;
+      const cStage2 = todosEv.filter(e => e.estadoMaterial === "proceso").length;
+      const cStage3 = todosEv.filter(e => e.estadoMaterial === "seleccion").length;
+      const cStage4 = todosEv.filter(e => e.estadoMaterial === "listo").length;
+      const totalActivosProd = cStage1 + cStage2 + cStage3 + cStage4;
+
+      const conSaldoPendiente = todosEv.filter(e => calcularEstadoDeudaYSanciones(e).deudaBase > 0 && e.estadoMaterial !== "entregado").length;
+      const activosNoEntregados = todosEv.filter(e => e.estadoMaterial !== "entregado").length;
+
+      const elTotRes = document.getElementById("cmd_stat_total_reservas");
+      const elNuevas = document.getElementById("cmd_stat_nuevas");
+      const elSeg = document.getElementById("cmd_stat_seguimiento");
+      const elCont = document.getElementById("cmd_stat_contratadas");
+
+      if (elTotRes) elTotRes.textContent = todosEv.length;
+      if (elNuevas) elNuevas.textContent = cStage1;
+      if (elSeg) elSeg.textContent = conSaldoPendiente;
+      if (elCont) elCont.textContent = activosNoEntregados;
+
+      const elTotProd = document.getElementById("cmd_total_en_produccion_lbl");
+      if (elTotProd) elTotProd.textContent = totalActivosProd;
+      const s1 = document.getElementById("cmd_stage_1_num");
+      const s2 = document.getElementById("cmd_stage_2_num");
+      const s3 = document.getElementById("cmd_stage_3_num");
+      const s4 = document.getElementById("cmd_stage_4_num");
+      if (s1) s1.textContent = cStage1;
+      if (s2) s2.textContent = cStage2;
+      if (s3) s3.textContent = cStage3;
+      if (s4) s4.textContent = cStage4;
+
+      // 2. BALANCE FINANCIERO DEL MES
+      const selMes = document.getElementById("cmd_mes_balance_select");
+      const filtroYm = selMes ? selMes.value : "TODOS";
+      const eventosDelPeriodo = filtroYm === "TODOS"
+        ? todosEv
+        : todosEv.filter(e => e.fecha && e.fecha.startsWith(filtroYm));
+
+      let sumaProyectado = 0;
+      let sumaCobrado = 0;
+      let sumaPorLiquidar = 0;
+
+      eventosDelPeriodo.forEach(ev => {
+        const tot = Number(ev.total) || 0;
+        const infoD = calcularEstadoDeudaYSanciones(ev);
+        sumaProyectado += tot;
+        sumaCobrado += infoD.totalAbonado;
+        sumaPorLiquidar += infoD.deudaBase;
+      });
+
+      const pctCobrado = sumaProyectado > 0 ? Math.min(100, Math.round((sumaCobrado / sumaProyectado) * 100)) : 0;
+
+      const pillMes = document.getElementById("cmd_eventos_mes_pill");
+      if (pillMes) {
+        pillMes.textContent = filtroYm === "TODOS"
+          ? `${eventosDelPeriodo.length} evento(s) registrados en total`
+          : `${eventosDelPeriodo.length} evento(s) contratados en este mes`;
+      }
+      const elProy = document.getElementById("cmd_fin_proyectado");
+      const elCob = document.getElementById("cmd_fin_cobrado");
+      const elLiq = document.getElementById("cmd_fin_por_liquidar");
+      const elPct = document.getElementById("cmd_fin_pct_cobrado");
+
+      if (elProy) elProy.textContent = `$${sumaProyectado.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (elCob) elCob.textContent = `$${sumaCobrado.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (elLiq) elLiq.textContent = `$${sumaPorLiquidar.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (elPct) elPct.textContent = `${pctCobrado}%`;
+
+      // 3. AGENDA DE LOS PRÓXIMOS 14 DÍAS (Y PRÓXIMOS EN PUERTA)
+      const cont14 = document.getElementById("cmd_agenda_14_dias_list");
+      if (cont14) {
+        const todasSes = obtenerTodasLasSesionesRegistradas();
+        const combinados = [
+          ...todosEv.map(ev => ({
+            id: ev.id,
+            esSesion: false,
+            cliente: ev.cliente,
+            subtipo: ev.paqueteNombre || "Evento",
+            fecha: ev.fecha,
+            dias: calcularDiferenciaDias(ev.fecha),
+            mapsHref: construirUrlGoogleMapsValida(ev.mapsUrl, ev.dirRecepcion, ev.lugar)
+          })),
+          ...todasSes.map(ses => ({
+            id: ses.id,
+            contratoId: ses.contratoId || "",
+            esSesion: true,
+            cliente: ses.cliente,
+            subtipo: ses.tipo || "Sesiones",
+            fecha: ses.fecha,
+            dias: calcularDiferenciaDias(ses.fecha),
+            mapsHref: construirUrlGoogleMapsValida(ses.mapsUrl, ses.lugar, "")
+          }))
+        ].filter(x => x.dias >= 0).sort((a, b) => a.dias - b.dias);
+
+        const en14Dias = combinados.filter(x => x.dias <= 14);
+        const listaMostrar = en14Dias.length > 0 ? en14Dias : combinados.slice(0, 5);
+
+        if (listaMostrar.length === 0) {
+          cont14.innerHTML = `<div style="padding:0.9rem; background:#fafaf9; border:1px dashed #d6d3d1; border-radius:12px; color:#78716c; font-size:0.82rem; text-align:center;">No hay sesiones ni eventos programados para los próximos días.</div>`;
+        } else {
+          cont14.innerHTML = listaMostrar.map(item => {
+            const txtDias = item.dias === 0 ? "¡ES HOY!" : (item.dias === 1 ? "Mañana" : `En ${item.dias} días`);
+            const accionExp = item.esSesion
+              ? (item.contratoId ? `switchTab('contratos'); cargarEventoEnFormulario('${item.contratoId}')` : `seleccionarDiaCalendario('${item.fecha}'); switchTab('calendario');`)
+              : `switchTab('contratos'); cargarEventoEnFormulario('${item.id}')`;
+            return `
+              <div class="crm-list-card">
+                <div>
+                  <div style="font-size:0.95rem; font-weight:800; color:#1c1917;">
+                    ${item.cliente}
+                    <span class="crm-days-pill ${item.dias <= 1 ? 'hoy' : ''}">${txtDias}</span>
+                  </div>
+                  <div style="font-size:0.8rem; color:#78716c; margin-top:0.2rem;">
+                    <span style="color:#b45339; font-weight:700;">${item.subtipo}</span> &nbsp;·&nbsp; ${formatearFechaCortaDMY(item.fecha)}
+                  </div>
+                </div>
+                <div style="display:flex; gap:0.35rem; align-items:center;">
+                  ${item.mapsHref ? `<a class="btn-maps-mobile" href="${item.mapsHref}" target="_blank" rel="noopener" title="Abrir ubicación en Google Maps">📍 Maps</a>` : ""}
+                  <button type="button" class="btn-expediente-crm" onclick="${accionExp}">Expediente →</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      }
+
+      // 4. COBROS PRÓXIMOS DE ENTREGAS (CLIENTES CON SALDO POR LIQUIDAR O SIN PRECIO ASIGNADO AÚN)
+      const contCobros = document.getElementById("cmd_cobros_proximos_list");
+      const badgeDeudores = document.getElementById("cmd_badge_total_deudores");
+      if (contCobros) {
+        const pendientesPago = todosEv
+          .map(ev => ({ ev, info: calcularEstadoDeudaYSanciones(ev) }))
+          .filter(x => (x.info.deudaBase > 0 || Number(x.ev.total || 0) === 0) && x.ev.estadoMaterial !== "entregado")
+          .sort((a, b) => (a.ev.fecha || "").localeCompare(b.ev.fecha || ""));
+
+        if (badgeDeudores) badgeDeudores.textContent = `${pendientesPago.length} activo(s)`;
+
+        if (pendientesPago.length === 0) {
+          contCobros.innerHTML = `<div style="padding:0.9rem; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; color:#15803d; font-size:0.82rem; font-weight:700; text-align:center;">✅ ¡Excelente! Todos los contratos activos están liquidados al 100%.</div>`;
+        } else {
+          contCobros.innerHTML = pendientesPago.map(({ ev, info }) => {
+            const totNum = Number(ev.total) || 0;
+            const waUrl = generarLinkWhatsAppCobro(ev.cliente, ev.telefono, ev.paqueteNombre, ev.fecha, info.totalConSancion || info.deudaBase);
+            return `
+              <div class="crm-cobro-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; flex-wrap:wrap;">
+                  <div>
+                    <div style="font-size:0.96rem; font-weight:800; color:#1c1917;">${ev.cliente}</div>
+                    <div style="display:inline-block; background:#ffedd5; color:#7c2d12; font-size:0.74rem; font-weight:800; padding:0.18rem 0.55rem; border-radius:6px; margin:0.28rem 0;">
+                      ${ev.paqueteNombre || "Servicio"} · ${formatearFechaCortaDMY(ev.fecha)}
+                    </div>
+                    <div style="font-size:0.9rem; font-weight:900; color:#b45339; margin-top:0.1rem;">
+                      ${totNum === 0
+                        ? `<span style="color:#d97706;">⚠️ Sin costo asignado (Pon abajo de cuánto fue el contrato)</span>`
+                        : `Saldo: $${info.deudaBase.toLocaleString("es-MX", { minimumFractionDigits: 2 })} MXN <small style="color:#15803d; font-weight:700;">(A cuenta: $${info.totalAbonado.toLocaleString("es-MX")})</small>`}
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:0.35rem; align-items:center;">
+                    <a class="btn-whatsapp-crm" href="${waUrl}" target="_blank" rel="noopener">WhatsApp</a>
+                    <button type="button" class="btn-expediente-crm" onclick="switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')">Modificar</button>
+                  </div>
+                </div>
+                <!-- Editar de cuánto fue el contrato y sumar lo que dejan a cuenta cada cierto tiempo -->
+                <div style="display:flex; gap:0.35rem; align-items:center; flex-wrap:wrap; margin-top:0.55rem; padding-top:0.45rem; border-top:1px dashed #fed7aa;">
+                  <div style="display:flex; align-items:center; gap:0.2rem;">
+                    <small style="font-weight:800; color:#475569; font-size:0.72rem;">Contrato $:</small>
+                    <input type="number" id="cmd_total_inline_ev_${ev.id}" value="${totNum}" min="0" style="width:88px; padding:0.28rem 0.4rem; font-size:0.78rem; font-weight:800; color:#0369a1;" onchange="actualizarCostoTotalContratoInline('${ev.id}', this.value)" />
+                  </div>
+                  <input type="number" id="cmd_abono_monto_${ev.id}" placeholder="$ Dejó a cuenta..." min="1" style="flex:1; min-width:110px; padding:0.28rem 0.5rem; font-size:0.78rem;" onkeydown="if(event.key==='Enter'){event.preventDefault();registrarAbonoACuentaDesdeComando('${ev.id}');}" />
+                  <button type="button" class="btn btn-success btn-sm" style="font-weight:800;" onclick="registrarAbonoACuentaDesdeComando('${ev.id}')">➕ Abonar</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      }
+
+      // 5. LISTA DE CONTRATOS Y LO QUE VAN DEJANDO A CUENTA (ABAJA EN EL PANEL DE CONTRATOS ANTERIORES)
+      renderizarListaContratosACuentaCmd();
+    }
+
+    function registrarAbonoACuentaDesdeComando(evId) {
+      const inp = document.getElementById("cmd_abono_monto_" + evId) || document.getElementById("cmd_ant_abono_inline_" + evId);
+      if (!inp) return;
+      const monto = Number(inp.value) || 0;
+      if (monto <= 0) {
+        notificar("Escribe cuánto te dejó a cuenta el cliente.", "warn");
+        inp.focus();
+        return;
+      }
+      const ev = state.eventos.find(e => e.id === evId);
+      if (!ev) return;
+
+      if (!Array.isArray(ev.abonos) || ev.abonos.length === 0) {
+        ev.abonos = [];
+        if (Number(ev.anticipo) > 0) {
+          ev.abonos.push({
+            id: "ab_init_" + Date.now(),
+            fecha: ev.fechaCotizacion || ev.fecha,
+            monto: Number(ev.anticipo),
+            nota: "1er Pago a cuenta"
+          });
+        }
+      }
+
+      const hoy = new Date().toISOString().split("T")[0];
+      ev.abonos.push({
+        id: "ab_" + Date.now(),
+        fecha: hoy,
+        monto,
+        nota: `Abono a cuenta #${ev.abonos.length + 1}`
+      });
+
+      const suma = ev.abonos.reduce((acc, a) => acc + (Number(a.monto) || 0), 0);
+      ev.totalAbonado = suma;
+      ev.saldo = Math.max(0, (Number(ev.total) || 0) - suma);
+
+      guardarEstado();
+      refrescarTodo();
+      notificar(`💵✅ Se sumaron $${monto.toLocaleString("es-MX")} MXN a cuenta de ${ev.cliente}. Nuevo saldo: $${ev.saldo.toLocaleString("es-MX")} MXN`);
+    }
+
+    function irAContratosAnterioresComando() {
+      switchTab("contratos");
+      setTimeout(() => {
+        const panel = document.getElementById("panel_contrato_anterior_agenda");
+        if (panel && (panel.style.display === "none" || panel.style.display === "")) {
+          toggleMenuContratoAnteriorAgenda();
+        }
+        const cardAg = document.getElementById("card_agenda_contratos");
+        if (cardAg) cardAg.scrollIntoView({ behavior: "smooth" });
+      }, 120);
+    }
+
+    function calcularRestaContratoAnteriorCmd() {
+      const tot = Number(document.getElementById("cmd_ant_total").value) || 0;
+      const acu = Number(document.getElementById("cmd_ant_acuenta").value) || 0;
+      const sal = Math.max(0, tot - acu);
+      const elSal = document.getElementById("cmd_ant_saldo");
+      if (elSal) elSal.value = sal;
+    }
+
+    function limpiarFormContratoAnteriorCmd() {
+      const hoy = new Date().toISOString().split("T")[0];
+      document.getElementById("cmd_ant_edit_id").value = "";
+      document.getElementById("cmd_ant_cliente").value = "";
+      document.getElementById("cmd_ant_fecha").value = hoy;
+      document.getElementById("cmd_ant_telefono").value = "";
+      document.getElementById("cmd_ant_lugar").value = "";
+      document.getElementById("cmd_ant_paquete").value = "";
+      document.getElementById("cmd_ant_maps").value = "";
+      document.getElementById("cmd_ant_total").value = 0;
+      document.getElementById("cmd_ant_acuenta").value = 0;
+      document.getElementById("cmd_ant_saldo").value = 0;
+      document.getElementById("cmd_ant_etapa").value = "pendiente";
+      document.getElementById("cmd_ant_notas").value = "";
+      document.getElementById("btn_guardar_cmd_ant").textContent = "📂💾 Guardar Contrato Anterior y sus Abonos a Cuenta";
+    }
+
+    function guardarContratoAnteriorDesdeComando() {
+      const cliente = document.getElementById("cmd_ant_cliente").value.trim();
+      const fecha = document.getElementById("cmd_ant_fecha").value;
+      const lugar = document.getElementById("cmd_ant_lugar").value.trim() || "Por confirmar";
+      const telefono = document.getElementById("cmd_ant_telefono").value.trim();
+      const paqueteNombre = document.getElementById("cmd_ant_paquete").value.trim() || "Contrato Anterior";
+      const mapsUrl = document.getElementById("cmd_ant_maps").value.trim();
+      const total = Number(document.getElementById("cmd_ant_total").value) || 0;
+      const acuenta = Number(document.getElementById("cmd_ant_acuenta").value) || 0;
+      const saldo = Math.max(0, total - acuenta);
+      const etapa = document.getElementById("cmd_ant_etapa").value || "pendiente";
+      const notas = document.getElementById("cmd_ant_notas").value.trim();
+      const editId = document.getElementById("cmd_ant_edit_id").value;
+
+      if (!cliente || !fecha) {
+        notificar("Escribe el Nombre del Cliente y la Fecha del Evento.", "error");
+        document.getElementById("cmd_ant_cliente").focus();
+        return;
+      }
+
+      const abonosArr = acuenta > 0
+        ? [{ id: "ab_ant_" + Date.now(), fecha, monto: acuenta, nota: "Dejado a cuenta (Contrato anterior)" }]
+        : [];
+
+      const nuevoEv = {
+        id: editId || ("ev_" + Date.now()),
+        esEventoSinContrato: true,
+        cliente,
+        telefono,
+        telefono2: "",
+        fechaCotizacion: fecha,
+        fecha,
+        fechaSesion: "",
+        horaSesion: "16:00",
+        lugarSesion: "",
+        lugar,
+        dirCeremonia: "",
+        dirRecepcion: lugar,
+        mapsUrl,
+        paqueteId: "",
+        paqueteNombre,
+        horasTotales: 6,
+        detalles: notas || "1. [FOTO] Contrato agendado previamente",
+        modoHorario: "bloques",
+        bloques: [],
+        horarioCeremonia: "",
+        horarioRecepcion: "",
+        bloquesTexto: notas || "Horario en contrato anterior",
+        total,
+        anticipo: acuenta,
+        totalAbonado: acuenta,
+        abonos: abonosArr,
+        saldo,
+        estadoMaterial: etapa,
+        prioridad: "normal",
+        impreso: true,
+        equipo: {}
+      };
+
+      if (editId) {
+        const idx = state.eventos.findIndex(e => e.id === editId);
+        if (idx >= 0) state.eventos[idx] = nuevoEv;
+      } else {
+        state.eventos.push(nuevoEv);
+      }
+
+      ordenarEventosPorFecha();
+      guardarEstado();
+      limpiarFormContratoAnteriorCmd();
+      refrescarTodo();
+      notificar(`📂✅ Contrato de "${cliente}" guardado: Total $${total.toLocaleString("es-MX")} | A cuenta $${acuenta.toLocaleString("es-MX")} | Resta $${saldo.toLocaleString("es-MX")} MXN.`);
+    }
+
+    function renderizarListaContratosACuentaCmd() {
+      const cont = document.getElementById("cmd_lista_contratos_acuenta");
+      if (!cont) return;
+      if (!state.eventos || state.eventos.length === 0) {
+        cont.innerHTML = `<div style="font-size:0.8rem; color:#64748b;">Aún no hay contratos registrados. Usa el formulario de arriba para agregar tus contratos anteriores.</div>`;
+        return;
+      }
+
+      cont.innerHTML = state.eventos.map(ev => {
+        const info = calcularEstadoDeudaYSanciones(ev);
+        const pagos = (Array.isArray(ev.abonos) && ev.abonos.length > 0)
+          ? ev.abonos
+          : (Number(ev.anticipo) > 0 ? [{ fecha: ev.fechaCotizacion || ev.fecha, monto: Number(ev.anticipo), nota: "1er Anticipo" }] : []);
+        return `
+          <div style="background:#ffffff; border:1px solid #bbf7d0; border-left:4px solid #10b981; border-radius:10px; padding:0.75rem 0.9rem; margin-bottom:0.6rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+              <div>
+                <strong style="font-size:0.92rem; color:#0f172a;">${ev.cliente}</strong>
+                <span class="badge badge-blue" style="margin-left:0.3rem;">${formatearFechaCortaDMY(ev.fecha)}</span>
+                <small style="color:#475569; display:block;">📍 ${ev.dirRecepcion || ev.lugar || "-"} • ${ev.paqueteNombre || "Contrato"}</small>
+              </div>
+              <div style="text-align:right; font-size:0.82rem;">
+                <div>Contrato: <strong>$${Number(ev.total || 0).toLocaleString("es-MX")}</strong> | Dejado a cuenta: <strong style="color:#15803d;">$${info.totalAbonado.toLocaleString("es-MX")}</strong></div>
+                <div style="font-weight:900; color:${info.deudaBase > 0 ? '#e11d48' : '#15803d'};">
+                  ${info.deudaBase > 0 ? `RESTA: $${info.deudaBase.toLocaleString("es-MX")} MXN` : `✅ LIQUIDADO AL 100%`}
+                </div>
+              </div>
+            </div>
+            ${pagos.length > 0 ? `
+              <div style="font-size:0.74rem; color:#334155; background:#f8fafc; padding:0.35rem 0.55rem; border-radius:6px; margin-top:0.4rem;">
+                <strong>Pagos que ha ido dejando a cuenta:</strong>
+                ${pagos.map((p, idxP) => `<span style="margin-right:0.65rem;">• #${idxP + 1}: <strong>$${Number(p.monto).toLocaleString("es-MX")}</strong> (${p.fecha || ''})</span>`).join("")}
+              </div>
+            ` : ""}
+            ${info.deudaBase > 0 ? `
+              <div style="display:flex; gap:0.35rem; align-items:center; margin-top:0.45rem;">
+                <input type="number" id="cmd_ant_abono_inline_${ev.id}" placeholder="Monto que dejó hoy a cuenta $" min="1" style="flex:1; padding:0.28rem 0.5rem; font-size:0.78rem;" onkeydown="if(event.key==='Enter'){event.preventDefault();registrarAbonoACuentaDesdeComando('${ev.id}');}" />
+                <button type="button" class="btn btn-success btn-sm" onclick="registrarAbonoACuentaDesdeComando('${ev.id}')">➕ Abonar a Cuenta</button>
+              </div>
+            ` : ""}
+          </div>
+        `;
+      }).join("");
+    }
+
+    // ================= SISTEMA DE NOTIFICACIONES DE QUE YA VA A SER EL EVENTO (CAMPANITA + PUSH NAVEGADOR) =================
+    let notifInicialYaMostrada = false;
+
+    function reproducirCampanaAlertaSuave() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.14); // A5
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.55);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.55);
+      } catch (e) {}
+    }
+
+    function obtenerAlertasEventosProximos() {
+      const alertas = [];
+      (state.eventos || []).forEach(ev => {
+        if (!ev.fecha || ev.estadoMaterial === "entregado") return;
+        const dias = calcularDiferenciaDias(ev.fecha);
+        if (dias >= 0 && dias <= 7) {
+          alertas.push({
+            tipo: "📸 EVENTO",
+            cliente: ev.cliente,
+            detalle: `${ev.paqueteNombre || "Servicio"} en ${ev.dirRecepcion || ev.lugar || "Salón"}`,
+            fecha: ev.fecha,
+            dias,
+            mapsHref: construirUrlGoogleMapsValida(ev.mapsUrl, ev.dirRecepcion, ev.lugar),
+            irFn: `switchTab('contratos'); cargarEventoEnFormulario('${ev.id}')`
+          });
+        }
+      });
+
+      obtenerTodasLasSesionesRegistradas().forEach(ses => {
+        if (!ses.fecha) return;
+        const dias = calcularDiferenciaDias(ses.fecha);
+        if (dias >= 0 && dias <= 7) {
+          alertas.push({
+            tipo: "📷 SESIÓN",
+            cliente: ses.cliente,
+            detalle: `${ses.tipo} (${ses.horaInicio || "16:00"} hrs) en ${ses.lugar || "Locación"}`,
+            fecha: ses.fecha,
+            dias,
+            mapsHref: construirUrlGoogleMapsValida(ses.mapsUrl, ses.lugar, ""),
+            irFn: `seleccionarDiaCalendario('${ses.fecha}'); switchTab('calendario');`
+          });
+        }
+      });
+
+      (state.rentas || []).forEach(ren => {
+        if (!ren.fecha) return;
+        const dias = calcularDiferenciaDias(ren.fecha);
+        if (dias >= 0 && dias <= 3) {
+          alertas.push({
+            tipo: "🎥 RENTA",
+            cliente: ren.cliente,
+            detalle: formatearEquipoTexto(ren.equipo),
+            fecha: ren.fecha,
+            dias,
+            mapsHref: "",
+            irFn: `switchTab('inventario'); cargarRentaEnFormulario('${ren.id}')`
+          });
+        }
+      });
+
+      return alertas.sort((a, b) => a.dias - b.dias);
+    }
+
+    function actualizarAlertasYNotificacionesEventos() {
+      const alertas = obtenerAlertasEventosProximos();
+      const badge = document.getElementById("floating_bell_badge");
+      const listEl = document.getElementById("notif_drawer_list");
+
+      if (badge) {
+        badge.textContent = alertas.length;
+        badge.style.display = alertas.length > 0 ? "flex" : "none";
+      }
+
+      if (listEl) {
+        if (alertas.length === 0) {
+          listEl.innerHTML = `<div style="font-size:0.8rem; color:#64748b; padding:0.5rem 0;">✅ No tienes eventos ni sesiones urgentes en los próximos 7 días.</div>`;
+        } else {
+          listEl.innerHTML = alertas.map(al => {
+            const urgTxt = al.dias === 0 ? "🚨 ¡ES HOY!" : (al.dias === 1 ? "⚠️ ¡ES MAÑANA!" : `🔔 En ${al.dias} días`);
+            return `
+              <div style="background:${al.dias <= 1 ? '#fff1f2' : '#f8fafc'}; border:1px solid ${al.dias <= 1 ? '#fda4af' : '#cbd5e1'}; border-radius:10px; padding:0.6rem 0.75rem; font-size:0.78rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong style="color:${al.dias <= 1 ? '#be123c' : '#0f172a'};">${urgTxt} — ${al.tipo}</strong>
+                  <small style="font-weight:700;">${formatearFechaCortaDMY(al.fecha)}</small>
+                </div>
+                <div style="font-weight:800; font-size:0.86rem; margin-top:2px;">${al.cliente}</div>
+                <div style="color:#475569; margin-bottom:0.4rem;">${al.detalle}</div>
+                <div style="display:flex; gap:0.3rem;">
+                  ${al.mapsHref ? `<a class="btn-maps-mobile" style="font-size:0.68rem; padding:0.18rem 0.5rem;" href="${al.mapsHref}" target="_blank">📍 Ir a Maps</a>` : ""}
+                  <button type="button" class="btn btn-outline btn-sm" style="font-size:0.68rem; padding:0.18rem 0.5rem;" onclick="${al.irFn}; togglePanelNotificacionesEventos();">Ver Detalle</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      }
+
+      // Si hay eventos para HOY o MAÑANA y es la primera vez que abre la página en esta sesión, avisarle para que esté atento
+      if (!notifInicialYaMostrada && alertas.length > 0) {
+        notifInicialYaMostrada = true;
+        const proxima = alertas[0];
+        const cuando = proxima.dias === 0 ? "¡ES HOY!" : (proxima.dias === 1 ? "¡ES MAÑANA!" : `en ${proxima.dias} días`);
+        setTimeout(() => {
+          notificar(`🔔 ¡ATENTO! Tienes ${proxima.tipo} de ${proxima.cliente} ${cuando} (${formatearFechaCortaDMY(proxima.fecha)}).`, proxima.dias <= 1 ? "warn" : "ok");
+          if ("Notification" in window && Notification.permission === "granted") {
+            try {
+              new Notification(`🔔 Montenegro Multimedia: Evento ${cuando}`, {
+                body: `${proxima.cliente} — ${proxima.detalle} (${formatearFechaCortaDMY(proxima.fecha)})`
+              });
+            } catch (e) {}
+          }
+        }, 900);
+      }
+    }
+
+    function togglePanelNotificacionesEventos() {
+      const panel = document.getElementById("notif_drawer_panel");
+      if (!panel) return;
+      const visible = panel.style.display === "block";
+      panel.style.display = visible ? "none" : "block";
+      if (!visible) {
+        actualizarAlertasYNotificacionesEventos();
+      }
+    }
+
+    async function activarYProbarNotificacionesEvento() {
+      reproducirCampanaAlertaSuave();
+      const alertas = obtenerAlertasEventosProximos();
+      const resumenMsg = alertas.length > 0
+        ? `Tienes ${alertas.length} evento(s)/sesión(es) próximos. El más cercano es: ${alertas[0].cliente} (${alertas[0].dias === 0 ? '¡HOY!' : 'en ' + alertas[0].dias + ' día(s)'}).`
+        : "El sistema te avisará con sonido y notificación en cuanto un evento o sesión esté a 7 días, mañana o el mismo día.";
+
+      if (!("Notification" in window)) {
+        notificar("🔔 Alertas internas y sonoras activadas. " + resumenMsg);
+        return;
+      }
+
+      try {
+        const perm = await Notification.requestPermission();
+        if (perm === "granted") {
+          new Notification("🔔 Avisos Activados — Montenegro Multimedia", {
+            body: resumenMsg
+          });
+          notificar("📲✅ ¡Notificaciones del celular/navegador activadas! " + resumenMsg);
+        } else {
+          notificar("🔔 Alertas visuales y sonoras activadas en la página. " + resumenMsg);
+        }
+      } catch (e) {
+        notificar("🔔 Alertas activadas: " + resumenMsg);
+      }
+    }
+
+    // ================= MÓDULO EXCLUSIVO DE MAQUILA, COSTOS DE PRODUCCIÓN E INVERSIÓN POR PAQUETE =================
+    function renderizarModuloMaquila() {
+      if (!Array.isArray(state.catalogoMaquila) || state.catalogoMaquila.length === 0) {
+        state.catalogoMaquila = JSON.parse(JSON.stringify(COSTOS_MAQUILA_DEFAULT));
+      }
+
+      // 1. Poblar selectores de paquetes y contratos
+      const selPkg = document.getElementById("maq_select_paquete");
+      if (selPkg) {
+        const prev = selPkg.value;
+        selPkg.innerHTML = `<option value="">— Selecciona un Paquete para calcular su maquila —</option>`;
+        (state.paquetes || []).forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.id;
+          opt.textContent = `🎁 ${p.nombre} — Venta: $${Number(p.precio).toLocaleString("es-MX")}`;
+          selPkg.appendChild(opt);
+        });
+        if (prev && state.paquetes.some(p => p.id === prev)) selPkg.value = prev;
+      }
+
+      const selEv = document.getElementById("maq_select_contrato");
+      if (selEv) {
+        const prevE = selEv.value;
+        selEv.innerHTML = `<option value="">— O elige el Contrato de un Cliente —</option>`;
+        (state.eventos || []).forEach(ev => {
+          const opt = document.createElement("option");
+          opt.value = ev.id;
+          opt.textContent = `👤 ${ev.cliente} (${ev.paqueteNombre || "Contrato"}) — $${Number(ev.total || 0).toLocaleString("es-MX")}`;
+          selEv.appendChild(opt);
+        });
+        if (prevE && state.eventos.some(e => e.id === prevE)) selEv.value = prevE;
+      }
+
+      // 2. Renderizar Chips Rápidos y Tabla del Catálogo de Costos de Maquila
+      const chipsCont = document.getElementById("maq_chips_insumos");
+      const tbodyCat = document.getElementById("tabla_catalogo_costos_maquila");
+
+      if (chipsCont) {
+        chipsCont.innerHTML = "";
+        state.catalogoMaquila.forEach(item => {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "catalog-chip";
+          const cantDefault = /4x6/i.test(item.nombre) ? 50 : 1;
+          chip.innerHTML = `<span>+ ${cantDefault > 1 ? cantDefault + 'x ' : ''}${item.nombre}</span> <strong style="color:#be123c;">$${Number(item.costo).toFixed(2)}</strong>`;
+          chip.onclick = () => sumarInsumoACalculadoraMaquila(cantDefault, item.nombre, item.costo);
+          chipsCont.appendChild(chip);
+        });
+      }
+
+      if (tbodyCat) {
+        tbodyCat.innerHTML = "";
+        state.catalogoMaquila.forEach((item, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>
+              <input type="text" value="${(item.nombre || '').replace(/"/g, '&quot;')}" style="padding:0.22rem 0.4rem; font-size:0.78rem; font-weight:700;"
+                onchange="editarCostoCatalogoMaquilaInline(${idx}, 'nombre', this.value)" />
+            </td>
+            <td><span class="badge badge-blue">${item.tipo || "INSUMO"}</span></td>
+            <td>
+              <input type="number" min="0" step="0.5" value="${item.costo}" style="padding:0.22rem 0.4rem; font-size:0.8rem; font-weight:800; color:#be123c;"
+                onchange="editarCostoCatalogoMaquilaInline(${idx}, 'costo', this.value)" />
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline btn-sm" onclick="sumarInsumoACalculadoraMaquila(${/4x6/i.test(item.nombre) ? 50 : 1}, '${(item.nombre || '').replace(/'/g, "\'")}', ${item.costo})">➕ Usar</button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm" onclick="eliminarInsumoCatalogoMaquila('${item.id}')">✕</button>
+            </td>
+          `;
+          tbodyCat.appendChild(tr);
+        });
+      }
+
+      renderizarTablaCalculadoraMaquila();
+      renderizarHistorialOrdenesMaquila();
+    }
+
+    function agregarInsumoCatalogoMaquila() {
+      const nombre = document.getElementById("maq_cat_nombre").value.trim();
+      const tipo = document.getElementById("maq_cat_tipo").value || "BASICO";
+      const costo = Math.max(0, Number(document.getElementById("maq_cat_costo").value) || 0);
+      if (!nombre) {
+        notificar("Escribe el nombre del insumo, fotografía o marco.", "error");
+        return;
+      }
+      state.catalogoMaquila.push({
+        id: "mq_" + Date.now(),
+        nombre,
+        tipo,
+        costo
+      });
+      document.getElementById("maq_cat_nombre").value = "";
+      guardarEstado();
+      renderizarModuloMaquila();
+      notificar(`🏷️ Costo de maquila "${nombre}" ($${costo}) guardado.`);
+    }
+
+    function editarCostoCatalogoMaquilaInline(idx, campo, valor) {
+      if (!state.catalogoMaquila[idx]) return;
+      const nombreAnterior = state.catalogoMaquila[idx].nombre;
+      if (campo === "costo") {
+        const nuevoCosto = Math.max(0, Number(valor) || 0);
+        state.catalogoMaquila[idx].costo = nuevoCosto;
+        // Actualizar también en la calculadora si ese insumo ya está en la lista actual
+        (state.calculadoraMaquilaItems || []).forEach(it => {
+          if (it.desc === nombreAnterior) it.costo = nuevoCosto;
+        });
+      } else {
+        state.catalogoMaquila[idx].nombre = valor.trim() || nombreAnterior;
+      }
+      guardarEstado();
+      renderizarModuloMaquila();
+      notificar("Costo de maquila actualizado.");
+    }
+
+    function eliminarInsumoCatalogoMaquila(id) {
+      state.catalogoMaquila = state.catalogoMaquila.filter(x => x.id !== id);
+      guardarEstado();
+      renderizarModuloMaquila();
+    }
+
+    function restaurarCostosMaquilaDefault() {
+      state.catalogoMaquila = JSON.parse(JSON.stringify(COSTOS_MAQUILA_DEFAULT));
+      guardarEstado();
+      renderizarModuloMaquila();
+      notificar("Costos base de maquila restaurados.");
+    }
+
+    function subirCatalogoMaquilaTxt(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const lineas = (e.target.result || "").split(/\r?\n/);
+        let agregados = 0;
+        lineas.forEach(lin => {
+          const clean = lin.trim();
+          if (!clean) return;
+          const partes = clean.split(/\||:| - /);
+          if (partes.length >= 2) {
+            const nombre = partes[0].trim();
+            const costoNum = parseFloat(partes[partes.length - 1].replace(/[^0-9.]/g, "")) || 0;
+            const tipo = /marco|cuadro|ampliaci/i.test(nombre) ? "MARCO" : (/foto/i.test(nombre) ? "FOTO" : "BASICO");
+            if (nombre) {
+              state.catalogoMaquila.push({ id: "mq_" + Date.now() + "_" + agregados, nombre, tipo, costo: costoNum });
+              agregados++;
+            }
+          }
+        });
+        guardarEstado();
+        renderizarModuloMaquila();
+        notificar(`📂 ¡Se cargaron ${agregados} costos de maquila desde tu archivo .txt!`);
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    function descargarCatalogoMaquilaTxt() {
+      const txt = (state.catalogoMaquila || []).map(m => `${m.nombre} | ${m.tipo} | ${m.costo}`).join("\n");
+      const blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "costos_maquila_montenegro.txt";
+      a.click();
+    }
+
+    function sumarInsumoACalculadoraMaquila(cant, desc, costo) {
+      if (!Array.isArray(state.calculadoraMaquilaItems)) state.calculadoraMaquilaItems = [];
+      const existente = state.calculadoraMaquilaItems.find(i => i.desc === desc);
+      if (existente) {
+        existente.cant = (Number(existente.cant) || 0) + Number(cant);
+      } else {
+        state.calculadoraMaquilaItems.push({
+          cant: Number(cant) || 1,
+          desc,
+          costo: Number(costo) || 0
+        });
+      }
+      guardarEstado();
+      renderizarTablaCalculadoraMaquila();
+    }
+
+    function agregarRenglonVacioMaquila() {
+      if (!Array.isArray(state.calculadoraMaquilaItems)) state.calculadoraMaquilaItems = [];
+      state.calculadoraMaquilaItems.push({
+        cant: 1,
+        desc: "Material / Marco / Básico extra",
+        costo: 0
+      });
+      guardarEstado();
+      renderizarTablaCalculadoraMaquila();
+    }
+
+    function cambiarCampoItemCalculadoraMaquila(idx, campo, valor) {
+      if (!state.calculadoraMaquilaItems[idx]) return;
+      if (campo === "cant") {
+        state.calculadoraMaquilaItems[idx].cant = Math.max(1, Number(valor) || 1);
+      } else if (campo === "costo") {
+        state.calculadoraMaquilaItems[idx].costo = Math.max(0, Number(valor) || 0);
+      } else if (campo === "desc") {
+        state.calculadoraMaquilaItems[idx].desc = valor;
+      }
+      const subCell = document.getElementById("sub_maq_item_" + idx);
+      if (subCell) {
+        const sub = (Number(state.calculadoraMaquilaItems[idx].cant) || 1) * (Number(state.calculadoraMaquilaItems[idx].costo) || 0);
+        subCell.textContent = "$" + sub.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      guardarEstado();
+      recalcularTotalesMaquila();
+    }
+
+    function eliminarItemCalculadoraMaquila(idx) {
+      state.calculadoraMaquilaItems.splice(idx, 1);
+      guardarEstado();
+      renderizarTablaCalculadoraMaquila();
+    }
+
+    function limpiarCalculadoraMaquila() {
+      state.calculadoraMaquilaItems = [];
+      const nomEl = document.getElementById("maq_nombre_proyecto");
+      if (nomEl) nomEl.value = "";
+      guardarEstado();
+      renderizarTablaCalculadoraMaquila();
+      notificar("Calculadora de maquila limpia.");
+    }
+
+    function renderizarTablaCalculadoraMaquila() {
+      const tbody = document.getElementById("tabla_items_calculadora_maquila");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      if (!state.calculadoraMaquilaItems || state.calculadoraMaquilaItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:1rem;">Toca los botones de arriba o selecciona un paquete para calcular cuánto vas a gastar de inversión en maquila.</td></tr>`;
+        recalcularTotalesMaquila();
+        return;
+      }
+
+      state.calculadoraMaquilaItems.forEach((it, idx) => {
+        const sub = (Number(it.cant) || 1) * (Number(it.costo) || 0);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>
+            <input type="number" min="1" value="${it.cant}" style="padding:0.25rem 0.4rem; font-size:0.8rem; font-weight:800;"
+              oninput="cambiarCampoItemCalculadoraMaquila(${idx}, 'cant', this.value)" />
+          </td>
+          <td>
+            <input type="text" value="${(it.desc || '').replace(/"/g, '&quot;')}" style="padding:0.25rem 0.45rem; font-size:0.8rem; font-weight:600;"
+              oninput="cambiarCampoItemCalculadoraMaquila(${idx}, 'desc', this.value)" />
+          </td>
+          <td>
+            <input type="number" min="0" step="0.5" value="${it.costo}" style="padding:0.25rem 0.4rem; font-size:0.8rem; font-weight:800; color:#be123c;"
+              oninput="cambiarCampoItemCalculadoraMaquila(${idx}, 'costo', this.value)" />
+          </td>
+          <td style="font-weight:900; color:#be123c; vertical-align:middle;" id="sub_maq_item_${idx}">
+            $${sub.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarItemCalculadoraMaquila(${idx})">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      recalcularTotalesMaquila();
+    }
+
+    function recalcularTotalesMaquila() {
+      const items = state.calculadoraMaquilaItems || [];
+      const totalInversion = items.reduce((acc, it) => acc + ((Number(it.cant) || 1) * (Number(it.costo) || 0)), 0);
+      const totalPiezas = items.reduce((acc, it) => acc + (Number(it.cant) || 0), 0);
+      const precioVenta = Number(document.getElementById("maq_precio_venta") ? document.getElementById("maq_precio_venta").value : 0) || 0;
+      const gananciaLibre = precioVenta - totalInversion;
+      const pctMargen = precioVenta > 0 ? Math.round((gananciaLibre / precioVenta) * 100) : 0;
+
+      const elInv = document.getElementById("maq_total_inversion_lbl");
+      const elPzas = document.getElementById("maq_badge_num_items");
+      const elVen = document.getElementById("maq_resumen_venta_lbl");
+      const elGan = document.getElementById("maq_ganancia_libre_lbl");
+      const elPct = document.getElementById("maq_pct_margen_lbl");
+
+      if (elInv) elInv.textContent = `$${totalInversion.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN`;
+      if (elPzas) elPzas.textContent = `${totalPiezas} pza(s) / insumos`;
+      if (elVen) elVen.textContent = `$${precioVenta.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (elGan) {
+        elGan.textContent = `$${gananciaLibre.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        elGan.style.color = gananciaLibre >= 0 ? "#15803d" : "#dc2626";
+      }
+      if (elPct) elPct.textContent = `${pctMargen}% libre`;
+    }
+
+    function buscarCostoMaquilaPorPalabraClave(regex, fallbackCosto) {
+      const encontrado = (state.catalogoMaquila || []).find(m => regex.test(m.nombre || ""));
+      return encontrado ? { nombre: encontrado.nombre, costo: Number(encontrado.costo) || fallbackCosto } : null;
+    }
+
+    function extraerInsumosMaquilaDesdeTextoPaquete(texto) {
+      const t = texto || "";
+      const itemsDetectados = [];
+
+      // 1. Detectar cantidad de fotografías 4x6 o 6x8
+      const matchFotos4x6 = t.match(/(\d+)\s*fotograf[ií]as?.*?(4\s*x\s*6|postal)/i);
+      const matchFotos6x8 = t.match(/(\d+)\s*fotograf[ií]as?.*?(6\s*x\s*8)/i);
+      if (matchFotos4x6) {
+        const cant = Number(matchFotos4x6[1]) || 100;
+        const cat = buscarCostoMaquilaPorPalabraClave(/4\s*x\s*6/i, 2.5) || { nombre: "Fotografía impresa 4x6 (Maquila)", costo: 2.5 };
+        itemsDetectados.push({ cant, desc: cat.nombre, costo: cat.costo });
+      } else if (matchFotos6x8) {
+        const cant = Number(matchFotos6x8[1]) || 100;
+        const cat = buscarCostoMaquilaPorPalabraClave(/6\s*x\s*8/i, 6.0) || { nombre: "Fotografía impresa 6x8 (Maquila)", costo: 6.0 };
+        itemsDetectados.push({ cant, desc: cat.nombre, costo: cat.costo });
+      }
+
+      // 2. Detectar Marcos / Ampliaciones 11x14, 16x20, 20x24
+      if (/11\s*x\s*14/i.test(t)) {
+        const cat = buscarCostoMaquilaPorPalabraClave(/11\s*x\s*14/i, 220) || { nombre: "Ampliación + Marco 11x14 completo (Maquila)", costo: 220 };
+        itemsDetectados.push({ cant: 1, desc: cat.nombre, costo: cat.costo });
+      }
+      if (/16\s*x\s*20/i.test(t)) {
+        const cat = buscarCostoMaquilaPorPalabraClave(/16\s*x\s*20/i, 420) || { nombre: "Ampliación + Marco 16x20 completo (Maquila)", costo: 420 };
+        itemsDetectados.push({ cant: 1, desc: cat.nombre, costo: cat.costo });
+      }
+      if (/20\s*x\s*24/i.test(t)) {
+        const cat = buscarCostoMaquilaPorPalabraClave(/20\s*x\s*24/i, 680) || { nombre: "Ampliación + Marco 20x24 completo (Maquila)", costo: 680 };
+        itemsDetectados.push({ cant: 1, desc: cat.nombre, costo: cat.costo });
+      }
+
+      // 3. Detectar Memoria USB
+      if (/usb/i.test(t)) {
+        const cat = buscarCostoMaquilaPorPalabraClave(/usb/i, 95) || { nombre: "Memoria USB 64GB (Costo proveedor)", costo: 95 };
+        itemsDetectados.push({ cant: 1, desc: cat.nombre, costo: cat.costo });
+      }
+
+      // 4. Detectar Estuche
+      if (/estuche/i.test(t)) {
+        const cat = buscarCostoMaquilaPorPalabraClave(/estuche/i, 140) || { nombre: "Estuche para USB / Fotografías (Maquila)", costo: 140 };
+        itemsDetectados.push({ cant: 1, desc: cat.nombre, costo: cat.costo });
+      }
+
+      // 5. Detectar DVD
+      const matchDvd = t.match(/(\d+)\s*dvds?/i);
+      if (matchDvd || /dvd/i.test(t)) {
+        const cantDvd = matchDvd ? (Number(matchDvd[1]) || 1) : 1;
+        const cat = buscarCostoMaquilaPorPalabraClave(/dvd/i, 18) || { nombre: "DVD impreso con estuche (Maquila)", costo: 18 };
+        itemsDetectados.push({ cant: cantDvd, desc: cat.nombre, costo: cat.costo });
+      }
+
+      return itemsDetectados;
+    }
+
+    function cargarPaqueteEnCalculadoraMaquila() {
+      const sel = document.getElementById("maq_select_paquete");
+      if (!sel || !sel.value) {
+        notificar("Selecciona primero un paquete de la lista.", "warn");
+        return;
+      }
+      const pkg = (state.paquetes || []).find(p => p.id === sel.value);
+      if (!pkg) return;
+
+      document.getElementById("maq_nombre_proyecto").value = pkg.nombre;
+      document.getElementById("maq_precio_venta").value = pkg.precio || 0;
+
+      const detectados = extraerInsumosMaquilaDesdeTextoPaquete(pkg.descripcion || "");
+      if (detectados.length > 0) {
+        state.calculadoraMaquilaItems = detectados;
+      }
+      guardarEstado();
+      renderizarTablaCalculadoraMaquila();
+      notificar(`🧮 Inversión de maquila calculada para "${pkg.nombre}".`);
+    }
+
+    function cargarContratoEnCalculadoraMaquila() {
+      const sel = document.getElementById("maq_select_contrato");
+      if (!sel || !sel.value) {
+        notificar("Selecciona primero el contrato de un cliente.", "warn");
+        return;
+      }
+      const ev = (state.eventos || []).find(e => e.id === sel.value);
+      if (!ev) return;
+
+      document.getElementById("maq_nombre_proyecto").value = `${ev.cliente} — ${ev.paqueteNombre || "Contrato"}`;
+      document.getElementById("maq_precio_venta").value = ev.total || 0;
+
+      const detectados = extraerInsumosMaquilaDesdeTextoPaquete(ev.detalles || "");
+      if (detectados.length > 0) {
+        state.calculadoraMaquilaItems = detectados;
+      }
+      guardarEstado();
+      renderizarTablaCalculadoraMaquila();
+      notificar(`🧮 Inversión de maquila cargada para el cliente "${ev.cliente}".`);
+    }
+
+    function guardarOrdenMaquilaEnHistorial() {
+      if (!state.calculadoraMaquilaItems || state.calculadoraMaquilaItems.length === 0) {
+        notificar("Agrega al menos un material o fotografía a la calculadora.", "warn");
+        return;
+      }
+      const nombre = document.getElementById("maq_nombre_proyecto").value.trim() || "Orden de Maquila / Paquete";
+      const precioVenta = Number(document.getElementById("maq_precio_venta").value) || 0;
+      const totalInversion = state.calculadoraMaquilaItems.reduce((acc, it) => acc + ((Number(it.cant) || 1) * (Number(it.costo) || 0)), 0);
+      const ganancia = precioVenta - totalInversion;
+
+      if (!Array.isArray(state.ordenesMaquila)) state.ordenesMaquila = [];
+      state.ordenesMaquila.unshift({
+        id: "ordm_" + Date.now(),
+        fecha: new Date().toISOString().split("T")[0],
+        nombre,
+        items: JSON.parse(JSON.stringify(state.calculadoraMaquilaItems)),
+        totalInversion,
+        precioVenta,
+        ganancia,
+        estado: "En Laboratorio / Maquila"
+      });
+
+      guardarEstado();
+      renderizarHistorialOrdenesMaquila();
+      notificar(`📦💾 Orden de maquila "${nombre}" guardada (Inversión: $${totalInversion.toLocaleString("es-MX")} MXN).`);
+    }
+
+    function renderizarHistorialOrdenesMaquila() {
+      const cont = document.getElementById("contenedor_historial_ordenes_maquila");
+      if (!cont) return;
+      const lista = state.ordenesMaquila || [];
+      if (lista.length === 0) {
+        cont.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted);">Aún no has guardado pedidos en el historial de maquila.</p>`;
+        return;
+      }
+
+      cont.innerHTML = lista.map(ord => `
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:0.75rem; margin-bottom:0.55rem; font-size:0.8rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+            <div>
+              <strong>${ord.nombre}</strong> <small style="color:#64748b;">(${ord.fecha})</small>
+            </div>
+            <div style="display:flex; gap:0.3rem; align-items:center;">
+              <span class="badge badge-zero">Inversión: $${Number(ord.totalInversion || 0).toLocaleString("es-MX")}</span>
+              <span class="badge badge-ok">Libre: $${Number(ord.ganancia || 0).toLocaleString("es-MX")}</span>
+              <button type="button" class="btn btn-danger btn-sm" onclick="eliminarOrdenMaquila('${ord.id}')">✕</button>
+            </div>
+          </div>
+          <div style="color:#475569; font-size:0.75rem; margin-top:0.3rem;">
+            ${(ord.items || []).map(i => `${i.cant}x ${i.desc} ($${(Number(i.cant) * Number(i.costo)).toLocaleString("es-MX")})`).join(" • ")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function eliminarOrdenMaquila(id) {
+      state.ordenesMaquila = (state.ordenesMaquila || []).filter(o => o.id !== id);
+      guardarEstado();
+      renderizarHistorialOrdenesMaquila();
+    }
+
+    function enviarPedidoMaquilaWhatsApp() {
+      if (!state.calculadoraMaquilaItems || state.calculadoraMaquilaItems.length === 0) {
+        notificar("Primero agrega las fotografías o marcos a la calculadora.", "warn");
+        return;
+      }
+      const proy = document.getElementById("maq_nombre_proyecto").value.trim() || "Pedido Montenegro Multimedia";
+      const lineas = state.calculadoraMaquilaItems.map(it => `• *${it.cant}x* ${it.desc.replace(/\(Maquila\)|\(Costo proveedor\)/gi, "").trim()}`);
+      const msg = `📸 *PEDIDO DE MAQUILA / IMPRESIÓN — MONTENEGRO MULTIMEDIA*
+Proyecto: ${proy}
+
+${lineas.join("\n")}
+
+Por favor confirmar de recibido. ¡Gracias!`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
     function refrescarTodo() {
       renderizarBannerProximoEvento();
       actualizarDisponibilidadEvento();
@@ -8827,6 +11177,9 @@
       renderizarMiniCalendario();
       renderizarRemision();
       refrescarTablas();
+      renderizarCentroDeComando();
+      renderizarModuloMaquila();
+      actualizarAlertasYNotificacionesEventos();
     }
 
     window.addEventListener("DOMContentLoaded", cargarEstado);
