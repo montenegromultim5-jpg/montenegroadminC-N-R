@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Montenegro" />
   <link rel="manifest" id="pwa_manifest_link" />
-  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v27)</title>
+  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v29)</title>
   <!-- Librería html2pdf para descargar el Contrato o Nota directamente en archivo PDF limpio -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Librerías oficiales de Google Firebase para Sincronización en Tiempo Real (Celular <-> PC) -->
@@ -2895,7 +2895,7 @@
     <div class="brand">
       <img class="logo-montenegro" alt="Montenegro Fotografía y Video" />
       <div>
-        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v27</span></span>
+        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v29</span></span>
         <span class="brand-sub">Gilberto Montenegro Ruiz • Porfirio Díaz #280 • Tel: 7131016388 y 7296990786</span>
       </div>
     </div>
@@ -3705,10 +3705,10 @@
           <span id="contador_pendientes_eventos" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Contratos -->
+        <!-- Buscador Instantáneo en Tiempo Real para Contratos (Optimizado con Debounce v29) -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
-          <input type="text" id="buscador_contratos_input" placeholder="Buscar cliente por nombre, salón, municipio, paquete, teléfono o fecha..." oninput="refrescarTablas()" />
+          <input type="text" id="buscador_contratos_input" placeholder="Buscar cliente por nombre, salón, municipio, paquete, teléfono o fecha..." oninput="buscadorOptimizadoContratos()" />
           <button type="button" class="search-clear-btn" onclick="limpiarBuscadorContratos()" title="Limpiar búsqueda">✕</button>
         </div>
 
@@ -4351,10 +4351,10 @@
           <span id="contador_pendientes_notas" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 -->
+        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 (Optimizado con Debounce v29) -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
-          <input type="text" id="buscador_notas_input" placeholder="Buscar nota por número de folio, nombre del cliente, teléfono o concepto..." oninput="refrescarTablas()" />
+          <input type="text" id="buscador_notas_input" placeholder="Buscar nota por número de folio, nombre del cliente, teléfono o concepto..." oninput="buscadorOptimizadoNotas()" />
           <button type="button" class="search-clear-btn" onclick="limpiarBuscadorNotas()" title="Limpiar búsqueda">✕</button>
         </div>
 
@@ -4759,7 +4759,7 @@
     const GDOC_URL_1_DEFAULT = "https://docs.google.com/document/d/1e6Tb2VZGjTadPs0Swk0nNQutGMk5IEzaocESmv0tkCU/edit?usp=sharing";
     const GDOC_URL_2_DEFAULT = "https://docs.google.com/document/d/13m23Gh1qTlHRDpZoRzlRdxH4EnZmVmnuT0rmcuSW0jk/edit?usp=sharing";
 
-    const APP_VERSION = "v27";
+    const APP_VERSION = "v29";
 
     const CONTRATO_1_DEFAULT = [
       "CONTRATO DE PRESTACIÓN DE SERVICIOS",
@@ -7629,9 +7629,18 @@
         equipo: equipoElegido
       };
 
+      let idx = -1;
       if (editId) {
-        const idx = state.eventos.findIndex(e => e.id === editId);
-        if (idx >= 0) state.eventos[idx] = datosEvento;
+        idx = state.eventos.findIndex(e => e.id === editId);
+      }
+      // Si no se encontró por editId, buscar por coincidencia exacta de cliente y fecha para evitar duplicados
+      if (idx < 0) {
+        idx = state.eventos.findIndex(e => e.cliente.trim().toLowerCase() === cliente.trim().toLowerCase() && e.fecha === fecha);
+      }
+
+      if (idx >= 0) {
+        datosEvento.id = state.eventos[idx].id; // Mantener ID existente
+        state.eventos[idx] = datosEvento;
       } else {
         state.eventos.push(datosEvento);
       }
@@ -7639,8 +7648,9 @@
       ordenarEventosPorFecha();
       guardarEstado();
       refrescarTodo();
-      document.getElementById("ev_edit_id").value = "";
-      document.getElementById("titulo_form_evento").textContent = "📝 Capturar Contrato / Nuevo Evento";
+      // NO limpiar ev_edit_id para que el usuario pueda volver a imprimir o guardar modificaciones sin duplicar
+      document.getElementById("ev_edit_id").value = datosEvento.id;
+      document.getElementById("titulo_form_evento").textContent = "✏️ Editando Contrato de: " + cliente;
       return datosEvento;
     }
 
@@ -8162,26 +8172,28 @@
         return;
       }
 
-      if (editId) {
-        const idx = state.eventos.findIndex(e => e.id === editId);
-        if (idx >= 0) {
-          state.eventos[idx].cliente = cliente;
-          state.eventos[idx].fecha = fecha;
-          state.eventos[idx].lugar = lugar;
-          state.eventos[idx].dirRecepcion = lugar;
-          state.eventos[idx].telefono = telefono;
-          state.eventos[idx].mapsUrl = mapsUrl;
-          state.eventos[idx].paqueteNombre = paqueteNombre;
-          if (detallesRaw) {
-            state.eventos[idx].detalles = detallesRaw;
-            state.eventos[idx].bloquesTexto = detallesRaw;
-          }
-          state.eventos[idx].total = total;
-          state.eventos[idx].inversionPaquete = inversionPaquete;
-          state.eventos[idx].anticipo = anticipo;
-          state.eventos[idx].totalAbonado = anticipo;
-          state.eventos[idx].saldo = saldo;
+      let idx = editId ? state.eventos.findIndex(e => e.id === editId) : -1;
+      if (idx < 0) {
+        idx = state.eventos.findIndex(e => e.cliente.trim().toLowerCase() === cliente.trim().toLowerCase() && e.fecha === fecha);
+      }
+
+      if (idx >= 0) {
+        state.eventos[idx].cliente = cliente;
+        state.eventos[idx].fecha = fecha;
+        state.eventos[idx].lugar = lugar;
+        state.eventos[idx].dirRecepcion = lugar;
+        state.eventos[idx].telefono = telefono;
+        state.eventos[idx].mapsUrl = mapsUrl;
+        state.eventos[idx].paqueteNombre = paqueteNombre;
+        if (detallesRaw) {
+          state.eventos[idx].detalles = detallesRaw;
+          state.eventos[idx].bloquesTexto = detallesRaw;
         }
+        state.eventos[idx].total = total;
+        state.eventos[idx].inversionPaquete = inversionPaquete;
+        state.eventos[idx].anticipo = anticipo;
+        state.eventos[idx].totalAbonado = anticipo;
+        state.eventos[idx].saldo = saldo;
       } else {
         const abonosInit = anticipo > 0
           ? [{ id: "ab_ant_" + Date.now(), fecha, monto: anticipo, nota: "Anticipo / Pagos previos" }]
@@ -12506,6 +12518,24 @@ Por favor confirmar de recibido. ¡Gracias!`;
       renderizarModuloMaquila();
       actualizarAlertasYNotificacionesEventos();
     }
+
+    
+    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V29) =================
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    const buscadorOptimizadoContratos = debounce(() => {
+      refrescarTablas();
+    }, 250);
+
+    const buscadorOptimizadoNotas = debounce(() => {
+      refrescarTablas();
+    }, 250);
 
     window.addEventListener("DOMContentLoaded", cargarEstado);
   </script>
