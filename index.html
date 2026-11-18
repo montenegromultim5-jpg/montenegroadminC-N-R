@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Montenegro" />
   <link rel="manifest" id="pwa_manifest_link" />
-  <title>Montenegro Multimedia — Suite de Gestión Fotográfica</title>
+  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v27)</title>
   <!-- Librería html2pdf para descargar el Contrato o Nota directamente en archivo PDF limpio -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Librerías oficiales de Google Firebase para Sincronización en Tiempo Real (Celular <-> PC) -->
@@ -2602,6 +2602,184 @@
       }
     }
 
+
+    /* ================= CORRECCIONES Y MEJORAS V27 ================= */
+    .version-badge {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      padding: 0.12rem 0.48rem;
+      margin-left: 0.35rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.55);
+      color: #38bdf8;
+      -webkit-text-fill-color: #38bdf8;
+    }
+
+    /* Bloque de Firmas Centrado en Medio (Contrato 1 y Contrato 2) */
+    .contract-signatures-box {
+      width: 100%;
+      max-width: 560px;
+      margin: 1.25rem auto 0 auto;
+      text-align: center;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contract-sig-heading {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #0f172a;
+      margin-bottom: 0.35rem;
+      text-align: center;
+    }
+
+    .contract-sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.2rem;
+      justify-items: center;
+      align-items: end;
+      width: 100%;
+    }
+
+    .contract-sig-col {
+      width: 100%;
+      max-width: 245px;
+      text-align: center;
+    }
+
+    .contract-sig-line {
+      border-top: 1.5px solid #0f172a;
+      margin: 2.1rem auto 0.35rem auto;
+      width: 100%;
+    }
+
+    .contract-sig-name {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    .contract-sig-role {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #334155;
+      line-height: 1.25;
+    }
+
+    .contract-sig-sub {
+      font-size: 0.69rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .contract-sig-footer {
+      margin-top: 0.85rem;
+      padding-top: 0.45rem;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 0.7rem;
+      color: #475569;
+      text-align: center;
+    }
+
+    /* Acomodo automático de la Primera Hoja (Contrato 1) según cantidad de elementos */
+    .contract-page-1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contract-page-1 .contract-body-text {
+      line-height: 1.48;
+    }
+
+    .contract-page-1.density-1 .contract-header-brand {
+      padding-bottom: 0.45rem;
+      margin-bottom: 0.65rem;
+    }
+    .contract-page-1.density-1 .contract-header-brand img { height: 44px; }
+    .contract-page-1.density-1 .contract-body-text { font-size: 0.86rem; line-height: 1.38; }
+    .contract-page-1.density-1 .contract-includes-box { padding: 0.42rem 0.6rem; margin: 0.32rem 0; }
+    .contract-page-1.density-1 .contract-includes-item { font-size: 0.74rem; line-height: 1.2; padding: 0.1rem 0; }
+    .contract-page-1.density-1 .contract-sig-line { margin-top: 1.55rem; }
+
+    .contract-page-1.density-2 .contract-header-brand {
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.45rem;
+    }
+    .contract-page-1.density-2 .contract-header-brand img { height: 38px; }
+    .contract-page-1.density-2 .contract-body-text { font-size: 0.81rem; line-height: 1.3; }
+    .contract-page-1.density-2 .contract-includes-box { padding: 0.34rem 0.5rem; margin: 0.25rem 0; }
+    .contract-page-1.density-2 .contract-includes-header { padding-bottom: 0.2rem; margin-bottom: 0.28rem; }
+    .contract-page-1.density-2 .contract-includes-col { padding: 0.3rem 0.45rem; }
+    .contract-page-1.density-2 .contract-includes-list { gap: 0.12rem; }
+    .contract-page-1.density-2 .contract-includes-item { font-size: 0.7rem; line-height: 1.15; padding: 0.06rem 0; }
+    .contract-page-1.density-2 .contract-includes-num { min-width: 16px; height: 16px; font-size: 0.62rem; }
+    .contract-page-1.density-2 .contract-signatures-box { margin-top: 0.7rem; }
+    .contract-page-1.density-2 .contract-sig-line { margin-top: 1.2rem; }
+
+    .contract-page-1.density-3 .contract-header-brand {
+      padding-bottom: 0.28rem;
+      margin-bottom: 0.35rem;
+    }
+    .contract-page-1.density-3 .contract-header-brand img { height: 34px; }
+    .contract-page-1.density-3 .contract-body-text { font-size: 0.76rem; line-height: 1.24; }
+    .contract-page-1.density-3 .contract-includes-box { padding: 0.28rem 0.45rem; margin: 0.2rem 0; }
+    .contract-page-1.density-3 .contract-includes-col { padding: 0.24rem 0.4rem; }
+    .contract-page-1.density-3 .contract-includes-list { gap: 0.08rem; }
+    .contract-page-1.density-3 .contract-includes-item { font-size: 0.66rem; line-height: 1.12; padding: 0.04rem 0; }
+    .contract-page-1.density-3 .contract-includes-num { min-width: 15px; height: 15px; font-size: 0.58rem; }
+    .contract-page-1.density-3 .contract-signatures-box { margin-top: 0.45rem; }
+    .contract-page-1.density-3 .contract-sig-line { margin-top: 0.95rem; }
+    .contract-page-1.density-3 .contract-sig-footer { margin-top: 0.45rem; padding-top: 0.25rem; }
+
+    /* Estilos de separación de Próximos vs Pasados en Calendario */
+    .cal-section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin: 0.2rem 0 0.7rem 0;
+      padding: 0.48rem 0.85rem;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .cal-section-divider.proximos {
+      background: #e0f2fe;
+      color: #0369a1;
+      border-left: 4px solid #0284c7;
+    }
+    .cal-section-divider.pasados {
+      background: #f1f5f9;
+      color: #475569;
+      border-left: 4px solid #94a3b8;
+      margin-top: 1.35rem;
+    }
+    .mes-agenda-bloque.mes-pasado {
+      opacity: 0.86;
+      border-color: #cbd5e1;
+    }
+    .mes-agenda-bloque.mes-pasado .mes-agenda-header {
+      background: linear-gradient(135deg, #334155 0%, #475569 100%);
+      border-bottom-color: #94a3b8;
+    }
+    .mes-agenda-bloque.mes-pasado .mes-agenda-titulo {
+      color: #e2e8f0;
+    }
+
     /* ================= IMPRESIÓN 100% AISLADA Y LIMPIA ================= */
     #print_only_stage {
       display: none;
@@ -2633,15 +2811,35 @@
         box-shadow: none !important;
         max-height: none !important;
         overflow: visible !important;
-        padding: 4mm 8mm !important;
+        padding: 2mm 6mm !important;
         margin: 0 !important;
-        font-size: 9.6pt !important;
-        line-height: 1.4 !important;
+        font-size: 9.5pt !important;
+        line-height: 1.36 !important;
+      }
+
+      #print_only_stage .contract-page-1 {
+        min-height: 250mm !important;
+        max-height: 258mm !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      #print_only_stage .contract-signatures-box {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
 
       #print_only_stage .page-break {
         border: none !important;
         margin: 0 !important;
+        padding: 0 !important;
         height: 0 !important;
         page-break-before: always !important;
         break-before: page !important;
@@ -2697,7 +2895,7 @@
     <div class="brand">
       <img class="logo-montenegro" alt="Montenegro Fotografía y Video" />
       <div>
-        <span class="brand-title">MONTENEGRO MULTIMEDIA</span>
+        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v27</span></span>
         <span class="brand-sub">Gilberto Montenegro Ruiz • Porfirio Díaz #280 • Tel: 7131016388 y 7296990786</span>
       </div>
     </div>
@@ -4561,6 +4759,8 @@
     const GDOC_URL_1_DEFAULT = "https://docs.google.com/document/d/1e6Tb2VZGjTadPs0Swk0nNQutGMk5IEzaocESmv0tkCU/edit?usp=sharing";
     const GDOC_URL_2_DEFAULT = "https://docs.google.com/document/d/13m23Gh1qTlHRDpZoRzlRdxH4EnZmVmnuT0rmcuSW0jk/edit?usp=sharing";
 
+    const APP_VERSION = "v27";
+
     const CONTRATO_1_DEFAULT = [
       "CONTRATO DE PRESTACIÓN DE SERVICIOS",
       "",
@@ -4575,12 +4775,7 @@
       "[descripcion_servicio]",
       "",
       "El Costo del servicio se estableció en previa cotización del día ( [fecha_cotizacion] ) y es de $( [total] MXN ) y se respetará hasta el día del evento. Siendo aceptada por el cliente. Dispone de 30 días para solicitar copias del material posteriores a la fecha de entrega. El pago del servicio se realiza de la siguiente manera: Un anticipo del $ ( [anticipo] MXN ) y la cantidad de $ ( [saldo] MXN ) restante contra entrega del trabajo.",
-      "",
-      "_____________________________________          _____________________________________",
-      "        Montenegro Multimedia                         ( [cliente] )",
-      "      Gilberto Montenegro Ruiz                            EL CLIENTE",
-      "",
-      "Montenegro Multimedia | montenegromultimedia@gmail.com | 7131016388 y 7296990786"
+      "[firmas_contrato_1]"
     ].join("\n");
 
     const CONTRATO_2_DEFAULT = [
@@ -4687,9 +4882,12 @@
         t = t.replace(/(anticipo\s+del?\s*\$\s*)\([\s_\.]*\)/gi, "$1( [anticipo] MXN )");
         // 10. cantidad de $ ( ) -> $ ( [saldo] MXN )
         t = t.replace(/(cantidad\s+de\s*\$\s*)\([\s_\.]*\)/gi, "$1( [saldo] MXN )");
-        // 11. Gilberto Montenegro Ruiz (   ) -> Firmas con [cliente]
-        t = t.replace(/(?:Montenegro\s+Multimedia\s*\r?\n\s*)?Gilberto\s+Montenegro\s+Ruiz\s*\([\s_\.]*\)/gi,
-          "_____________________________________          _____________________________________\n        Montenegro Multimedia                         ( [cliente] )\n      Gilberto Montenegro Ruiz                            EL CLIENTE");
+        // 11. Convertir firmas (de Google Docs o plantilla anterior con guiones bajos) al bloque centrado [firmas_contrato_1]
+        t = t.replace(/_{5,}[ \t]+_{5,}[\s\S]*?EL\s+CLIENTE(?:\s*\r?\n\s*Montenegro\s+Multimedia\s*\|[^\n]*)?/gi, "[firmas_contrato_1]");
+        t = t.replace(/(?:Montenegro\s+Multimedia\s*\r?\n\s*)?Gilberto\s+Montenegro\s+Ruiz\s*\([\s_\.]*\)(?:\s*\r?\n\s*Montenegro\s+Multimedia\s*\|[^\n]*)?/gi, "[firmas_contrato_1]");
+        if (!t.includes("[firmas_contrato_1]")) {
+          t = t.trim() + "\n[firmas_contrato_1]";
+        }
 
         if (!t.includes("[cliente]") || !t.includes("[descripcion_servicio]")) {
           return CONTRATO_1_DEFAULT;
@@ -6040,69 +6238,114 @@
         if (badgeTotalMeses) badgeTotalMeses.textContent = "Sin fechas agendadas";
         contMes.innerHTML = `<p style="font-size:0.84rem; color:var(--text-muted);">No hay fechas agendadas todavía. Usa el botón <strong>"➕ Agregar Evento (Sin Contrato)"</strong> o <strong>"📷 Agendar Sesión"</strong> arriba para agregar tus fechas.</p>`;
       } else {
-        // Agrupar por clave de mes "YYYY-MM"
-        const mapaMeses = {};
-        todosItemsAgenda.forEach(item => {
-          const ym = item.fecha.slice(0, 7); // "YYYY-MM"
-          if (!mapaMeses[ym]) mapaMeses[ym] = [];
-          mapaMeses[ym].push(item);
-        });
+        // Separar eventos PRÓXIMOS (hoy y futuros -> van PRIMERO) de eventos PASADOS (ej. octubre -> se mandan HASTA EL ÚLTIMO)
+        const itemsProximos = todosItemsAgenda
+          .filter(it => it.fecha >= hoyStr)
+          .sort((a, b) => a.fecha.localeCompare(b.fecha));
+        const itemsPasados = todosItemsAgenda
+          .filter(it => it.fecha < hoyStr)
+          .sort((a, b) => a.fecha.localeCompare(b.fecha));
 
-        const clavesMesesOrdenadas = Object.keys(mapaMeses).sort();
+        const construirBloquesPorMes = (lista, esPasado) => {
+          const mapa = {};
+          lista.forEach(item => {
+            const ym = item.fecha.slice(0, 7);
+            if (!mapa[ym]) mapa[ym] = [];
+            mapa[ym].push(item);
+          });
+          // Próximos: mes más cercano primero (ascendente). Pasados: más reciente arriba y los más antiguos al fondo (descendente)
+          const claves = Object.keys(mapa).sort((a, b) => esPasado ? b.localeCompare(a) : a.localeCompare(b));
+          return claves.map(ym => {
+            const nombreMesCompleto = obtenerNombreCompletoMesAnio(ym);
+            const listaDelMes = mapa[ym];
+            return `
+              <div class="mes-agenda-bloque ${esPasado ? 'mes-pasado' : ''}">
+                <div class="mes-agenda-header">
+                  <div class="mes-agenda-titulo">
+                    <span>${esPasado ? '🗂️' : '📅'} ${nombreMesCompleto}${esPasado ? ' (Pasado)' : ''}</span>
+                  </div>
+                  <span class="badge ${esPasado ? 'badge-printed' : 'badge-next'}">${listaDelMes.length} ${esPasado ? 'realizado(s)' : 'próximo(s)'} en ${nombreMesCompleto.split(" ")[0]}</span>
+                </div>
+                <div style="overflow-x:auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th style="width:125px;">Fecha</th>
+                        <th style="width:155px;">Tipo</th>
+                        <th>Cliente / Evento</th>
+                        <th>Lugar / Detalle</th>
+                        <th style="width:90px; text-align:right;">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${listaDelMes.map(it => {
+                        const diaNum = it.fecha.split("-")[2] || "";
+                        const diasRest = calcularDiferenciaDias(it.fecha);
+                        const etiquetaDia = !esPasado
+                          ? (diasRest === 0 ? `<span class="badge badge-overdue" style="font-size:0.64rem; margin-top:2px;">¡HOY!</span>` : (diasRest === 1 ? `<span class="badge badge-warn" style="font-size:0.64rem; margin-top:2px;">Mañana</span>` : `<small style="color:#0369a1; font-weight:700;">En ${diasRest} días</small>`))
+                          : `<small style="color:#64748b;">Hace ${Math.abs(diasRest)} día(s)</small>`;
+                        return `
+                          <tr style="cursor:pointer;" onclick="seleccionarDiaCalendario('${it.fecha}')" title="Haz clic para ver el día ${it.fecha} en el Mini Calendario">
+                            <td>
+                              <strong>Día ${diaNum}</strong><br/>
+                              <small style="color:var(--text-muted);">${it.fecha}</small><br/>
+                              ${etiquetaDia}
+                            </td>
+                            <td><span class="badge ${it.color}">${it.tipo}</span></td>
+                            <td><strong>${it.titulo}</strong></td>
+                            <td>
+                              <small>${it.sub}</small>
+                              ${it.mapsHref ? `<div style="margin-top:3px;" onclick="event.stopPropagation();"><a class="btn-maps-mobile" style="font-size:0.68rem; padding:0.18rem 0.48rem;" href="${it.mapsHref}" target="_blank" rel="noopener">📍🗺️ Ir a Ubicación (Maps)</a></div>` : ""}
+                            </td>
+                            <td style="text-align:right; white-space:nowrap;" onclick="event.stopPropagation();">
+                              <button type="button" class="btn btn-outline btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.editFn}" title="Editar">✏️</button>
+                              <button type="button" class="btn btn-danger btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.delFn}" title="Eliminar">✕</button>
+                            </td>
+                          </tr>
+                        `;
+                      }).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+          }).join("");
+        };
+
         if (badgeTotalMeses) {
-          badgeTotalMeses.textContent = `${clavesMesesOrdenadas.length} mes(es) con agenda (${todosItemsAgenda.length} fecha(s) en total)`;
+          badgeTotalMeses.textContent = `${itemsProximos.length} próximo(s) • ${itemsPasados.length} pasado(s)`;
         }
 
-        contMes.innerHTML = clavesMesesOrdenadas.map(ym => {
-          const nombreMesCompleto = obtenerNombreCompletoMesAnio(ym);
-          const listaDelMes = mapaMeses[ym];
-          return `
-            <div class="mes-agenda-bloque">
-              <div class="mes-agenda-header">
-                <div class="mes-agenda-titulo">
-                  <span>📅 ${nombreMesCompleto}</span>
-                </div>
-                <span class="badge badge-next">${listaDelMes.length} agendado(s) en ${nombreMesCompleto.split(" ")[0]}</span>
-              </div>
-              <div style="overflow-x:auto;">
-                <table>
-                  <thead>
-                    <tr>
-                      <th style="width:125px;">Fecha</th>
-                      <th style="width:155px;">Tipo</th>
-                      <th>Cliente / Evento</th>
-                      <th>Lugar / Detalle</th>
-                      <th style="width:90px; text-align:right;">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${listaDelMes.map(it => {
-                      const diaNum = it.fecha.split("-")[2] || "";
-                      return `
-                        <tr style="cursor:pointer;" onclick="seleccionarDiaCalendario('${it.fecha}')" title="Haz clic para ver el día ${it.fecha} en el Mini Calendario">
-                          <td>
-                            <strong>Día ${diaNum}</strong><br/>
-                            <small style="color:var(--text-muted);">${it.fecha}</small>
-                          </td>
-                          <td><span class="badge ${it.color}">${it.tipo}</span></td>
-                          <td><strong>${it.titulo}</strong></td>
-                          <td>
-                            <small>${it.sub}</small>
-                            ${it.mapsHref ? `<div style="margin-top:3px;" onclick="event.stopPropagation();"><a class="btn-maps-mobile" style="font-size:0.68rem; padding:0.18rem 0.48rem;" href="${it.mapsHref}" target="_blank" rel="noopener">📍🗺️ Ir a Ubicación (Maps)</a></div>` : ""}
-                          </td>
-                          <td style="text-align:right; white-space:nowrap;" onclick="event.stopPropagation();">
-                            <button type="button" class="btn btn-outline btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.editFn}" title="Editar">✏️</button>
-                            <button type="button" class="btn btn-danger btn-sm" style="padding:0.15rem 0.4rem;" onclick="${it.delFn}" title="Eliminar">✕</button>
-                          </td>
-                        </tr>
-                      `;
-                    }).join("")}
-                  </tbody>
-                </table>
-              </div>
+        let htmlResumenFinal = "";
+        if (itemsProximos.length > 0) {
+          htmlResumenFinal += `
+            <div class="cal-section-divider proximos">
+              <span>🔔 Próximos Eventos y Sesiones (Del más cercano en adelante)</span>
+              <span>${itemsProximos.length} evento(s)</span>
             </div>
+            ${construirBloquesPorMes(itemsProximos, false)}
           `;
-        }).join("");
+        } else {
+          htmlResumenFinal += `
+            <div class="cal-section-divider proximos">
+              <span>🔔 Próximos Eventos</span>
+              <span>Sin próximos agendados</span>
+            </div>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.85rem;">No hay eventos próximos programados a partir de hoy.</p>
+          `;
+        }
+
+        if (itemsPasados.length > 0) {
+          htmlResumenFinal += `
+            <div class="cal-section-divider pasados">
+              <span>🗂️ Eventos Pasados / Anteriores (Al final)</span>
+              <span>${itemsPasados.length} evento(s)</span>
+            </div>
+            ${construirBloquesPorMes(itemsPasados, true)}
+          `;
+        }
+
+        contMes.innerHTML = htmlResumenFinal;
       }
     }
 
@@ -6817,13 +7060,23 @@
       return "FOTO";
     }
 
-    function limpiarPrefijosPunto(texto) {
+    // Quita SOLO numeración explícita de lista (ej. "1. ", "2) ", "Punto 1: "), SIN borrar jamás cantidades como "100 fotografías 4x6"
+    function quitarNumeracionLista(texto) {
       return (texto || "")
+        .replace(/^\s*punto\s*\d+\s*[\.)\-:]?\s+/i, "")
+        .replace(/^\s*\d{1,2}\s*[\.):]\s+/, "")
+        .replace(/^\s*[•\*]\s+/, "")
+        .trim();
+    }
+
+    function limpiarPrefijosPunto(texto) {
+      let t = quitarNumeracionLista(texto);
+      t = t
         .replace(/^\s*\[(?:foto|video)\]\s*/i, "")
         .replace(/^\s*(?:foto|video)\s*:\s*/i, "")
-        .replace(/^\s*(?:punto\s*)?\d+[\.)\-:\s]+/i, "")
-        .replace(/^[•\-\*]\s*/, "")
+        .replace(/^\s*[•\*]\s+/, "")
         .trim();
+      return t;
     }
 
     function extraerPuntosDeTexto(textoRaw) {
@@ -6838,7 +7091,7 @@
 
       const resultado = [];
       partes.forEach(raw => {
-        const sinNum = raw.replace(/^\s*(?:punto\s*)?\d+[\.)\-:\s]+/i, "").replace(/^[•\-\*]\s*/, "").trim();
+        const sinNum = quitarNumeracionLista(raw);
         if (!sinNum) return;
         const cat = detectarCategoriaPunto(sinNum);
         const textoLimpio = limpiarPrefijosPunto(sinNum);
@@ -7023,6 +7276,11 @@
       return `<div class="contract-includes-box"><div class="contract-includes-header"><span class="contract-includes-title">📌 DESGLOSE DE LO QUE INCLUYE EL PAQUETE (${nombrePaquete})</span><span class="contract-includes-badge">⏱️ Cobertura: ${horasTotales} Horas</span></div><div class="contract-includes-split"><div class="contract-includes-col col-foto"><div class="contract-col-subtitle">📸 APARTADO DE FOTOGRAFÍA</div><ul class="contract-includes-list">${htmlFoto}</ul></div><div class="contract-includes-col col-video"><div class="contract-col-subtitle">🎥 APARTADO DE VIDEO</div><ul class="contract-includes-list">${htmlVideo}</ul></div></div></div>`;
     }
 
+    function construirBloqueFirmasContrato1Html(clienteNombre) {
+      const cli = clienteNombre || "___________________________";
+      return `<div class="contract-signatures-box"><div class="contract-sig-heading">FIRMAS DE CONFORMIDAD</div><div class="contract-sig-grid"><div class="contract-sig-col"><div class="contract-sig-line"></div><div class="contract-sig-name">${state.config.negocio}</div><div class="contract-sig-role">${state.config.representante}</div><div class="contract-sig-sub">EL PRESTADOR DE SERVICIOS</div></div><div class="contract-sig-col"><div class="contract-sig-line"></div><div class="contract-sig-name">${cli}</div><div class="contract-sig-role">EL CLIENTE</div><div class="contract-sig-sub">Nombre y Firma de Conformidad</div></div></div><div class="contract-sig-footer">${state.config.negocio} | ${state.config.contacto}</div></div>`;
+    }
+
     function reemplazarVariablesContrato(plantilla, comoHtmlVisual = true) {
       const cliente = document.getElementById("ev_cliente").value || "___________________________";
       const telefono = document.getElementById("ev_telefono").value || "________________";
@@ -7047,6 +7305,10 @@
       const detallesParaContrato = comoHtmlVisual
         ? construirBloqueHtmlIncluyeContrato(nombrePaquete, horasTotales, detallesRaw)
         : detallesTextoPuntos;
+
+      const firmasContrato1 = comoHtmlVisual
+        ? construirBloqueFirmasContrato1Html(cliente)
+        : `\n__________________________          __________________________\n   ${state.config.negocio}                  ${cliente}\n   ${state.config.representante}                  EL CLIENTE`;
 
       const totalNum = Number(document.getElementById("ev_total").value || 0);
       const primerAnticipoNum = Number(document.getElementById("ev_anticipo").value || 0);
@@ -7081,6 +7343,7 @@
         servicio: nombrePaquete,
         descripcion_servicio: detallesParaContrato,
         detalles: detallesParaContrato,
+        firmas_contrato_1: firmasContrato1,
         equipo,
         total,
         anticipo,
@@ -7095,6 +7358,13 @@
       Object.entries(mapa).forEach(([key, val]) => {
         resultado = resultado.replaceAll(`[${key}]`, val).replaceAll(`{${key}}`, val);
       });
+
+      if (comoHtmlVisual) {
+        // Evitar renglones vacíos gigantes pegados a los bloques HTML
+        resultado = resultado.replace(/\n{2,}\s*(<div class="contract-includes-box")/g, "\n$1");
+        resultado = resultado.replace(/(<\/div><\/div><\/div>)\s*\n{2,}/g, "$1\n");
+        resultado = resultado.replace(/\n{2,}\s*(<div class="contract-signatures-box")/g, "\n$1");
+      }
       return resultado;
     }
 
@@ -7181,25 +7451,76 @@
             </tbody>
           </table>
 
-          <div style="margin-top:0.5rem; font-weight:700; font-size:0.84rem;">FIRMAS:</div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; text-align:center; font-size: 0.85rem;">
-            <div>
-              <div style="border-top: 1px solid #0f172a; padding-top: 0.35rem;">
-                <strong>EL PRESTADOR DE SERVICIOS</strong><br/>
-                [${state.config.representante}]<br/>
-                Firma: ___________________________
+          <div class="contract-signatures-box" style="margin-top: 1.1rem;">
+            <div class="contract-sig-heading">FIRMAS DE CONFORMIDAD</div>
+            <div class="contract-sig-grid">
+              <div class="contract-sig-col">
+                <div class="contract-sig-line"></div>
+                <div class="contract-sig-name">EL PRESTADOR DE SERVICIOS</div>
+                <div class="contract-sig-role">${state.config.representante}</div>
+                <div class="contract-sig-sub">${state.config.negocio}</div>
               </div>
-            </div>
-            <div>
-              <div style="border-top: 1px solid #0f172a; padding-top: 0.35rem;">
-                <strong>EL CLIENTE</strong><br/>
-                [${cliente}]<br/>
-                Firma: ___________________________
+              <div class="contract-sig-col">
+                <div class="contract-sig-line"></div>
+                <div class="contract-sig-name">EL CLIENTE</div>
+                <div class="contract-sig-role">${cliente}</div>
+                <div class="contract-sig-sub">Nombre y Firma</div>
               </div>
             </div>
           </div>
         </div>
       `;
+    }
+
+    function obtenerClaseDensidadHoja1() {
+      const detallesRaw = document.getElementById("ev_detalles") ? document.getElementById("ev_detalles").value : "";
+      const pts = extraerPuntosDeTexto(detallesRaw);
+      const cantFoto = pts.filter(p => p.cat === "FOTO").length;
+      const cantVideo = pts.filter(p => p.cat === "VIDEO").length;
+      const maxCol = Math.max(cantFoto, cantVideo);
+      const bloquesExtra = Math.max(0, (bloquesFormulario ? bloquesFormulario.length : 2) - 2);
+      const carga = maxCol + bloquesExtra;
+      if (carga >= 9) return "density-3";
+      if (carga >= 6) return "density-2";
+      if (carga >= 4) return "density-1";
+      return "";
+    }
+
+    // Mide la primera hoja del contrato y ajusta densidad/escala automáticamente para que SIEMPRE quepa con sus firmas en 1 sola hoja Carta sin dejar espacio en blanco
+    function autoAjustarHoja1Contrato(rootEl, maxAltoPx = 935) {
+      if (!rootEl) return;
+      const page1 = rootEl.querySelector(".contract-page-1");
+      if (!page1) return;
+
+      // Separar las firmas al pie del bloque flex para que queden equilibradas y centradas en la hoja
+      const bodyText = page1.querySelector(".contract-body-text");
+      const sigBox = page1.querySelector(".contract-signatures-box");
+      if (bodyText && sigBox && sigBox.parentElement === bodyText) {
+        page1.appendChild(sigBox);
+      }
+
+      // Reset de escala previa
+      page1.style.zoom = "";
+      page1.style.fontSize = "";
+
+      // Si el elemento no está visible todavía en pantalla, dejamos solo la clase de densidad calculada por número de puntos
+      if (page1.offsetHeight === 0) return;
+
+      const niveles = ["", "density-1", "density-2", "density-3"];
+      let nivelIdx = niveles.findIndex(cls => cls && page1.classList.contains(cls));
+      if (nivelIdx < 0) nivelIdx = 0;
+
+      while (page1.scrollHeight > maxAltoPx && nivelIdx < niveles.length - 1) {
+        if (niveles[nivelIdx]) page1.classList.remove(niveles[nivelIdx]);
+        nivelIdx++;
+        page1.classList.add(niveles[nivelIdx]);
+      }
+
+      // Si aún tiene muchos artículos y excede 1 hoja Carta, escalar suavemente para garantizar 1 sola hoja exacta
+      if (page1.scrollHeight > maxAltoPx) {
+        const factor = Math.max(0.68, Math.floor((maxAltoPx / page1.scrollHeight) * 100) / 100);
+        page1.style.zoom = String(factor);
+      }
     }
 
     function actualizarVistaContrato() {
@@ -7208,17 +7529,20 @@
       const texto1 = reemplazarVariablesContrato(base1);
       const texto2 = reemplazarVariablesContrato(base2);
       const cont = document.getElementById("contrato_preview_container");
+      const densidadCls = obtenerClaseDensidadHoja1();
 
       const htmlC1 = `
-        <div class="contract-page-block">
+        <div class="contract-page-block contract-page-1 ${densidadCls}">
           <img class="contract-watermark wm-montenegro" alt="" />
-          ${construirEncabezadoMembrete("CONTRATO PRINCIPAL")}
-          <div class="contract-body-text">${texto1}</div>
+          <div class="contract-page-1-top">
+            ${construirEncabezadoMembrete("CONTRATO PRINCIPAL")}
+            <div class="contract-body-text">${texto1}</div>
+          </div>
         </div>
       `;
 
       const htmlC2 = `
-        <div class="contract-page-block">
+        <div class="contract-page-block contract-page-2">
           <img class="contract-watermark wm-montenegro" alt="" />
           ${construirEncabezadoMembrete("TÉRMINOS Y CONDICIONES")}
           <div class="contract-body-text">${texto2}</div>
@@ -7237,6 +7561,9 @@
           ${htmlC2}
         `;
       }
+
+      // Acomodar firmas fuera de pre-wrap y auto-ajustar Hoja 1
+      autoAjustarHoja1Contrato(cont, 935);
     }
 
     // ================= 3 MODOS DE GUARDADO E IMPRESIÓN DE CONTRATOS =================
@@ -9979,6 +10306,18 @@
       const preview = document.getElementById("contrato_preview_container");
       if (stage && preview) {
         stage.innerHTML = `<div class="contract-sheet">${preview.innerHTML}</div>`;
+        // Medir fuera de pantalla al ancho real de hoja Carta (730px) para garantizar que la Hoja 1 + firmas quepan exacto en 1 hoja
+        stage.style.display = "block";
+        stage.style.position = "fixed";
+        stage.style.left = "-9999px";
+        stage.style.top = "0";
+        stage.style.width = "198mm";
+        autoAjustarHoja1Contrato(stage, 920);
+        stage.style.display = "";
+        stage.style.position = "";
+        stage.style.left = "";
+        stage.style.top = "";
+        stage.style.width = "";
       }
       window.print();
     }
@@ -10004,6 +10343,15 @@
       contenedorTemp.style.fontSize = "9.5pt";
       contenedorTemp.style.lineHeight = "1.38";
       contenedorTemp.innerHTML = preview.innerHTML;
+      contenedorTemp.style.width = "196mm";
+      contenedorTemp.style.position = "fixed";
+      contenedorTemp.style.left = "-9999px";
+      document.body.appendChild(contenedorTemp);
+      autoAjustarHoja1Contrato(contenedorTemp, 915);
+      document.body.removeChild(contenedorTemp);
+      contenedorTemp.style.position = "";
+      contenedorTemp.style.left = "";
+      contenedorTemp.style.width = "";
 
       contenedorTemp.querySelectorAll(".page-break").forEach(pb => {
         pb.style.border = "none";
@@ -10062,6 +10410,21 @@
             </tr>
           `;
           splitEl.replaceWith(table2Col);
+        }
+      });
+
+      clon.querySelectorAll(".contract-sig-grid").forEach(sigGrid => {
+        const cols = sigGrid.querySelectorAll(".contract-sig-col");
+        if (cols.length === 2) {
+          const tableSig = document.createElement("table");
+          tableSig.setAttribute("style", "width:88%; margin:18px auto 0 auto; border-collapse:collapse; text-align:center;");
+          tableSig.innerHTML = `
+            <tr>
+              <td style="width:50%; text-align:center; padding:8px 18px; vertical-align:bottom;">${cols[0].innerHTML}</td>
+              <td style="width:50%; text-align:center; padding:8px 18px; vertical-align:bottom;">${cols[1].innerHTML}</td>
+            </tr>
+          `;
+          sigGrid.replaceWith(tableSig);
         }
       });
 
