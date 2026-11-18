@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Montenegro" />
   <link rel="manifest" id="pwa_manifest_link" />
-  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v29)</title>
+  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v30)</title>
   <!-- Librería html2pdf para descargar el Contrato o Nota directamente en archivo PDF limpio -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Librerías oficiales de Google Firebase para Sincronización en Tiempo Real (Celular <-> PC) -->
@@ -2895,7 +2895,7 @@
     <div class="brand">
       <img class="logo-montenegro" alt="Montenegro Fotografía y Video" />
       <div>
-        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v29</span></span>
+        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v30</span></span>
         <span class="brand-sub">Gilberto Montenegro Ruiz • Porfirio Díaz #280 • Tel: 7131016388 y 7296990786</span>
       </div>
     </div>
@@ -3249,26 +3249,59 @@
       <!-- Gavetas superiores limpias: Paquetes y Google Docs -->
       <div class="grid-2 no-print" style="margin-bottom: 0.25rem;">
         <details class="custom-collapse">
-          <summary><span>🎁 Configurar Paquetes de Foto y Video (o subir en formato .txt)</span></summary>
+          <summary><span>🎁 Configurar Paquetes de Foto y Video + 💜 Inversión (o subir .txt)</span></summary>
           <div style="margin-top: 0.85rem;">
             <p style="font-size: 0.79rem; color: var(--text-muted); margin-bottom: 0.65rem;">
-              Modifica lo que incluye cada paquete o sube un archivo de texto (<code>.txt</code>) con el desglose.
+              Define lo que incluye cada paquete y su <strong>inversión de producción</strong>. Como inviertes casi lo mismo en todos, puedes fijar tu inversión base arriba para que se aplique automáticamente.
             </p>
+
+            <!-- Barra de Inversión Estándar / Base para Todos los Paquetes (v30) -->
+            <div class="inversion-paquete-box" style="margin-bottom: 0.85rem;">
+              <div class="inversion-paquete-row">
+                <div style="flex:1; min-width:190px;">
+                  <label class="inversion-paquete-label">
+                    💜 Inversión Base / Estándar para Todos mis Paquetes ($ MXN)
+                  </label>
+                  <small style="font-size:0.71rem; color:#5b21b6; display:block; margin-top:2px;">
+                    Se carga por defecto al crear/subir paquetes y se descuenta en la sumatoria total.
+                  </small>
+                </div>
+                <div style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap;">
+                  <input type="number" id="cfg_inversion_base_paquetes" class="inversion-paquete-input" value="1000" min="0" step="50" oninput="guardarInversionBasePaquetes()" />
+                  <button type="button" class="btn btn-sm" style="background:#6d28d9; color:#fff; font-weight:800;" onclick="aplicarInversionBaseATodosLosPaquetes()">
+                    ⚡ Aplicar a Todos
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <input type="hidden" id="pkg_edit_id" value="" />
 
-            <div class="form-row-3">
+            <div class="form-row">
               <div class="form-group">
                 <label>Nombre del Paquete *</label>
                 <input type="text" id="pkg_nombre" placeholder="Ej. Paquete Oro" />
               </div>
               <div class="form-group">
-                <label>Horas</label>
+                <label>Horas de Cobertura</label>
                 <input type="number" id="pkg_horas" value="6" min="1" />
               </div>
+            </div>
+
+            <div class="form-row">
               <div class="form-group">
-                <label>Precio ($ MXN)</label>
-                <input type="number" id="pkg_precio" value="6500" min="0" />
+                <label style="color:#0369a1; font-weight:800;">💰 Precio del Paquete ($ MXN)</label>
+                <input type="number" id="pkg_precio" value="6500" min="0" oninput="actualizarPreviewNetoFormPaquete()" style="font-weight:800; color:#0369a1;" />
               </div>
+              <div class="form-group">
+                <label style="color:#6d28d9; font-weight:800;">💜 Inversión del Paquete ($ MXN)</label>
+                <input type="number" id="pkg_inversion" value="1000" min="0" oninput="actualizarPreviewNetoFormPaquete()" style="font-weight:800; color:#6d28d9; border-color:#a78bfa; background:#faf5ff;" />
+              </div>
+            </div>
+
+            <div class="total-final-neto-bar" style="margin-top:0; margin-bottom:0.75rem;">
+              <span>💎 Ganancia Libre de este Paquete (Precio menos Inversión):</span>
+              <strong id="pkg_neto_preview_lbl">$5,500 MXN</strong>
             </div>
 
             <div class="form-group">
@@ -3281,15 +3314,22 @@
             <div class="btn-group" style="margin-top:0.4rem;">
               <button type="button" class="btn btn-primary btn-sm" id="btn_guardar_pkg" onclick="guardarPaqueteCatalogo()">💾 Guardar Paquete</button>
               <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFormPaquete()">🧹 Limpiar</button>
+              <label class="btn btn-outline btn-sm" style="margin:0; cursor:pointer; border-color:#7dd3fc; color:#0369a1;">
+                📂 Subir .txt
+                <input type="file" accept=".txt" onchange="subirTxtAlDesglosePaquete(event)" style="display:none;" />
+              </label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="descargarPaquetesTxt()">⬇️ Exportar .txt</button>
             </div>
 
-            <div style="margin-top: 0.75rem; max-height: 160px; overflow-y: auto; border:1px solid var(--border); border-radius:8px;">
+            <div style="margin-top: 0.75rem; max-height: 190px; overflow-y: auto; border:1px solid var(--border); border-radius:8px;">
               <table>
                 <thead>
                   <tr>
                     <th>Paquete</th>
                     <th>Hrs</th>
                     <th>Precio</th>
+                    <th>💜 Inversión</th>
+                    <th>💎 Libre</th>
                     <th>Incluye</th>
                     <th></th>
                   </tr>
@@ -3705,7 +3745,7 @@
           <span id="contador_pendientes_eventos" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Contratos (Optimizado con Debounce v29) -->
+        <!-- Buscador Instantáneo en Tiempo Real para Contratos (Optimizado con Debounce v30) -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
           <input type="text" id="buscador_contratos_input" placeholder="Buscar cliente por nombre, salón, municipio, paquete, teléfono o fecha..." oninput="buscadorOptimizadoContratos()" />
@@ -4351,7 +4391,7 @@
           <span id="contador_pendientes_notas" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 (Optimizado con Debounce v29) -->
+        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 (Optimizado con Debounce v30) -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
           <input type="text" id="buscador_notas_input" placeholder="Buscar nota por número de folio, nombre del cliente, teléfono o concepto..." oninput="buscadorOptimizadoNotas()" />
@@ -4759,7 +4799,7 @@
     const GDOC_URL_1_DEFAULT = "https://docs.google.com/document/d/1e6Tb2VZGjTadPs0Swk0nNQutGMk5IEzaocESmv0tkCU/edit?usp=sharing";
     const GDOC_URL_2_DEFAULT = "https://docs.google.com/document/d/13m23Gh1qTlHRDpZoRzlRdxH4EnZmVmnuT0rmcuSW0jk/edit?usp=sharing";
 
-    const APP_VERSION = "v29";
+    const APP_VERSION = "v30";
 
     const CONTRATO_1_DEFAULT = [
       "CONTRATO DE PRESTACIÓN DE SERVICIOS",
@@ -4924,6 +4964,7 @@
         nombre: "Paquete Básico Foto y Video (5 Horas)",
         horas: 5,
         precio: 4500,
+        inversion: 1000,
         descripcion: "1. [FOTO] Cobertura fotográfica por 5 horas\n2. [FOTO] 50 fotografías impresas tamaño 4x6 pulgadas\n3. [FOTO] 1 fotografía ampliada y enmarcada 11x14 pulgadas\n4. [VIDEO] Servicio de video por 5 horas de cobertura\n5. [VIDEO] Video profesional editado y musicalizado\n6. [VIDEO] 1 memoria USB de 64GB entregada en estuche"
       },
       {
@@ -4931,6 +4972,7 @@
         nombre: "Paquete Estándar Foto y Video (6 Horas + 100 Fotos)",
         horas: 6,
         precio: 6500,
+        inversion: 1000,
         descripcion: "1. [FOTO] Cobertura fotográfica por 6 horas (Misa y Recepción)\n2. [FOTO] 100 fotografías impresas tamaño 4x6 pulgadas\n3. [FOTO] 1 fotografía ampliada y enmarcada 16x20 pulgadas\n4. [VIDEO] Servicio de video por 6 horas (Misa y Recepción)\n5. [VIDEO] Video profesional editado y musicalizado\n6. [VIDEO] 1 estuche especial con memoria USB de 64GB"
       },
       {
@@ -4938,6 +4980,7 @@
         nombre: "Paquete Completo Foto y Video (7 Horas + Cuadro 16x20)",
         horas: 7,
         precio: 6800,
+        inversion: 1000,
         descripcion: "1. [FOTO] Cobertura fotográfica por 7 horas (en 2 bloques)\n2. [FOTO] 100 fotografías impresas tamaño 4x6 pulgadas\n3. [FOTO] 1 fotografía ampliada y enmarcada 16x20 pulgadas\n4. [VIDEO] Servicio de video en alta definición por 7 horas\n5. [VIDEO] Video editado, musicalizado y titulado\n6. [VIDEO] 1 estuche de lujo con memoria USB de 64GB"
       },
       {
@@ -4945,6 +4988,7 @@
         nombre: "Paquete Premium Completo + Dron (9 Horas)",
         horas: 9,
         precio: 9500,
+        inversion: 1000,
         descripcion: "1. [FOTO] Cobertura fotográfica amplia por 9 horas\n2. [FOTO] 150 fotografías impresas tamaño 6x8 pulgadas\n3. [FOTO] 1 fotografía ampliada y enmarcada 20x24 pulgadas\n4. [VIDEO] Servicio de video en alta definición por 9 horas\n5. [VIDEO] Tomas aéreas con Dron (sujetas a clima)\n6. [VIDEO] 1 estuche de lujo con USB de 64GB + 2 DVDs"
       },
       {
@@ -4952,6 +4996,7 @@
         nombre: "Paquete Personalizado (Armar punto por punto)",
         horas: 6,
         precio: 0,
+        inversion: 1000,
         descripcion: "1. [FOTO] Cobertura fotográfica por 6 horas\n2. [FOTO] 100 fotografías impresas tamaño 4x6\n3. [VIDEO] Servicio de video por 6 horas\n4. [VIDEO] 1 memoria USB de 64GB en estuche"
       }
     ];
@@ -5011,7 +5056,8 @@
         plantilla1: CONTRATO_1_DEFAULT,
         plantilla2: CONTRATO_2_DEFAULT,
         diasAlertaNota: 5,
-        diasAlertaContrato: 12
+        diasAlertaContrato: 12,
+        inversionBasePaquete: 1000
       },
       paquetes: JSON.parse(JSON.stringify(PAQUETES_DEFAULT)),
       productosRemision: JSON.parse(JSON.stringify(PRODUCTOS_REMISION_DEFAULT)),
@@ -5086,9 +5132,15 @@
           if (!Array.isArray(state.marcosCatalogo)) {
             state.marcosCatalogo = [];
           }
-          // Asegurar que los paquetes existentes tengan su descripción claramente numerada por puntos (1., 2., 3...)
+          if (state.config.inversionBasePaquete === undefined || state.config.inversionBasePaquete === null) {
+            state.config.inversionBasePaquete = 1000;
+          }
+          // Asegurar que los paquetes existentes tengan su descripción numerada y su inversión configurada
           if (Array.isArray(state.paquetes)) {
             state.paquetes.forEach(p => {
+              if (p.inversion === undefined || p.inversion === null) {
+                p.inversion = state.config.inversionBasePaquete;
+              }
               if (p.descripcion && !p.descripcion.includes("1.")) {
                 const pts = extraerPuntosDeTexto(p.descripcion);
                 if (pts.length > 0) {
@@ -6349,15 +6401,128 @@
       }
     }
 
-    // ================= GESTIÓN DE PAQUETES (.TXT) =================
+    // ================= GESTIÓN DE PAQUETES E INVERSIÓN AUTOMÁTICA (.TXT - V30) =================
+    function obtenerInversionBaseConfig() {
+      const val = Number(state.config && state.config.inversionBasePaquete);
+      return !isNaN(val) && val >= 0 ? val : 1000;
+    }
+
+    function obtenerInversionDePaquete(pkg) {
+      if (!pkg) return obtenerInversionBaseConfig();
+      if (pkg.inversion !== undefined && pkg.inversion !== null && pkg.inversion !== "") {
+        return Math.max(0, Number(pkg.inversion) || 0);
+      }
+      return Number(pkg.precio) > 0 ? obtenerInversionBaseConfig() : 0;
+    }
+
+    // Obtiene la inversión efectiva de cualquier contrato para que SIEMPRE cuente en la sumatoria total
+    function obtenerInversionEfectivaEvento(ev) {
+      if (!ev) return 0;
+      const invGuardada = Number(ev.inversionPaquete);
+      if (!isNaN(invGuardada) && invGuardada > 0) return invGuardada;
+      if (ev.inversionManualCero === true) return 0;
+
+      const pkg = (state.paquetes || []).find(p => p.id === ev.paqueteId || p.nombre === ev.paqueteNombre);
+      if (pkg) return obtenerInversionDePaquete(pkg);
+      return Number(ev.total) > 0 ? obtenerInversionBaseConfig() : 0;
+    }
+
+    function actualizarPreviewNetoFormPaquete() {
+      const precio = Math.max(0, Number(document.getElementById("pkg_precio") ? document.getElementById("pkg_precio").value : 0) || 0);
+      const inversion = Math.max(0, Number(document.getElementById("pkg_inversion") ? document.getElementById("pkg_inversion").value : 0) || 0);
+      const libre = Math.max(0, precio - inversion);
+      const lbl = document.getElementById("pkg_neto_preview_lbl");
+      if (lbl) {
+        lbl.textContent = `$${libre.toLocaleString("es-MX")} MXN (Precio $${precio.toLocaleString("es-MX")} - Inversión $${inversion.toLocaleString("es-MX")})`;
+      }
+    }
+
+    function guardarInversionBasePaquetes() {
+      const inp = document.getElementById("cfg_inversion_base_paquetes");
+      const montoBase = Math.max(0, Number(inp ? inp.value : 1000) || 0);
+      state.config.inversionBasePaquete = montoBase;
+
+      const editId = document.getElementById("pkg_edit_id") ? document.getElementById("pkg_edit_id").value : "";
+      if (!editId && document.getElementById("pkg_inversion")) {
+        document.getElementById("pkg_inversion").value = montoBase;
+        actualizarPreviewNetoFormPaquete();
+      }
+      guardarEstado();
+    }
+
+    function aplicarInversionBaseATodosLosPaquetes() {
+      const inp = document.getElementById("cfg_inversion_base_paquetes");
+      const montoBase = Math.max(0, Number(inp ? inp.value : 1000) || 0);
+      state.config.inversionBasePaquete = montoBase;
+
+      (state.paquetes || []).forEach(p => {
+        p.inversion = montoBase;
+      });
+
+      // Actualizar también los contratos activos para que la sumatoria total lo refleje al instante
+      (state.eventos || []).forEach(ev => {
+        if (Number(ev.total) > 0) {
+          ev.inversionPaquete = montoBase;
+          ev.inversionManualCero = false;
+        }
+      });
+
+      if (document.getElementById("pkg_inversion")) {
+        document.getElementById("pkg_inversion").value = montoBase;
+      }
+      if (document.getElementById("ev_inversion_paquete")) {
+        document.getElementById("ev_inversion_paquete").value = montoBase;
+      }
+      if (document.getElementById("ant_inversion")) {
+        document.getElementById("ant_inversion").value = montoBase;
+      }
+
+      actualizarPreviewNetoFormPaquete();
+      guardarEstado();
+      renderizarSelectPaquetes();
+      calcularSaldoEvento();
+      refrescarTodo();
+      notificar(`💜⚡ Inversión de $${montoBase.toLocaleString("es-MX")} MXN aplicada a todos tus paquetes y sumatoria total.`);
+    }
+
+    function editarInversionPaqueteInline(pkgId, nuevoValor) {
+      const pkg = (state.paquetes || []).find(p => p.id === pkgId);
+      if (!pkg) return;
+      const invNum = Math.max(0, Number(nuevoValor) || 0);
+      pkg.inversion = invNum;
+
+      (state.eventos || []).forEach(ev => {
+        if (ev.paqueteId === pkg.id || ev.paqueteNombre === pkg.nombre) {
+          ev.inversionPaquete = invNum;
+          ev.inversionManualCero = (invNum === 0);
+        }
+      });
+
+      const selEvPkg = document.getElementById("ev_paquete_select");
+      if (selEvPkg && selEvPkg.value === pkg.id && document.getElementById("ev_inversion_paquete")) {
+        document.getElementById("ev_inversion_paquete").value = invNum;
+        calcularSaldoEvento();
+      }
+
+      guardarEstado();
+      renderizarSelectPaquetes();
+      refrescarTodo();
+      notificar(`💜 Inversión de "${pkg.nombre}" actualizada a -$${invNum.toLocaleString("es-MX")} MXN.`);
+    }
+
     function renderizarSelectPaquetes() {
+      const inpBase = document.getElementById("cfg_inversion_base_paquetes");
+      if (inpBase) inpBase.value = obtenerInversionBaseConfig();
+
       const sel = document.getElementById("ev_paquete_select");
       const valorPrevio = sel.value;
       sel.innerHTML = "";
       state.paquetes.forEach(p => {
+        const inv = obtenerInversionDePaquete(p);
+        const libre = Math.max(0, (Number(p.precio) || 0) - inv);
         const opt = document.createElement("option");
         opt.value = p.id;
-        opt.textContent = `${p.nombre} (${p.horas} hrs - $${Number(p.precio).toLocaleString("es-MX")})`;
+        opt.textContent = `${p.nombre} (${p.horas} hrs - $${Number(p.precio).toLocaleString("es-MX")} | 💜 Inv: -$${inv.toLocaleString("es-MX")} | 💎 Libre: $${libre.toLocaleString("es-MX")})`;
         sel.appendChild(opt);
       });
       if (valorPrevio && state.paquetes.some(p => p.id === valorPrevio)) {
@@ -6367,11 +6532,23 @@
       const tbody = document.getElementById("tabla_catalogo_paquetes");
       tbody.innerHTML = "";
       state.paquetes.forEach(p => {
+        const inv = obtenerInversionDePaquete(p);
+        const libre = Math.max(0, (Number(p.precio) || 0) - inv);
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${p.nombre}</strong></td>
           <td>${p.horas}h</td>
-          <td>$${Number(p.precio).toLocaleString("es-MX")}</td>
+          <td><strong>$${Number(p.precio).toLocaleString("es-MX")}</strong></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:0.2rem;">
+              <span style="color:#6d28d9; font-weight:800; font-size:0.75rem;">-$</span>
+              <input type="number" min="0" value="${inv}"
+                style="width:78px; padding:0.18rem 0.35rem; font-size:0.78rem; font-weight:800; color:#6d28d9; border:1px solid #c4b5fd; border-radius:5px; background:#faf5ff;"
+                onchange="editarInversionPaqueteInline('${p.id}', this.value)"
+                title="Modificar inversión de este paquete" />
+            </div>
+          </td>
+          <td><strong style="color:#15803d;">$${libre.toLocaleString("es-MX")}</strong></td>
           <td><small>${p.descripcion || "Editable en formulario"}</small></td>
           <td>
             <div style="display:flex; gap:0.25rem;">
@@ -6382,6 +6559,7 @@
         `;
         tbody.appendChild(tr);
       });
+      actualizarPreviewNetoFormPaquete();
     }
 
     function seleccionarPaqueteFormulario() {
@@ -6392,6 +6570,11 @@
         if (pkg.descripcion) {
           puntosServicioActuales = extraerPuntosDeTexto(pkg.descripcion);
           renderizarPuntosServicioDOM(true);
+        }
+        // Cargar automáticamente la inversión del paquete en el contrato
+        const invPaquete = obtenerInversionDePaquete(pkg);
+        if (document.getElementById("ev_inversion_paquete")) {
+          document.getElementById("ev_inversion_paquete").value = invPaquete;
         }
         if (pkg.precio > 0) {
           document.getElementById("ev_total").value = pkg.precio;
@@ -6418,8 +6601,12 @@
       document.getElementById("pkg_nombre").value = pkg.nombre;
       document.getElementById("pkg_horas").value = pkg.horas;
       document.getElementById("pkg_precio").value = pkg.precio;
+      if (document.getElementById("pkg_inversion")) {
+        document.getElementById("pkg_inversion").value = obtenerInversionDePaquete(pkg);
+      }
       document.getElementById("pkg_descripcion").value = pkg.descripcion;
       document.getElementById("btn_guardar_pkg").textContent = "💾 Actualizar Paquete";
+      actualizarPreviewNetoFormPaquete();
       notificar("Editando paquete: " + pkg.nombre);
     }
 
@@ -6428,8 +6615,12 @@
       document.getElementById("pkg_nombre").value = "";
       document.getElementById("pkg_horas").value = 6;
       document.getElementById("pkg_precio").value = 6500;
+      if (document.getElementById("pkg_inversion")) {
+        document.getElementById("pkg_inversion").value = obtenerInversionBaseConfig();
+      }
       document.getElementById("pkg_descripcion").value = "";
       document.getElementById("btn_guardar_pkg").textContent = "💾 Guardar Paquete";
+      actualizarPreviewNetoFormPaquete();
     }
 
     function guardarPaqueteCatalogo() {
@@ -6437,6 +6628,7 @@
       const nombre = document.getElementById("pkg_nombre").value.trim();
       const horas = Number(document.getElementById("pkg_horas").value) || 6;
       const precio = Number(document.getElementById("pkg_precio").value) || 0;
+      const inversion = Math.max(0, Number(document.getElementById("pkg_inversion") ? document.getElementById("pkg_inversion").value : obtenerInversionBaseConfig()) || 0);
       const descripcion = document.getElementById("pkg_descripcion").value.trim();
 
       if (!nombre) {
@@ -6447,17 +6639,23 @@
       if (editId) {
         const idx = state.paquetes.findIndex(p => p.id === editId);
         if (idx >= 0) {
-          state.paquetes[idx] = { id: editId, nombre, horas, precio, descripcion };
+          state.paquetes[idx] = { id: editId, nombre, horas, precio, inversion, descripcion };
         }
+        (state.eventos || []).forEach(ev => {
+          if (ev.paqueteId === editId || ev.paqueteNombre === nombre) {
+            ev.inversionPaquete = inversion;
+          }
+        });
         guardarEstado();
         renderizarSelectPaquetes();
         document.getElementById("ev_paquete_select").value = editId;
         seleccionarPaqueteFormulario();
         limpiarFormPaquete();
-        notificar("¡Paquete actualizado!");
+        refrescarTodo();
+        notificar(`¡Paquete actualizado con inversión de -$${inversion.toLocaleString("es-MX")} MXN!`);
       } else {
         const nuevoId = "pkg_" + Date.now();
-        const nuevoPkg = { id: nuevoId, nombre, horas, precio, descripcion };
+        const nuevoPkg = { id: nuevoId, nombre, horas, precio, inversion, descripcion };
         const idxCustom = state.paquetes.findIndex(p => p.id === "pkg_custom");
         if (idxCustom >= 0) {
           state.paquetes.splice(idxCustom, 0, nuevoPkg);
@@ -6469,7 +6667,8 @@
         document.getElementById("ev_paquete_select").value = nuevoId;
         seleccionarPaqueteFormulario();
         limpiarFormPaquete();
-        notificar("¡Nuevo paquete guardado y seleccionado!");
+        refrescarTodo();
+        notificar(`¡Nuevo paquete guardado con inversión automática de -$${inversion.toLocaleString("es-MX")} MXN!`);
       }
     }
 
@@ -6490,7 +6689,14 @@
         if (!document.getElementById("pkg_nombre").value.trim()) {
           document.getElementById("pkg_nombre").value = file.name.replace(/\.txt$/i, "");
         }
-        notificar("¡Texto del paquete cargado desde " + file.name + "!");
+        const matchInv = texto.match(/INVERSI[OÓ]N\s*:\s*\$?\s*([0-9.,]+)/i);
+        if (document.getElementById("pkg_inversion")) {
+          document.getElementById("pkg_inversion").value = matchInv
+            ? (parseFloat(matchInv[1].replace(/,/g, "")) || obtenerInversionBaseConfig())
+            : obtenerInversionBaseConfig();
+        }
+        actualizarPreviewNetoFormPaquete();
+        notificar("¡Paquete cargado desde " + file.name + " con su inversión lista!");
       };
       reader.readAsText(file);
       event.target.value = "";
@@ -6513,7 +6719,9 @@
 
     function descargarPaquetesTxt() {
       const lineas = state.paquetes.map(p => {
-        return `PAQUETE: ${p.nombre}\nHORAS: ${p.horas}\nPRECIO: $${p.precio}\nINCLUYE: ${p.descripcion}\n----------------------------------------`;
+        const inv = obtenerInversionDePaquete(p);
+        const libre = Math.max(0, (Number(p.precio) || 0) - inv);
+        return `PAQUETE: ${p.nombre}\nHORAS: ${p.horas}\nPRECIO: $${p.precio}\nINVERSION: $${inv}\nGANANCIA LIBRE: $${libre}\nINCLUYE:\n${p.descripcion}\n----------------------------------------`;
       });
       const blob = new Blob([lineas.join("\n\n")], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -7757,6 +7965,7 @@
       const val = nuevoValor !== undefined ? nuevoValor : (inp ? inp.value : ev.inversionPaquete);
       const invNum = Math.max(0, Number(val) || 0);
       ev.inversionPaquete = invNum;
+      ev.inversionManualCero = (invNum === 0);
 
       if (document.getElementById("ev_edit_id").value === ev.id && document.getElementById("ev_inversion_paquete")) {
         document.getElementById("ev_inversion_paquete").value = invNum;
@@ -7997,7 +8206,7 @@
       renderizarBloquesDOM();
 
       document.getElementById("ev_total").value = ev.total || 0;
-      if (document.getElementById("ev_inversion_paquete")) document.getElementById("ev_inversion_paquete").value = ev.inversionPaquete || 0;
+      if (document.getElementById("ev_inversion_paquete")) document.getElementById("ev_inversion_paquete").value = obtenerInversionEfectivaEvento(ev);
       document.getElementById("ev_anticipo").value = ev.anticipo || 0;
       if (Array.isArray(ev.abonos) && ev.abonos.length > 0) {
         abonosFormulario = JSON.parse(JSON.stringify(ev.abonos));
@@ -8146,7 +8355,7 @@
       document.getElementById("ant_total").value = 0;
       document.getElementById("ant_anticipo").value = 0;
       document.getElementById("ant_saldo").value = 0;
-      if (document.getElementById("ant_inversion")) document.getElementById("ant_inversion").value = 0;
+      if (document.getElementById("ant_inversion")) document.getElementById("ant_inversion").value = obtenerInversionBaseConfig();
       if (!silencioso) notificar("Formulario de contrato anterior limpio.");
     }
 
@@ -10638,9 +10847,12 @@
       const totalEvPendientes = state.eventos.filter(e => (e.estadoMaterial || "pendiente") === "pendiente" || e.estadoMaterial === "proceso").length;
       const totalEvListos = state.eventos.filter(e => e.estadoMaterial === "listo").length;
       const totalEvNoImpresos = state.eventos.filter(e => e.impreso === false).length;
+      const sumaBrutaAgenda = state.eventos.reduce((acc, e) => acc + (Number(e.total) || 0), 0);
+      const sumaInvAgenda = state.eventos.reduce((acc, e) => acc + obtenerInversionEfectivaEvento(e), 0);
+      const sumaLibreAgenda = Math.max(0, sumaBrutaAgenda - sumaInvAgenda);
       const lblEv = document.getElementById("contador_pendientes_eventos");
       if (lblEv) {
-        lblEv.textContent = `⚠️ ${totalEvNoImpresos} sin imprimir | ⏳ ${totalEvPendientes} en producción | ✅ ${totalEvListos} listos | Total: ${state.eventos.length}`;
+        lblEv.innerHTML = `⚠️ ${totalEvNoImpresos} sin imprimir | ⏳ ${totalEvPendientes} en producción | 💰 Total: <strong>$${sumaBrutaAgenda.toLocaleString("es-MX")}</strong> | <span style="color:#6d28d9;">💜 Inv: <strong>-$${sumaInvAgenda.toLocaleString("es-MX")}</strong></span> | <span style="color:#15803d;">💎 Libre: <strong>$${sumaLibreAgenda.toLocaleString("es-MX")}</strong></span>`;
       }
 
       const qEvInput = document.getElementById("buscador_contratos_input");
@@ -10824,7 +11036,7 @@
                   </label>
                   <div class="clean-total-input-wrap">
                     <span style="font-weight:900; color:#6d28d9; font-size:0.8rem;">-$</span>
-                    <input type="number" class="inversion-paquete-input" id="inv_paq_inline_ev_${ev.id}" value="${Number(ev.inversionPaquete) || 0}" min="0"
+                    <input type="number" class="inversion-paquete-input" id="inv_paq_inline_ev_${ev.id}" value="${obtenerInversionEfectivaEvento(ev)}" min="0"
                       placeholder="Ej. 1000"
                       onchange="actualizarInversionPaqueteInline('${ev.id}', this.value)"
                       onkeydown="if(event.key==='Enter'){event.preventDefault();actualizarInversionPaqueteInline('${ev.id}', this.value);}" />
@@ -10833,7 +11045,7 @@
                 </div>
                 <div class="total-final-neto-bar">
                   <span>💎 Total Final (Sin Inversión):</span>
-                  <strong>$${Math.max(0, totalContratoNum - (Number(ev.inversionPaquete) || 0)).toLocaleString("es-MX")} MXN</strong>
+                  <strong>$${Math.max(0, totalContratoNum - obtenerInversionEfectivaEvento(ev)).toLocaleString("es-MX")} MXN</strong>
                 </div>
               </div>
 
@@ -11289,7 +11501,7 @@
 
       eventosDelPeriodo.forEach(ev => {
         const tot = Number(ev.total) || 0;
-        const inv = Number(ev.inversionPaquete) || 0;
+        const inv = obtenerInversionEfectivaEvento(ev);
         const infoD = calcularEstadoDeudaYSanciones(ev);
         sumaBrutoContratos += tot;
         sumaInversionPaquetes += inv;
@@ -11424,12 +11636,12 @@
                   </div>
                   <div style="display:flex; align-items:center; gap:0.2rem; background:#f5f3ff; border:1px solid #c4b5fd; padding:0.12rem 0.38rem; border-radius:6px;">
                     <small style="font-weight:900; color:#6d28d9; font-size:0.71rem;">💜 Inversión -$:</small>
-                    <input type="number" id="cmd_inv_paq_inline_ev_${ev.id}" value="${Number(ev.inversionPaquete) || 0}" min="0" style="width:76px; padding:0.2rem 0.3rem; font-size:0.76rem; font-weight:900; color:#6d28d9; border-color:#a78bfa;" onchange="actualizarInversionPaqueteInline('${ev.id}', this.value)" />
+                    <input type="number" id="cmd_inv_paq_inline_ev_${ev.id}" value="${obtenerInversionEfectivaEvento(ev)}" min="0" style="width:76px; padding:0.2rem 0.3rem; font-size:0.76rem; font-weight:900; color:#6d28d9; border-color:#a78bfa;" onchange="actualizarInversionPaqueteInline('${ev.id}', this.value)" />
                   </div>
                   <input type="number" id="cmd_abono_monto_${ev.id}" placeholder="$ Dejó a cuenta..." min="1" style="flex:1; min-width:105px; padding:0.26rem 0.45rem; font-size:0.76rem;" onkeydown="if(event.key==='Enter'){event.preventDefault();registrarAbonoACuentaDesdeComando('${ev.id}');}" />
                   <button type="button" class="btn btn-success btn-sm" style="font-weight:800;" onclick="registrarAbonoACuentaDesdeComando('${ev.id}')">➕ Abonar</button>
                 </div>
-                ${Number(ev.inversionPaquete) > 0 ? `<div style="font-size:0.74rem; font-weight:800; color:#5b21b6; margin-top:0.3rem;">💎 Total Final del Contrato descontando Inversión: $${Math.max(0, totNum - (Number(ev.inversionPaquete) || 0)).toLocaleString("es-MX")} MXN</div>` : ""}
+                ${obtenerInversionEfectivaEvento(ev) > 0 ? `<div style="font-size:0.74rem; font-weight:800; color:#5b21b6; margin-top:0.3rem;">💎 Total Final del Contrato descontando Inversión: $${Math.max(0, totNum - obtenerInversionEfectivaEvento(ev)).toLocaleString("es-MX")} MXN</div>` : ""}
               </div>
             `;
           }).join("");
@@ -12520,7 +12732,7 @@ Por favor confirmar de recibido. ¡Gracias!`;
     }
 
     
-    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V29) =================
+    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V30) =================
     function debounce(func, wait) {
       let timeout;
       return function(...args) {
