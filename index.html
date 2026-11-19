@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Montenegro" />
   <link rel="manifest" id="pwa_manifest_link" />
-  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v30)</title>
+  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v31)</title>
   <!-- Librería html2pdf para descargar el Contrato o Nota directamente en archivo PDF limpio -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Librerías oficiales de Google Firebase para Sincronización en Tiempo Real (Celular <-> PC) -->
@@ -2883,6 +2883,227 @@
         page-break-inside: avoid !important;
       }
     }
+
+    /* ================= APARTADO PRINCIPAL DE GANANCIA Y RESUMEN VISUAL (V31) ================= */
+    .ganancia-hero-card {
+      background: #f4f7f5;
+      border: 1.5px solid #d5e2dc;
+      border-radius: 22px;
+      padding: 1.15rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .ganancia-studio-bar {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+      flex-wrap: wrap;
+    }
+
+    .ganancia-studio-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .ganancia-studio-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid #0f172a;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.78rem;
+      color: #0f172a;
+      flex-shrink: 0;
+    }
+
+    .ganancia-next-event-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 0.9rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    .ganancia-next-banner-top {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 65%, #0369a1 100%);
+      color: #ffffff;
+      border-radius: 15px;
+      padding: 1rem 1.15rem;
+      margin-bottom: 0.85rem;
+      position: relative;
+    }
+
+    .ganancia-date-pill {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.94);
+      color: #0f172a;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      padding: 0.25rem 0.65rem;
+      border-radius: 8px;
+      text-transform: uppercase;
+      margin-bottom: 0.55rem;
+    }
+
+    .ganancia-next-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-ver-evento-teal {
+      background: #2ab7a9;
+      color: #ffffff !important;
+      border: none;
+      border-radius: 12px;
+      padding: 0.62rem 1.15rem;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(42, 183, 169, 0.3);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-ver-evento-teal:hover {
+      background: #219b8e;
+      transform: translateY(-1px);
+    }
+
+    .ganancia-cards-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0.95rem;
+      margin-bottom: 0.95rem;
+    }
+
+    @media (max-width: 780px) {
+      .ganancia-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ganancia-dark-card {
+      background: linear-gradient(160deg, #16181d 0%, #232730 100%);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.8rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+    }
+
+    .ganancia-dark-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.12);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .ganancia-big-amount {
+      font-size: 1.9rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+    }
+
+    .ganancia-packages-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    .ganancia-avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+
+    .ganancia-avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #0f172a;
+      border: 2px solid #ffffff;
+      font-size: 0.72rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -8px;
+    }
+
+    .ganancia-avatar-circle:first-child {
+      margin-left: 0;
+    }
+
+    .ganancia-avatar-circle.more {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .ganancia-breakdown-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+    }
+
+    @media (max-width: 720px) {
+      .ganancia-breakdown-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ganancia-mini-metric {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 15px;
+      padding: 0.85rem 0.95rem;
+    }
+
+    .ganancia-mini-metric.neta {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+    }
+
+    .ganancia-mini-metric.inv {
+      background: #f5f3ff;
+      border-color: #c4b5fd;
+    }
+
+    .ganancia-mini-metric.bruta {
+      background: #f0f9ff;
+      border-color: #7dd3fc;
+    }
+
   </style>
   <style id="dynamic_print_page_rule"></style>
 </head>
@@ -2895,12 +3116,13 @@
     <div class="brand">
       <img class="logo-montenegro" alt="Montenegro Fotografía y Video" />
       <div>
-        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v30</span></span>
+        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v31</span></span>
         <span class="brand-sub">Gilberto Montenegro Ruiz • Porfirio Díaz #280 • Tel: 7131016388 y 7296990786</span>
       </div>
     </div>
     <nav class="nav-tabs">
-      <button type="button" class="tab-btn active" id="nav_btn_comando" onclick="switchTab('comando')">📱 Centro de Comando</button>
+      <button type="button" class="tab-btn active" id="nav_btn_ganancia" onclick="switchTab('ganancia')">💰 Ganancia</button>
+      <button type="button" class="tab-btn" id="nav_btn_comando" onclick="switchTab('comando')">📱 Centro de Comando</button>
       <button type="button" class="tab-btn" id="nav_btn_contratos" onclick="switchTab('contratos')">📄 Contratos y Agenda</button>
       <button type="button" class="tab-btn" id="nav_btn_calendario" onclick="switchTab('calendario')">📅 Calendario</button>
       <button type="button" class="tab-btn" id="nav_btn_maquila" onclick="switchTab('maquila')">🧮 Maquila e Inversión</button>
@@ -2947,8 +3169,114 @@
         <div class="kpi-icon">🎁</div>
       </div>
     </div>
+    <!-- ================= TAB PRINCIPAL: APARTADO DE GANANCIA (INICIO) ================= -->
+    <section id="tab-ganancia" class="tab-content active no-print">
+      <div class="ganancia-hero-card">
+        <!-- Barra superior de estudio y fecha -->
+        <div class="ganancia-studio-bar">
+          <div class="ganancia-studio-badge">
+            <div class="ganancia-studio-avatar">MM</div>
+            <div>
+              <div id="ganancia_fecha_hoy_lbl" style="font-size:0.74rem; color:#64748b; font-weight:700;">Hoy</div>
+              <div id="ganancia_saludo_estudio_lbl" style="font-size:1.05rem; font-weight:900; color:#0f172a; line-height:1.15;">
+                Hola, Montenegro Multimedia
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+            <select id="ganancia_mes_select" onchange="renderizarApartadoGanancia()" style="width:auto; font-weight:800; font-size:0.78rem; padding:0.32rem 0.65rem; border-radius:999px; border-color:#cbd5e1;"></select>
+            <button type="button" class="btn btn-outline btn-sm" style="border-radius:999px; font-weight:800;" onclick="switchTab('comando')">
+              📱 Comando
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjeta destacada del Próximo Evento -->
+        <div class="ganancia-next-event-card" id="ganancia_proximo_evento_box"></div>
+
+        <!-- Dos tarjetas principales: Ganancia / Por Cobrar (oscura) y Paquetes / Compartir (clara) -->
+        <div class="ganancia-cards-grid">
+          <div class="ganancia-dark-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="ganancia-dark-icon">💰</span>
+              <span id="ganancia_badge_cobrado_pct" class="badge badge-ok">0% cobrado</span>
+            </div>
+            <div>
+              <div style="font-size:0.74rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#99f6e4; margin-bottom:0.2rem;">
+                MI GANANCIA LIBRE NETA
+              </div>
+              <div class="ganancia-big-amount" id="ganancia_neta_principal_lbl" style="color:#ffffff;">$0</div>
+              <div id="ganancia_por_cobrar_sub_lbl" style="font-size:0.8rem; color:#cbd5e1; margin-top:0.25rem;">
+                Falta por cobrar $0 • 0 clientes
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
+              <div id="ganancia_clientes_avatares" class="ganancia-avatar-stack"></div>
+              <button type="button" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.22); font-weight:800;" onclick="switchTab('comando'); document.getElementById('card_cobros_proximos_cmd').scrollIntoView({behavior:'smooth'});">
+                Ver cobros →
+              </button>
+            </div>
+          </div>
+
+          <div class="ganancia-packages-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div id="ganancia_mini_thumbs" style="display:flex; gap:0.35rem;">
+                <span class="badge badge-blue">📸 Foto</span>
+                <span class="badge badge-purple">🎥 Video</span>
+              </div>
+              <span class="badge badge-ok">Activos</span>
+            </div>
+            <div>
+              <div class="ganancia-big-amount" id="ganancia_total_paquetes_lbl" style="color:#0f172a; font-size:1.45rem;">0 paquetes</div>
+              <div id="ganancia_desde_precio_lbl" style="font-size:0.82rem; color:#64748b; font-weight:600;">
+                Desde $0 MXN
+              </div>
+            </div>
+            <button type="button" class="btn-ver-evento-teal" style="width:100%;" onclick="compartirResumenGananciaWhatsApp()">
+              💬 Compartir Resumen de Ganancia
+            </button>
+          </div>
+        </div>
+
+        <!-- Desglose claro de Ganancia Neta vs Inversión vs Venta Total -->
+        <div class="ganancia-breakdown-strip">
+          <div class="ganancia-mini-metric neta">
+            <div style="font-size:0.7rem; font-weight:800; color:#065f46; text-transform:uppercase;">💎 Ganancia Neta Libre</div>
+            <div id="ganancia_desglose_neta" style="font-size:1.35rem; font-weight:900; color:#15803d; margin-top:2px;">$0 MXN</div>
+            <small style="color:#047857; font-size:0.72rem;">Total contratos menos inversión</small>
+          </div>
+          <div class="ganancia-mini-metric inv">
+            <div style="font-size:0.7rem; font-weight:800; color:#5b21b6; text-transform:uppercase;">💜 Inversión en Paquetes</div>
+            <div id="ganancia_desglose_inversion" style="font-size:1.35rem; font-weight:900; color:#6d28d9; margin-top:2px;">$0 MXN</div>
+            <small style="color:#5b21b6; font-size:0.72rem;">Material, impresión, marcos y extras</small>
+          </div>
+          <div class="ganancia-mini-metric bruta">
+            <div style="font-size:0.7rem; font-weight:800; color:#0369a1; text-transform:uppercase;">💵 Cobrado vs Por Cobrar</div>
+            <div id="ganancia_desglose_cobrado" style="font-size:1.15rem; font-weight:900; color:#0369a1; margin-top:3px;">$0 cobrado / $0 resta</div>
+            <small style="color:#0284c7; font-size:0.72rem;">Control directo de anticipos y abonos</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accesos rápidos para mantener todo lo demás igual -->
+      <div class="card" style="margin-bottom:0;">
+        <h2>
+          <span>⚡ Accesos Directos de Operación</span>
+          <span class="badge badge-blue">Todo tu sistema intacto</span>
+        </h2>
+        <div class="btn-group" style="margin-top:0;">
+          <button type="button" class="btn btn-primary" onclick="abrirEditorNuevoContrato()">➕✍️ Nuevo Contrato</button>
+          <button type="button" class="btn btn-success" onclick="switchTab('contratos'); cambiarSubvistaContratos('agenda');">📋 Mi Agenda y Abonos</button>
+          <button type="button" class="btn btn-outline" onclick="switchTab('calendario')">📅 Mini Calendario</button>
+          <button type="button" class="btn btn-outline" style="border-color:#8b5cf6; color:#5b21b6;" onclick="switchTab('maquila')">🧮 Maquila e Inversión</button>
+          <button type="button" class="btn btn-outline" onclick="switchTab('remisiones')">🧾 Notas 10×15</button>
+          <button type="button" class="btn btn-outline" onclick="switchTab('inventario')">🎥 Rentas</button>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= TAB 0: CENTRO DE COMANDO OPERATIVO (OPTIMIZADO MÓVIL VERTICAL) ================= -->
-    <section id="tab-comando" class="tab-content active no-print">
+    <section id="tab-comando" class="tab-content no-print">
 
       <!-- Encabezado Centro de Comando Operativo + Botón de Notificaciones -->
       <div class="crm-command-header">
@@ -3255,7 +3583,7 @@
               Define lo que incluye cada paquete y su <strong>inversión de producción</strong>. Como inviertes casi lo mismo en todos, puedes fijar tu inversión base arriba para que se aplique automáticamente.
             </p>
 
-            <!-- Barra de Inversión Estándar / Base para Todos los Paquetes (v30) -->
+            <!-- Barra de Inversión Estándar / Base para Todos los Paquetes (v31) -->
             <div class="inversion-paquete-box" style="margin-bottom: 0.85rem;">
               <div class="inversion-paquete-row">
                 <div style="flex:1; min-width:190px;">
@@ -3745,7 +4073,7 @@
           <span id="contador_pendientes_eventos" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Contratos (Optimizado con Debounce v30) -->
+        <!-- Buscador Instantáneo en Tiempo Real para Contratos (Optimizado con Debounce v31) -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
           <input type="text" id="buscador_contratos_input" placeholder="Buscar cliente por nombre, salón, municipio, paquete, teléfono o fecha..." oninput="buscadorOptimizadoContratos()" />
@@ -4188,6 +4516,22 @@
           </div>
 
           <input type="hidden" id="rem_renta_id" value="" />
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.5rem;">
+            <span id="badge_vinculo_renta_nota" class="badge badge-purple" style="display:none;"></span>
+          </div>
+
+          <!-- Jalar Renta de Equipo o Perfil Frecuente a la Nota 10x15 -->
+          <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:9px; padding:0.55rem 0.7rem; margin-bottom:0.75rem;">
+            <div style="display:flex; gap:0.35rem; flex-wrap:wrap; margin-bottom:0.4rem;">
+              <select id="rem_select_renta_jalar" style="flex:1; min-width:190px; font-size:0.78rem; font-weight:600; padding:0.3rem 0.5rem;"></select>
+              <button type="button" class="btn btn-outline btn-sm" style="border-color:#7c3aed; color:#5b21b6; font-weight:800;" onclick="jalarRentaSeleccionadaANota()">📥 Jalar Renta</button>
+            </div>
+            <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+              <select id="rem_select_perfil_jalar" style="flex:1; min-width:190px; font-size:0.78rem; font-weight:600; padding:0.3rem 0.5rem;"></select>
+              <button type="button" class="btn btn-outline btn-sm" style="border-color:#7c3aed; color:#5b21b6; font-weight:800;" onclick="jalarPerfilClienteDirectoANota()">👤 Jalar Perfil</button>
+            </div>
+            <div id="chips_equipos_renta_nota" class="catalog-chips" style="margin:0.45rem 0 0 0; max-height:75px;"></div>
+          </div>
 
           <!-- Datos del Cliente y Fecha de la Nota -->
           <div class="form-row-3">
@@ -4391,7 +4735,7 @@
           <span id="contador_pendientes_notas" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 (Optimizado con Debounce v30) -->
+        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 (Optimizado con Debounce v31) -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
           <input type="text" id="buscador_notas_input" placeholder="Buscar nota por número de folio, nombre del cliente, teléfono o concepto..." oninput="buscadorOptimizadoNotas()" />
@@ -4737,7 +5081,7 @@
 
   <!-- Barra de Navegación Inferior Fija para Celular en Formato Vertical -->
   <nav class="mobile-bottom-nav no-print">
-    <button type="button" class="mob-nav-item active" id="mob_btn_comando" onclick="switchTab('comando')">
+    <button type="button" class="mob-nav-item" id="mob_btn_comando" onclick="switchTab('comando')">
       <span class="mob-ico">📊</span>
       <span>Comando</span>
     </button>
@@ -4799,7 +5143,7 @@
     const GDOC_URL_1_DEFAULT = "https://docs.google.com/document/d/1e6Tb2VZGjTadPs0Swk0nNQutGMk5IEzaocESmv0tkCU/edit?usp=sharing";
     const GDOC_URL_2_DEFAULT = "https://docs.google.com/document/d/13m23Gh1qTlHRDpZoRzlRdxH4EnZmVmnuT0rmcuSW0jk/edit?usp=sharing";
 
-    const APP_VERSION = "v30";
+    const APP_VERSION = "v31";
 
     const CONTRATO_1_DEFAULT = [
       "CONTRATO DE PRESTACIÓN DE SERVICIOS",
@@ -6401,7 +6745,7 @@
       }
     }
 
-    // ================= GESTIÓN DE PAQUETES E INVERSIÓN AUTOMÁTICA (.TXT - V30) =================
+    // ================= GESTIÓN DE PAQUETES E INVERSIÓN AUTOMÁTICA (.TXT - V31) =================
     function obtenerInversionBaseConfig() {
       const val = Number(state.config && state.config.inversionBasePaquete);
       return !isNaN(val) && val >= 0 ? val : 1000;
@@ -12718,7 +13062,188 @@ Por favor confirmar de recibido. ¡Gracias!`;
       window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
     }
 
+
+    // ================= LÓGICA DEL APARTADO PRINCIPAL DE GANANCIA (V31) =================
+    function poblarSelectorMesGanancia() {
+      const sel = document.getElementById("ganancia_mes_select");
+      if (!sel) return;
+      const prev = sel.value || "TODOS";
+      const mesesSet = new Set();
+      const hoyYm = new Date().toISOString().slice(0, 7);
+      mesesSet.add(hoyYm);
+      (state.eventos || []).forEach(ev => {
+        if (ev.fecha && ev.fecha.length >= 7) mesesSet.add(ev.fecha.slice(0, 7));
+      });
+      const mesesOrdenados = Array.from(mesesSet).sort();
+
+      sel.innerHTML = `<option value="TODOS">Todos los meses</option>`;
+      mesesOrdenados.forEach(ym => {
+        const opt = document.createElement("option");
+        opt.value = ym;
+        opt.textContent = obtenerNombreCompletoMesAnio(ym);
+        sel.appendChild(opt);
+      });
+
+      if (prev === "TODOS" || mesesOrdenados.includes(prev)) {
+        sel.value = prev;
+      } else {
+        sel.value = hoyYm;
+      }
+    }
+
+    function renderizarApartadoGanancia() {
+      const contNext = document.getElementById("ganancia_proximo_evento_box");
+      if (!contNext) return;
+
+      poblarSelectorMesGanancia();
+      ordenarEventosPorFecha();
+
+      const fechaHoyLbl = document.getElementById("ganancia_fecha_hoy_lbl");
+      const saludoLbl = document.getElementById("ganancia_saludo_estudio_lbl");
+      const ahora = new Date();
+      if (fechaHoyLbl) {
+        const textoFecha = ahora.toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" });
+        fechaHoyLbl.textContent = textoFecha.charAt(0).toUpperCase() + textoFecha.slice(1);
+      }
+      if (saludoLbl) {
+        saludoLbl.textContent = `Hola, ${state.config.negocio || "Montenegro Multimedia"}`;
+      }
+
+      const hoyStr = ahora.toISOString().split("T")[0];
+      const todosEv = state.eventos || [];
+      const proximo = todosEv.find(e => e.fecha >= hoyStr) || todosEv[todosEv.length - 1] || null;
+
+      if (!proximo) {
+        contNext.innerHTML = `
+          <div class="ganancia-next-banner-top">
+            <span class="ganancia-date-pill">SIN EVENTOS PRÓXIMOS</span>
+            <div style="font-size:1.1rem; font-weight:800;">Agrega tu primer contrato o evento</div>
+            <div style="font-size:0.8rem; color:#cbd5e1; margin-top:2px;">Aquí aparecerá automáticamente tu siguiente cobertura y su saldo por cobrar.</div>
+          </div>
+          <div class="ganancia-next-bottom">
+            <span style="font-size:0.82rem; color:#64748b;">Listo para comenzar</span>
+            <button type="button" class="btn-ver-evento-teal" onclick="abrirEditorNuevoContrato()">Crear contrato</button>
+          </div>
+        `;
+      } else {
+        const infoNext = calcularEstadoDeudaYSanciones(proximo);
+        const lugarNext = proximo.dirRecepcion && proximo.dirRecepcion !== "Por confirmar"
+          ? proximo.dirRecepcion
+          : (proximo.lugar || "Por confirmar");
+        const partesFecha = (proximo.fecha || "").split("-");
+        const mesCorto = partesFecha[1] ? (MESES_NOMBRES[parseInt(partesFecha[1], 10) - 1] || "").slice(0, 3).toUpperCase() : "";
+        const diaCorto = partesFecha[2] || "";
+        const horaInicioNext = (proximo.bloques && proximo.bloques[0] && proximo.bloques[0].inicio) ? proximo.bloques[0].inicio : "";
+
+        contNext.innerHTML = `
+          <div class="ganancia-next-banner-top">
+            <span class="ganancia-date-pill">${mesCorto} ${diaCorto}${horaInicioNext ? " • " + horaInicioNext : ""}</span>
+            <div style="font-size:1.15rem; font-weight:800; line-height:1.25;">
+              ${proximo.paqueteNombre ? proximo.paqueteNombre.split("(")[0].trim() : "Evento"} • tu próximo evento
+            </div>
+            <div style="font-size:0.82rem; color:#cbd5e1; margin-top:3px;">
+              Fecha programada: ${formatearFechaCortaDMY(proximo.fecha)}
+            </div>
+          </div>
+          <div class="ganancia-next-bottom">
+            <div>
+              <div style="font-size:1.3rem; font-weight:900; color:#0f172a; line-height:1.2;">${proximo.cliente}</div>
+              <div style="font-size:0.82rem; color:#64748b; margin-top:2px;">
+                ${infoNext.deudaBase > 0 ? `Falta por cobrar $${infoNext.deudaBase.toLocaleString("es-MX")}` : "Liquidado"} • ${lugarNext}
+              </div>
+            </div>
+            <button type="button" class="btn-ver-evento-teal" onclick="switchTab('contratos'); cargarEventoEnFormulario('${proximo.id}')">
+              Ver evento
+            </button>
+          </div>
+        `;
+      }
+
+      const selMes = document.getElementById("ganancia_mes_select");
+      const ymFiltro = selMes ? selMes.value : "TODOS";
+      const eventosFiltrados = ymFiltro === "TODOS"
+        ? todosEv
+        : todosEv.filter(e => e.fecha && e.fecha.startsWith(ymFiltro));
+
+      let totalBruto = 0;
+      let totalInversion = 0;
+      let totalCobrado = 0;
+      let totalPorCobrar = 0;
+      const deudores = [];
+
+      eventosFiltrados.forEach(ev => {
+        const tot = Number(ev.total) || 0;
+        const inv = obtenerInversionEfectivaEvento(ev);
+        const infoD = calcularEstadoDeudaYSanciones(ev);
+        totalBruto += tot;
+        totalInversion += inv;
+        totalCobrado += infoD.totalAbonado;
+        totalPorCobrar += infoD.deudaBase;
+        if (infoD.deudaBase > 0 && (ev.estadoMaterial || "pendiente") !== "entregado") {
+          deudores.push(ev.cliente);
+        }
+      });
+
+      const gananciaNeta = Math.max(0, totalBruto - totalInversion);
+      const pctCobrado = totalBruto > 0 ? Math.min(100, Math.round((totalCobrado / totalBruto) * 100)) : 0;
+
+      const elNetaPrin = document.getElementById("ganancia_neta_principal_lbl");
+      const elPorCobrarSub = document.getElementById("ganancia_por_cobrar_sub_lbl");
+      const elPctBadge = document.getElementById("ganancia_badge_cobrado_pct");
+      const elAvatares = document.getElementById("ganancia_clientes_avatares");
+      const elDesgloseNeta = document.getElementById("ganancia_desglose_neta");
+      const elDesgloseInv = document.getElementById("ganancia_desglose_inversion");
+      const elDesgloseCob = document.getElementById("ganancia_desglose_cobrado");
+
+      if (elNetaPrin) elNetaPrin.textContent = `$${gananciaNeta.toLocaleString("es-MX")}`;
+      if (elPorCobrarSub) {
+        elPorCobrarSub.textContent = `Falta por cobrar $${totalPorCobrar.toLocaleString("es-MX")} • ${deudores.length} ${deudores.length === 1 ? "cliente" : "clientes"}`;
+      }
+      if (elPctBadge) elPctBadge.textContent = `${pctCobrado}% cobrado`;
+      if (elDesgloseNeta) elDesgloseNeta.textContent = `$${gananciaNeta.toLocaleString("es-MX")} MXN`;
+      if (elDesgloseInv) elDesgloseInv.textContent = `-$${totalInversion.toLocaleString("es-MX")} MXN`;
+      if (elDesgloseCob) {
+        elDesgloseCob.textContent = `$${totalCobrado.toLocaleString("es-MX")} / $${totalPorCobrar.toLocaleString("es-MX")}`;
+      }
+
+      if (elAvatares) {
+        if (deudores.length === 0) {
+          elAvatares.innerHTML = `<span style="font-size:0.74rem; color:#99f6e4; font-weight:700;">Sin saldos pendientes</span>`;
+        } else {
+          const visibles = deudores.slice(0, 3).map(nom => {
+            const inicial = (nom.trim()[0] || "C").toUpperCase();
+            return `<span class="ganancia-avatar-circle">${inicial}</span>`;
+          }).join("");
+          const extra = deudores.length > 3 ? `<span class="ganancia-avatar-circle more">+${deudores.length - 3}</span>` : "";
+          elAvatares.innerHTML = visibles + extra;
+        }
+      }
+
+      const pkgs = state.paquetes || [];
+      const preciosValidos = pkgs.map(p => Number(p.precio) || 0).filter(n => n > 0);
+      const precioMin = preciosValidos.length > 0 ? Math.min(...preciosValidos) : 0;
+      const elTotalPaq = document.getElementById("ganancia_total_paquetes_lbl");
+      const elDesdePrecio = document.getElementById("ganancia_desde_precio_lbl");
+      if (elTotalPaq) elTotalPaq.textContent = `${pkgs.length} ${pkgs.length === 1 ? "paquete" : "paquetes"}`;
+      if (elDesdePrecio) elDesdePrecio.textContent = `Desde $${precioMin.toLocaleString("es-MX")}`;
+    }
+
+    function compartirResumenGananciaWhatsApp() {
+      const netaTxt = document.getElementById("ganancia_desglose_neta")?.textContent || "$0 MXN";
+      const invTxt = document.getElementById("ganancia_desglose_inversion")?.textContent || "$0 MXN";
+      const cobTxt = document.getElementById("ganancia_desglose_cobrado")?.textContent || "$0 / $0";
+      const msg = [
+        `📊 *RESUMEN DE GANANCIA — ${(state.config.negocio || "MONTENEGRO MULTIMEDIA").toUpperCase()}*`,
+        `💎 *Ganancia Neta Libre:* ${netaTxt}`,
+        `💜 *Inversión en Paquetes:* ${invTxt}`,
+        `💵 *Cobrado / Por Cobrar:* ${cobTxt}`
+      ].join("
+");
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
     function refrescarTodo() {
+      renderizarApartadoGanancia();
       renderizarBannerProximoEvento();
       actualizarDisponibilidadEvento();
       actualizarVistaContrato();
@@ -12732,7 +13257,7 @@ Por favor confirmar de recibido. ¡Gracias!`;
     }
 
     
-    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V30) =================
+    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V31) =================
     function debounce(func, wait) {
       let timeout;
       return function(...args) {
