@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Montenegro" />
   <link rel="manifest" id="pwa_manifest_link" />
-  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v30)</title>
+  <title>Montenegro Multimedia — Suite de Gestión Fotográfica (v31)</title>
   <!-- Librería html2pdf para descargar el Contrato o Nota directamente en archivo PDF limpio -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Librerías oficiales de Google Firebase para Sincronización en Tiempo Real (Celular <-> PC) -->
@@ -2603,7 +2603,7 @@
     }
 
 
-    /* ================= CORRECCIONES Y MEJORAS V27 ================= */
+    /* ================= CORRECCIONES Y MEJORAS V27 - V31 ================= */
     .version-badge {
       display: inline-block;
       vertical-align: middle;
@@ -2617,6 +2617,59 @@
       border: 1px solid rgba(56, 189, 248, 0.55);
       color: #38bdf8;
       -webkit-text-fill-color: #38bdf8;
+    }
+
+    /* Vista previa en vivo de etiquetas [FOTO] y [VIDEO] al crear paquetes (v31) */
+    .pkg-tags-preview-box {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 0.6rem 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .pkg-tags-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+      margin-top: 0.35rem;
+    }
+
+    @media (max-width: 600px) {
+      .pkg-tags-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pkg-tag-col {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 0.42rem 0.55rem;
+      font-size: 0.74rem;
+    }
+
+    .pkg-tag-col.foto {
+      border-top: 3px solid #0284c7;
+    }
+
+    .pkg-tag-col.video {
+      border-top: 3px solid #7c3aed;
+    }
+
+    .pkg-tag-col ul {
+      list-style: none;
+      margin: 0.25rem 0 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+    }
+
+    .pkg-tag-col li {
+      color: #0f172a;
+      font-weight: 600;
+      line-height: 1.25;
     }
 
     /* Bloque de Firmas Centrado en Medio (Contrato 1 y Contrato 2) */
@@ -2895,7 +2948,7 @@
     <div class="brand">
       <img class="logo-montenegro" alt="Montenegro Fotografía y Video" />
       <div>
-        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v30</span></span>
+        <span class="brand-title">MONTENEGRO MULTIMEDIA <span class="version-badge">v31</span></span>
         <span class="brand-sub">Gilberto Montenegro Ruiz • Porfirio Díaz #280 • Tel: 7131016388 y 7296990786</span>
       </div>
     </div>
@@ -3249,13 +3302,13 @@
       <!-- Gavetas superiores limpias: Paquetes y Google Docs -->
       <div class="grid-2 no-print" style="margin-bottom: 0.25rem;">
         <details class="custom-collapse">
-          <summary><span>🎁 Configurar Paquetes de Foto y Video + 💜 Inversión (o subir .txt)</span></summary>
+          <summary><span>🎁 Configurar Paquetes de Foto y Video + 💜 Inversión (Etiquetas [FOTO] / [VIDEO])</span></summary>
           <div style="margin-top: 0.85rem;">
             <p style="font-size: 0.79rem; color: var(--text-muted); margin-bottom: 0.65rem;">
-              Define lo que incluye cada paquete y su <strong>inversión de producción</strong>. Como inviertes casi lo mismo en todos, puedes fijar tu inversión base arriba para que se aplique automáticamente.
+              <strong>🏷️ Regla de Etiquetas:</strong> Únicamente se colocarán en el paquete los puntos que lleven la etiqueta <code>[FOTO]</code> o <code>[VIDEO]</code>. Las líneas sin etiqueta no se agregan.
             </p>
 
-            <!-- Barra de Inversión Estándar / Base para Todos los Paquetes (v30) -->
+            <!-- Barra de Inversión Estándar / Base para Todos los Paquetes -->
             <div class="inversion-paquete-box" style="margin-bottom: 0.85rem;">
               <div class="inversion-paquete-row">
                 <div style="flex:1; min-width:190px;">
@@ -3305,10 +3358,24 @@
             </div>
 
             <div class="form-group">
-              <label>Qué incluye el paquete (Puntos de Fotografía y Video):</label>
-              <textarea id="pkg_descripcion" rows="4" placeholder="1. Servicio de 6 horas
-2. Servicio de video profesional
-3. 100 fotos impresas 4x6..."></textarea>
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.3rem;">
+                <label style="margin:0;">Puntos del Paquete (Solo se colocan si llevan <code>[FOTO]</code> o <code>[VIDEO]</code>):</label>
+                <div style="display:flex; gap:0.3rem;">
+                  <button type="button" class="btn btn-outline btn-sm" style="border-color:#0284c7; color:#0369a1; font-weight:800;" onclick="insertarEtiquetaEnPaquete('[FOTO]')" title="Inserta la etiqueta [FOTO] para agregar un punto de fotografía">
+                    ➕ [FOTO]
+                  </button>
+                  <button type="button" class="btn btn-outline btn-sm" style="border-color:#7c3aed; color:#6d28d9; font-weight:800;" onclick="insertarEtiquetaEnPaquete('[VIDEO]')" title="Inserta la etiqueta [VIDEO] para agregar un punto de video">
+                    ➕ [VIDEO]
+                  </button>
+                </div>
+              </div>
+              <textarea id="pkg_descripcion" rows="5" oninput="actualizarPreviewEtiquetasPaquete()" placeholder="[FOTO] Cobertura fotográfica por 6 horas
+[FOTO] 100 fotografías impresas tamaño 4x6
+[VIDEO] Servicio de video profesional editado
+[VIDEO] 1 memoria USB de 64GB en estuche"></textarea>
+
+              <!-- Vista previa en vivo de los puntos que SÍ llevan [FOTO] o [VIDEO] -->
+              <div id="pkg_preview_etiquetas_box" class="pkg-tags-preview-box"></div>
             </div>
 
             <div class="btn-group" style="margin-top:0.4rem;">
@@ -3321,7 +3388,7 @@
               <button type="button" class="btn btn-outline btn-sm" onclick="descargarPaquetesTxt()">⬇️ Exportar .txt</button>
             </div>
 
-            <div style="margin-top: 0.75rem; max-height: 190px; overflow-y: auto; border:1px solid var(--border); border-radius:8px;">
+            <div style="margin-top: 0.75rem; max-height: 200px; overflow-y: auto; border:1px solid var(--border); border-radius:8px;">
               <table>
                 <thead>
                   <tr>
@@ -3330,7 +3397,7 @@
                     <th>Precio</th>
                     <th>💜 Inversión</th>
                     <th>💎 Libre</th>
-                    <th>Incluye</th>
+                    <th>Incluye ([FOTO] / [VIDEO])</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -3745,7 +3812,7 @@
           <span id="contador_pendientes_eventos" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Contratos (Optimizado con Debounce v30) -->
+        <!-- Buscador Instantáneo en Tiempo Real para Contratos -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
           <input type="text" id="buscador_contratos_input" placeholder="Buscar cliente por nombre, salón, municipio, paquete, teléfono o fecha..." oninput="buscadorOptimizadoContratos()" />
@@ -4391,7 +4458,7 @@
           <span id="contador_pendientes_notas" style="font-size:0.78rem; font-weight:700; color:var(--text-muted);"></span>
         </div>
 
-        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 (Optimizado con Debounce v30) -->
+        <!-- Buscador Instantáneo en Tiempo Real para Notas 10x15 -->
         <div class="search-bar-wrapper">
           <span class="search-icon-left">🔍</span>
           <input type="text" id="buscador_notas_input" placeholder="Buscar nota por número de folio, nombre del cliente, teléfono o concepto..." oninput="buscadorOptimizadoNotas()" />
@@ -4799,7 +4866,7 @@
     const GDOC_URL_1_DEFAULT = "https://docs.google.com/document/d/1e6Tb2VZGjTadPs0Swk0nNQutGMk5IEzaocESmv0tkCU/edit?usp=sharing";
     const GDOC_URL_2_DEFAULT = "https://docs.google.com/document/d/13m23Gh1qTlHRDpZoRzlRdxH4EnZmVmnuT0rmcuSW0jk/edit?usp=sharing";
 
-    const APP_VERSION = "v30";
+    const APP_VERSION = "v31";
 
     const CONTRATO_1_DEFAULT = [
       "CONTRATO DE PRESTACIÓN DE SERVICIOS",
@@ -5135,16 +5202,16 @@
           if (state.config.inversionBasePaquete === undefined || state.config.inversionBasePaquete === null) {
             state.config.inversionBasePaquete = 1000;
           }
-          // Asegurar que los paquetes existentes tengan su descripción numerada y su inversión configurada
+          // Asegurar que los paquetes existentes tengan su inversión configurada y sus puntos etiquetados
           if (Array.isArray(state.paquetes)) {
             state.paquetes.forEach(p => {
               if (p.inversion === undefined || p.inversion === null) {
                 p.inversion = state.config.inversionBasePaquete;
               }
               if (p.descripcion && !p.descripcion.includes("1.")) {
-                const pts = extraerPuntosDeTexto(p.descripcion);
-                if (pts.length > 0) {
-                  p.descripcion = construirTextoNumeradoDesdePuntos(pts);
+                const resPts = extraerPuntosSoloConEtiqueta(p.descripcion);
+                if (resPts.puntos.length > 0) {
+                  p.descripcion = construirTextoNumeradoDesdePuntos(resPts.puntos);
                 }
               }
             });
@@ -6305,7 +6372,6 @@
             if (!mapa[ym]) mapa[ym] = [];
             mapa[ym].push(item);
           });
-          // Próximos: mes más cercano primero (ascendente). Pasados: más reciente arriba y los más antiguos al fondo (descendente)
           const claves = Object.keys(mapa).sort((a, b) => esPasado ? b.localeCompare(a) : a.localeCompare(b));
           return claves.map(ym => {
             const nombreMesCompleto = obtenerNombreCompletoMesAnio(ym);
@@ -6401,7 +6467,116 @@
       }
     }
 
-    // ================= GESTIÓN DE PAQUETES E INVERSIÓN AUTOMÁTICA (.TXT - V30) =================
+    // ================= GESTIÓN DE PAQUETES E INVERSIÓN + ETIQUETAS ESTRICTAS [FOTO] Y [VIDEO] (V31) =================
+    // Extrae ÚNICAMENTE los puntos que lleven explícitamente la etiqueta [FOTO] o [VIDEO]
+    function extraerPuntosSoloConEtiqueta(textoRaw) {
+      if (!textoRaw || !textoRaw.trim()) {
+        return { puntos: [], omitidos: [] };
+      }
+      const limpio = textoRaw.trim();
+      const partes = limpio.includes("\n")
+        ? limpio.split(/\r?\n/)
+        : limpio.split(/[,;•]+/);
+
+      const puntos = [];
+      const omitidos = [];
+
+      partes.forEach(raw => {
+        const linea = raw.trim();
+        if (!linea) return;
+        // Ignorar encabezados técnicos al importar .txt como PAQUETE:, HORAS:, PRECIO:, INVERSION:, GANANCIA LIBRE:, INCLUYE:, ---
+        if (/^(?:PAQUETE|HORAS|PRECIO|INVERSI[OÓ]N|GANANCIA\s+LIBRE|INCLUYE)\s*:/i.test(linea) || /^-{5,}$/.test(linea)) {
+          return;
+        }
+
+        const sinNum = linea
+          .replace(/^\s*punto\s*\d+\s*[\.)\-:]?\s+/i, "")
+          .replace(/^\s*\d{1,2}\s*[\.):]\s+/, "")
+          .replace(/^\s*[•\*]\s+/, "")
+          .trim();
+
+        if (!sinNum) return;
+
+        const matchTag = sinNum.match(/\[(foto|video)\]/i);
+        if (!matchTag) {
+          omitidos.push(sinNum);
+          return;
+        }
+
+        const cat = matchTag[1].toUpperCase() === "VIDEO" ? "VIDEO" : "FOTO";
+        const textoLimpio = sinNum
+          .replace(/\[(?:foto|video)\]\s*/ig, "")
+          .replace(/^\s*[\-:]\s*/, "")
+          .trim();
+
+        if (textoLimpio) {
+          puntos.push({ cat, texto: textoLimpio });
+        } else {
+          omitidos.push(sinNum);
+        }
+      });
+
+      return { puntos, omitidos };
+    }
+
+    function insertarEtiquetaEnPaquete(etiqueta) {
+      const ta = document.getElementById("pkg_descripcion");
+      if (!ta) return;
+      const actual = ta.value;
+      const prefijo = actual.length > 0 && !actual.endsWith("\n") ? "\n" : "";
+      ta.value = actual + prefijo + etiqueta + " ";
+      ta.focus();
+      ta.selectionStart = ta.selectionEnd = ta.value.length;
+      actualizarPreviewEtiquetasPaquete();
+    }
+
+    function actualizarPreviewEtiquetasPaquete() {
+      const box = document.getElementById("pkg_preview_etiquetas_box");
+      const ta = document.getElementById("pkg_descripcion");
+      if (!box || !ta) return;
+
+      const { puntos, omitidos } = extraerPuntosSoloConEtiqueta(ta.value);
+      const fotos = puntos.filter(p => p.cat === "FOTO");
+      const videos = puntos.filter(p => p.cat === "VIDEO");
+
+      if (!ta.value.trim()) {
+        box.innerHTML = `<div style="font-size:0.75rem; color:#64748b;">💡 Escribe arriba usando <strong>[FOTO]</strong> o <strong>[VIDEO]</strong> al inicio de cada punto (o toca los botones <strong>➕ [FOTO]</strong> / <strong>➕ [VIDEO]</strong>).</div>`;
+        return;
+      }
+
+      const htmlFotos = fotos.length > 0
+        ? `<ul>${fotos.map((p, i) => `<li><strong>${i + 1}.</strong> ${p.texto}</li>`).join("")}</ul>`
+        : `<div style="color:#94a3b8; font-size:0.72rem; margin-top:3px;">Sin puntos con [FOTO]</div>`;
+
+      const htmlVideos = videos.length > 0
+        ? `<ul>${videos.map((p, i) => `<li><strong>${i + 1}.</strong> ${p.texto}</li>`).join("")}</ul>`
+        : `<div style="color:#94a3b8; font-size:0.72rem; margin-top:3px;">Sin puntos con [VIDEO]</div>`;
+
+      const avisoOmitidos = omitidos.length > 0
+        ? `<div style="margin-top:0.45rem; background:#fef3c7; border:1px solid #f59e0b; color:#92400e; border-radius:6px; padding:0.32rem 0.55rem; font-size:0.72rem; font-weight:700;">
+            ⚠️ ${omitidos.length} línea(s) sin etiqueta <code>[FOTO]</code> o <code>[VIDEO]</code> NO se colocarán en el paquete:
+            <div style="font-weight:500; margin-top:2px; font-style:italic;">${omitidos.map(o => `"${o}"`).join(" | ")}</div>
+          </div>`
+        : `<div style="margin-top:0.4rem; color:#065f46; font-size:0.72rem; font-weight:700;">✅ Todos los puntos escritos tienen su etiqueta [FOTO] o [VIDEO] lista.</div>`;
+
+      box.innerHTML = `
+        <div style="font-size:0.74rem; font-weight:800; color:#0f172a;">
+          📋 Vista Previa de Puntos que SÍ entrarán al Paquete (${puntos.length} etiquetados):
+        </div>
+        <div class="pkg-tags-grid">
+          <div class="pkg-tag-col foto">
+            <strong style="color:#0369a1;">📸 [FOTO] (${fotos.length})</strong>
+            ${htmlFotos}
+          </div>
+          <div class="pkg-tag-col video">
+            <strong style="color:#6d28d9;">🎥 [VIDEO] (${videos.length})</strong>
+            ${htmlVideos}
+          </div>
+        </div>
+        ${avisoOmitidos}
+      `;
+    }
+
     function obtenerInversionBaseConfig() {
       const val = Number(state.config && state.config.inversionBasePaquete);
       return !isNaN(val) && val >= 0 ? val : 1000;
@@ -6415,7 +6590,6 @@
       return Number(pkg.precio) > 0 ? obtenerInversionBaseConfig() : 0;
     }
 
-    // Obtiene la inversión efectiva de cualquier contrato para que SIEMPRE cuente en la sumatoria total
     function obtenerInversionEfectivaEvento(ev) {
       if (!ev) return 0;
       const invGuardada = Number(ev.inversionPaquete);
@@ -6459,7 +6633,6 @@
         p.inversion = montoBase;
       });
 
-      // Actualizar también los contratos activos para que la sumatoria total lo refleje al instante
       (state.eventos || []).forEach(ev => {
         if (Number(ev.total) > 0) {
           ev.inversionPaquete = montoBase;
@@ -6494,6 +6667,7 @@
       (state.eventos || []).forEach(ev => {
         if (ev.paqueteId === pkg.id || ev.paqueteNombre === pkg.nombre) {
           ev.inversionPaquete = invNum;
+      ev.inversionManualCero = (invNum === 0);
           ev.inversionManualCero = (invNum === 0);
         }
       });
@@ -6534,6 +6708,10 @@
       state.paquetes.forEach(p => {
         const inv = obtenerInversionDePaquete(p);
         const libre = Math.max(0, (Number(p.precio) || 0) - inv);
+        const { puntos } = extraerPuntosSoloConEtiqueta(p.descripcion || "");
+        const resumenEtiquetas = puntos.length > 0
+          ? puntos.map(pt => `[${pt.cat}] ${pt.texto}`).join(" • ")
+          : "Sin puntos con etiqueta [FOTO] / [VIDEO]";
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${p.nombre}</strong></td>
@@ -6549,7 +6727,7 @@
             </div>
           </td>
           <td><strong style="color:#15803d;">$${libre.toLocaleString("es-MX")}</strong></td>
-          <td><small>${p.descripcion || "Editable en formulario"}</small></td>
+          <td><small>${resumenEtiquetas}</small></td>
           <td>
             <div style="display:flex; gap:0.25rem;">
               <button type="button" class="btn btn-outline btn-sm" onclick="editarPaqueteCatalogo('${p.id}')">✏️</button>
@@ -6560,6 +6738,7 @@
         tbody.appendChild(tr);
       });
       actualizarPreviewNetoFormPaquete();
+      actualizarPreviewEtiquetasPaquete();
     }
 
     function seleccionarPaqueteFormulario() {
@@ -6567,11 +6746,11 @@
       const pkg = state.paquetes.find(p => p.id === pkgId);
       if (pkg) {
         document.getElementById("ev_horas_totales").value = pkg.horas;
-        if (pkg.descripcion) {
-          puntosServicioActuales = extraerPuntosDeTexto(pkg.descripcion);
-          renderizarPuntosServicioDOM(true);
-        }
-        // Cargar automáticamente la inversión del paquete en el contrato
+        // Colocar ÚNICAMENTE los puntos que lleven etiqueta [FOTO] o [VIDEO]
+        const { puntos } = extraerPuntosSoloConEtiqueta(pkg.descripcion || "");
+        puntosServicioActuales = puntos;
+        renderizarPuntosServicioDOM(true);
+
         const invPaquete = obtenerInversionDePaquete(pkg);
         if (document.getElementById("ev_inversion_paquete")) {
           document.getElementById("ev_inversion_paquete").value = invPaquete;
@@ -6607,6 +6786,7 @@
       document.getElementById("pkg_descripcion").value = pkg.descripcion;
       document.getElementById("btn_guardar_pkg").textContent = "💾 Actualizar Paquete";
       actualizarPreviewNetoFormPaquete();
+      actualizarPreviewEtiquetasPaquete();
       notificar("Editando paquete: " + pkg.nombre);
     }
 
@@ -6621,6 +6801,7 @@
       document.getElementById("pkg_descripcion").value = "";
       document.getElementById("btn_guardar_pkg").textContent = "💾 Guardar Paquete";
       actualizarPreviewNetoFormPaquete();
+      actualizarPreviewEtiquetasPaquete();
     }
 
     function guardarPaqueteCatalogo() {
@@ -6629,12 +6810,23 @@
       const horas = Number(document.getElementById("pkg_horas").value) || 6;
       const precio = Number(document.getElementById("pkg_precio").value) || 0;
       const inversion = Math.max(0, Number(document.getElementById("pkg_inversion") ? document.getElementById("pkg_inversion").value : obtenerInversionBaseConfig()) || 0);
-      const descripcion = document.getElementById("pkg_descripcion").value.trim();
+      const descripcionRaw = document.getElementById("pkg_descripcion").value.trim();
 
       if (!nombre) {
         notificar("Escribe el nombre del paquete.", "error");
         return;
       }
+
+      // Filtrar estrictamente: SOLO colocar los puntos que lleven etiqueta [FOTO] o [VIDEO]
+      const { puntos, omitidos } = extraerPuntosSoloConEtiqueta(descripcionRaw);
+
+      if (descripcionRaw && puntos.length === 0) {
+        notificar("⚠️ Solo se colocan los puntos que lleven la etiqueta [FOTO] o [VIDEO]. Agrega [FOTO] o [VIDEO] antes de cada punto.", "error");
+        document.getElementById("pkg_descripcion").focus();
+        return;
+      }
+
+      const descripcion = construirTextoNumeradoDesdePuntos(puntos);
 
       if (editId) {
         const idx = state.paquetes.findIndex(p => p.id === editId);
@@ -6652,7 +6844,9 @@
         seleccionarPaqueteFormulario();
         limpiarFormPaquete();
         refrescarTodo();
-        notificar(`¡Paquete actualizado con inversión de -$${inversion.toLocaleString("es-MX")} MXN!`);
+        notificar(omitidos.length > 0
+          ? `💾 Paquete actualizado con ${puntos.length} punto(s) etiquetados. Se omitieron ${omitidos.length} línea(s) sin [FOTO]/[VIDEO].`
+          : `💾 Paquete actualizado con ${puntos.length} punto(s) etiquetados ([FOTO] / [VIDEO]).`);
       } else {
         const nuevoId = "pkg_" + Date.now();
         const nuevoPkg = { id: nuevoId, nombre, horas, precio, inversion, descripcion };
@@ -6668,7 +6862,9 @@
         seleccionarPaqueteFormulario();
         limpiarFormPaquete();
         refrescarTodo();
-        notificar(`¡Nuevo paquete guardado con inversión automática de -$${inversion.toLocaleString("es-MX")} MXN!`);
+        notificar(omitidos.length > 0
+          ? `💾 Paquete guardado con ${puntos.length} punto(s) etiquetados. Se omitieron ${omitidos.length} línea(s) sin [FOTO]/[VIDEO].`
+          : `💾 Nuevo paquete guardado con ${puntos.length} punto(s) etiquetados ([FOTO] / [VIDEO]).`);
       }
     }
 
@@ -6696,7 +6892,11 @@
             : obtenerInversionBaseConfig();
         }
         actualizarPreviewNetoFormPaquete();
-        notificar("¡Paquete cargado desde " + file.name + " con su inversión lista!");
+        actualizarPreviewEtiquetasPaquete();
+        const { puntos, omitidos } = extraerPuntosSoloConEtiqueta(texto);
+        notificar(omitidos.length > 0
+          ? `📂 Archivo cargado: ${puntos.length} punto(s) con [FOTO]/[VIDEO] detectados (${omitidos.length} sin etiqueta se omitirán).`
+          : `📂 Archivo cargado: ${puntos.length} punto(s) con [FOTO]/[VIDEO] detectados.`);
       };
       reader.readAsText(file);
       event.target.value = "";
@@ -7289,6 +7489,10 @@
 
     function extraerPuntosDeTexto(textoRaw) {
       if (!textoRaw || !textoRaw.trim()) return [];
+      // Si el texto contiene etiquetas explícitas [FOTO] o [VIDEO], colocar ÚNICAMENTE los puntos que lleven esa etiqueta
+      if (/\[(?:foto|video)\]/i.test(textoRaw)) {
+        return extraerPuntosSoloConEtiqueta(textoRaw).puntos;
+      }
       const limpio = textoRaw.trim();
       let partes = [];
       if (limpio.includes("\n")) {
@@ -7304,13 +7508,7 @@
         const cat = detectarCategoriaPunto(sinNum);
         const textoLimpio = limpiarPrefijosPunto(sinNum);
         if (!textoLimpio) return;
-
-        // Si un punto genérico dice "fotografía y video" al inicio, dividirlo automáticamente en ambas columnas para que luzca ordenado
-        if (/servicio de .* horas de (cobertura|servicio de fotograf[ií]a y video)/i.test(textoLimpio) && partes.length <= 6) {
-          resultado.push({ cat: "FOTO", texto: textoLimpio });
-        } else {
-          resultado.push({ cat, texto: textoLimpio });
-        }
+        resultado.push({ cat, texto: textoLimpio });
       });
       return resultado;
     }
@@ -7561,14 +7759,12 @@
         domicilio: state.config.domicilio
       };
 
-      // Si una plantilla guardada tenía comillas alrededor de [descripcion_servicio], limpiarlas para que el recuadro luzca limpio
       let resultado = plantilla.replace(/"\s*\[descripcion_servicio\]\s*"/g, "[descripcion_servicio]");
       Object.entries(mapa).forEach(([key, val]) => {
         resultado = resultado.replaceAll(`[${key}]`, val).replaceAll(`{${key}}`, val);
       });
 
       if (comoHtmlVisual) {
-        // Evitar renglones vacíos gigantes pegados a los bloques HTML
         resultado = resultado.replace(/\n{2,}\s*(<div class="contract-includes-box")/g, "\n$1");
         resultado = resultado.replace(/(<\/div><\/div><\/div>)\s*\n{2,}/g, "$1\n");
         resultado = resultado.replace(/\n{2,}\s*(<div class="contract-signatures-box")/g, "\n$1");
@@ -7694,24 +7890,20 @@
       return "";
     }
 
-    // Mide la primera hoja del contrato y ajusta densidad/escala automáticamente para que SIEMPRE quepa con sus firmas en 1 sola hoja Carta sin dejar espacio en blanco
     function autoAjustarHoja1Contrato(rootEl, maxAltoPx = 935) {
       if (!rootEl) return;
       const page1 = rootEl.querySelector(".contract-page-1");
       if (!page1) return;
 
-      // Separar las firmas al pie del bloque flex para que queden equilibradas y centradas en la hoja
       const bodyText = page1.querySelector(".contract-body-text");
       const sigBox = page1.querySelector(".contract-signatures-box");
       if (bodyText && sigBox && sigBox.parentElement === bodyText) {
         page1.appendChild(sigBox);
       }
 
-      // Reset de escala previa
       page1.style.zoom = "";
       page1.style.fontSize = "";
 
-      // Si el elemento no está visible todavía en pantalla, dejamos solo la clase de densidad calculada por número de puntos
       if (page1.offsetHeight === 0) return;
 
       const niveles = ["", "density-1", "density-2", "density-3"];
@@ -7724,7 +7916,6 @@
         page1.classList.add(niveles[nivelIdx]);
       }
 
-      // Si aún tiene muchos artículos y excede 1 hoja Carta, escalar suavemente para garantizar 1 sola hoja exacta
       if (page1.scrollHeight > maxAltoPx) {
         const factor = Math.max(0.68, Math.floor((maxAltoPx / page1.scrollHeight) * 100) / 100);
         page1.style.zoom = String(factor);
@@ -7770,7 +7961,6 @@
         `;
       }
 
-      // Acomodar firmas fuera de pre-wrap y auto-ajustar Hoja 1
       autoAjustarHoja1Contrato(cont, 935);
     }
 
@@ -7841,13 +8031,12 @@
       if (editId) {
         idx = state.eventos.findIndex(e => e.id === editId);
       }
-      // Si no se encontró por editId, buscar por coincidencia exacta de cliente y fecha para evitar duplicados
       if (idx < 0) {
         idx = state.eventos.findIndex(e => e.cliente.trim().toLowerCase() === cliente.trim().toLowerCase() && e.fecha === fecha);
       }
 
       if (idx >= 0) {
-        datosEvento.id = state.eventos[idx].id; // Mantener ID existente
+        datosEvento.id = state.eventos[idx].id;
         state.eventos[idx] = datosEvento;
       } else {
         state.eventos.push(datosEvento);
@@ -7856,7 +8045,6 @@
       ordenarEventosPorFecha();
       guardarEstado();
       refrescarTodo();
-      // NO limpiar ev_edit_id para que el usuario pueda volver a imprimir o guardar modificaciones sin duplicar
       document.getElementById("ev_edit_id").value = datosEvento.id;
       document.getElementById("titulo_form_evento").textContent = "✏️ Editando Contrato de: " + cliente;
       return datosEvento;
@@ -7965,7 +8153,6 @@
       const val = nuevoValor !== undefined ? nuevoValor : (inp ? inp.value : ev.inversionPaquete);
       const invNum = Math.max(0, Number(val) || 0);
       ev.inversionPaquete = invNum;
-      ev.inversionManualCero = (invNum === 0);
 
       if (document.getElementById("ev_edit_id").value === ev.id && document.getElementById("ev_inversion_paquete")) {
         document.getElementById("ev_inversion_paquete").value = invNum;
@@ -8381,28 +8568,26 @@
         return;
       }
 
-      let idx = editId ? state.eventos.findIndex(e => e.id === editId) : -1;
-      if (idx < 0) {
-        idx = state.eventos.findIndex(e => e.cliente.trim().toLowerCase() === cliente.trim().toLowerCase() && e.fecha === fecha);
-      }
-
-      if (idx >= 0) {
-        state.eventos[idx].cliente = cliente;
-        state.eventos[idx].fecha = fecha;
-        state.eventos[idx].lugar = lugar;
-        state.eventos[idx].dirRecepcion = lugar;
-        state.eventos[idx].telefono = telefono;
-        state.eventos[idx].mapsUrl = mapsUrl;
-        state.eventos[idx].paqueteNombre = paqueteNombre;
-        if (detallesRaw) {
-          state.eventos[idx].detalles = detallesRaw;
-          state.eventos[idx].bloquesTexto = detallesRaw;
+      if (editId) {
+        const idx = state.eventos.findIndex(e => e.id === editId);
+        if (idx >= 0) {
+          state.eventos[idx].cliente = cliente;
+          state.eventos[idx].fecha = fecha;
+          state.eventos[idx].lugar = lugar;
+          state.eventos[idx].dirRecepcion = lugar;
+          state.eventos[idx].telefono = telefono;
+          state.eventos[idx].mapsUrl = mapsUrl;
+          state.eventos[idx].paqueteNombre = paqueteNombre;
+          if (detallesRaw) {
+            state.eventos[idx].detalles = detallesRaw;
+            state.eventos[idx].bloquesTexto = detallesRaw;
+          }
+          state.eventos[idx].total = total;
+          state.eventos[idx].inversionPaquete = inversionPaquete;
+          state.eventos[idx].anticipo = anticipo;
+          state.eventos[idx].totalAbonado = anticipo;
+          state.eventos[idx].saldo = saldo;
         }
-        state.eventos[idx].total = total;
-        state.eventos[idx].inversionPaquete = inversionPaquete;
-        state.eventos[idx].anticipo = anticipo;
-        state.eventos[idx].totalAbonado = anticipo;
-        state.eventos[idx].saldo = saldo;
       } else {
         const abonosInit = anticipo > 0
           ? [{ id: "ab_ant_" + Date.now(), fecha, monto: anticipo, nota: "Anticipo / Pagos previos" }]
@@ -10527,7 +10712,6 @@
       const preview = document.getElementById("contrato_preview_container");
       if (stage && preview) {
         stage.innerHTML = `<div class="contract-sheet">${preview.innerHTML}</div>`;
-        // Medir fuera de pantalla al ancho real de hoja Carta (730px) para garantizar que la Hoja 1 + firmas quepan exacto en 1 hoja
         stage.style.display = "block";
         stage.style.position = "fixed";
         stage.style.left = "-9999px";
@@ -10564,15 +10748,6 @@
       contenedorTemp.style.fontSize = "9.5pt";
       contenedorTemp.style.lineHeight = "1.38";
       contenedorTemp.innerHTML = preview.innerHTML;
-      contenedorTemp.style.width = "196mm";
-      contenedorTemp.style.position = "fixed";
-      contenedorTemp.style.left = "-9999px";
-      document.body.appendChild(contenedorTemp);
-      autoAjustarHoja1Contrato(contenedorTemp, 915);
-      document.body.removeChild(contenedorTemp);
-      contenedorTemp.style.position = "";
-      contenedorTemp.style.left = "";
-      contenedorTemp.style.width = "";
 
       contenedorTemp.querySelectorAll(".page-break").forEach(pb => {
         pb.style.border = "none";
@@ -10631,21 +10806,6 @@
             </tr>
           `;
           splitEl.replaceWith(table2Col);
-        }
-      });
-
-      clon.querySelectorAll(".contract-sig-grid").forEach(sigGrid => {
-        const cols = sigGrid.querySelectorAll(".contract-sig-col");
-        if (cols.length === 2) {
-          const tableSig = document.createElement("table");
-          tableSig.setAttribute("style", "width:88%; margin:18px auto 0 auto; border-collapse:collapse; text-align:center;");
-          tableSig.innerHTML = `
-            <tr>
-              <td style="width:50%; text-align:center; padding:8px 18px; vertical-align:bottom;">${cols[0].innerHTML}</td>
-              <td style="width:50%; text-align:center; padding:8px 18px; vertical-align:bottom;">${cols[1].innerHTML}</td>
-            </tr>
-          `;
-          sigGrid.replaceWith(tableSig);
         }
       });
 
@@ -11045,7 +11205,7 @@
                 </div>
                 <div class="total-final-neto-bar">
                   <span>💎 Total Final (Sin Inversión):</span>
-                  <strong>$${Math.max(0, totalContratoNum - obtenerInversionEfectivaEvento(ev)).toLocaleString("es-MX")} MXN</strong>
+                  <strong>$${Math.max(0, totalContratoNum - (obtenerInversionEfectivaEvento(ev))).toLocaleString("es-MX")} MXN</strong>
                 </div>
               </div>
 
@@ -11641,7 +11801,7 @@
                   <input type="number" id="cmd_abono_monto_${ev.id}" placeholder="$ Dejó a cuenta..." min="1" style="flex:1; min-width:105px; padding:0.26rem 0.45rem; font-size:0.76rem;" onkeydown="if(event.key==='Enter'){event.preventDefault();registrarAbonoACuentaDesdeComando('${ev.id}');}" />
                   <button type="button" class="btn btn-success btn-sm" style="font-weight:800;" onclick="registrarAbonoACuentaDesdeComando('${ev.id}')">➕ Abonar</button>
                 </div>
-                ${obtenerInversionEfectivaEvento(ev) > 0 ? `<div style="font-size:0.74rem; font-weight:800; color:#5b21b6; margin-top:0.3rem;">💎 Total Final del Contrato descontando Inversión: $${Math.max(0, totNum - obtenerInversionEfectivaEvento(ev)).toLocaleString("es-MX")} MXN</div>` : ""}
+                ${obtenerInversionEfectivaEvento(ev) > 0 ? `<div style="font-size:0.74rem; font-weight:800; color:#5b21b6; margin-top:0.3rem;">💎 Total Final del Contrato descontando Inversión: $${Math.max(0, totNum - (obtenerInversionEfectivaEvento(ev))).toLocaleString("es-MX")} MXN</div>` : ""}
               </div>
             `;
           }).join("");
@@ -12731,8 +12891,8 @@ Por favor confirmar de recibido. ¡Gracias!`;
       actualizarAlertasYNotificacionesEventos();
     }
 
-    
-    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V30) =================
+
+    // ================= OPTIMIZACIÓN DE BÚSQUEDA CON DEBOUNCE (V31) =================
     function debounce(func, wait) {
       let timeout;
       return function(...args) {
@@ -12741,13 +12901,17 @@ Por favor confirmar de recibido. ¡Gracias!`;
       };
     }
 
-    const buscadorOptimizadoContratos = debounce(() => {
+    const _debouncedRefrescarTablas = debounce(() => {
       refrescarTablas();
     }, 250);
 
-    const buscadorOptimizadoNotas = debounce(() => {
-      refrescarTablas();
-    }, 250);
+    function buscadorOptimizadoContratos() {
+      _debouncedRefrescarTablas();
+    }
+
+    function buscadorOptimizadoNotas() {
+      _debouncedRefrescarTablas();
+    }
 
     window.addEventListener("DOMContentLoaded", cargarEstado);
   </script>
